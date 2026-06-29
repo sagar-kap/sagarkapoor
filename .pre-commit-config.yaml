@@ -13,7 +13,7 @@ repos:
           - --maxkb=5000
 
   - repo: https://github.com/Weburz/crisp
-    rev: v0.1.4
+    rev: v1.0.0
     hooks:
       - id: crisp
         name: lint git-commit messages
