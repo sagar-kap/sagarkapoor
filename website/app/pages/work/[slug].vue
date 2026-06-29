@@ -71,7 +71,8 @@
       </section>
     </div>
 
-    <!-- Project milestones, as a vertical timeline -->
+    <!-- Project milestones, as a scroll-pinned horizontal walk (desktop);
+         a static vertical stack on mobile / reduced motion. -->
     <CaseStudyMilestones :milestones="study.milestones" />
 
     <!-- Pull quote -->
