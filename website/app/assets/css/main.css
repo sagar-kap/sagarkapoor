@@ -1,0 +1,244 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+/*
+ * sagarkapoor.eu — the OCEAN identity, wearing the family's craft.
+ *
+ * "Sagar" means ocean. The site is a sibling of Weburz (shared Sofia Sans +
+ * BurzYellow + dark-first rhythm) but its own thing: deep-teal structure, a
+ * coral wildcard used like a struck match (<=5% of any screen), and a sea-foam
+ * "paper" light mode. Restraint reads as bad ass — colour is an event, not a
+ * fill. Atmosphere (grain + vignette) and a few precise GSAP beats do the work;
+ * no WebGL, no particles, no gimmicks.
+ */
+@theme {
+  /* ── Brand: shared family signal + ocean palette ───────────────────────── */
+
+  /* BurzYellow — the family handshake (same as Weburz). Primary CTAs, the
+     sunlight-on-water highlight. Full scale reused from the Weburz site. */
+  --color-burz-yellow-50: #fefce8;
+  --color-burz-yellow-100: #fff8cf;
+  --color-burz-yellow-200: #fff3b3;
+  --color-burz-yellow-300: #feea7d;
+  --color-burz-yellow-400: #fde047;
+  --color-burz-yellow-500: #fdd32a;
+  --color-burz-yellow-600: #fcc800;
+  --color-burz-yellow-700: #efb100;
+  --color-burz-yellow-800: #d08700;
+  --color-burz-yellow-900: #a65f00;
+  --color-burz-yellow-950: #733e0a;
+
+  /* Teal — Sagar's sibling-blue (warmer + greener than BurzBlue). Structure,
+     links on dark, the Nuxt UI `primary`. Anchored at 500 = #0e7c86. */
+  --color-teal-50: #ecfafb;
+  --color-teal-100: #cdf0f2;
+  --color-teal-200: #9fe2e7;
+  --color-teal-300: #63ccd5;
+  --color-teal-400: #2bafba;
+  --color-teal-500: #0e7c86;
+  --color-teal-600: #0d6a73;
+  --color-teal-700: #115560;
+  --color-teal-800: #14454e;
+  --color-teal-900: #153a42;
+  --color-teal-950: #06252b;
+
+  /* Coral — the wildcard, the one "alive" colour. The contact submit, hover
+     emphasis, the Nuxt UI `error`. Used sparingly. 500 = #e8745c. */
+  --color-coral-50: #fdf4f1;
+  --color-coral-100: #fbe6df;
+  --color-coral-200: #f7cdbf;
+  --color-coral-300: #f1ab94;
+  --color-coral-400: #ee8e72;
+  --color-coral-500: #e8745c;
+  --color-coral-600: #d4583f;
+  --color-coral-700: #b14430;
+  --color-coral-800: #933b2c;
+  --color-coral-900: #7a352a;
+  --color-coral-950: #421912;
+
+  /* Warm neutral — sea-foam cream. Light-mode background + /writing paper. */
+  --color-sea-foam: #f4efe6;
+
+  /* ── Type — Sofia Sans everywhere, JetBrains Mono for code + the contact
+     input. The family names alone drive @nuxt/fonts (Google Fonts) — there is
+     no @font-face block. ─────────────────────────────────────────────────── */
+  --font-display: "Sofia Sans", system-ui, sans-serif;
+  --font-body: "Sofia Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Fluid display scale (brief §6, mobile → desktop). Generates text-display-*
+     utilities. Body sizes use Tailwind defaults. */
+  --text-display-xl: clamp(3.5rem, 9vw, 6rem);
+  --text-display-xl--line-height: 1.05;
+  --text-display-xl--letter-spacing: -0.04em;
+  --text-display-xl--font-weight: 600;
+
+  --text-display-lg: clamp(2.5rem, 6vw, 4rem);
+  --text-display-lg--line-height: 1.1;
+  --text-display-lg--letter-spacing: -0.03em;
+  --text-display-lg--font-weight: 600;
+
+  --text-display-md: clamp(2rem, 4.5vw, 3rem);
+  --text-display-md--line-height: 1.15;
+  --text-display-md--letter-spacing: -0.02em;
+  --text-display-md--font-weight: 600;
+}
+
+/* ── Semantic surface tokens, split per theme ────────────────────────────── */
+
+/* LIGHT (default :root) — sea-foam paper. */
+:root {
+  --background: #f4efe6;
+  --surface: #ffffff;
+  --color: #0b1418; /* body text */
+  --muted: #5a6b73;
+  --hairline: oklch(from currentColor l c h / 0.12);
+  --nav-background: rgba(244, 239, 230, 0.78);
+  --vignette-color: rgba(11, 20, 24, 0.07);
+
+  /* Bridge to Nuxt UI primitives so <UButton>/<UCard> blend with the ocean. */
+  --ui-bg: var(--background);
+  --ui-text: var(--color);
+}
+
+/* DARK — deep ocean. */
+.dark {
+  --background: #0b1418;
+  --surface: #0f1a1f;
+  --color: #e8edf0;
+  --muted: #8a9ba3;
+  --hairline: oklch(from currentColor l c h / 0.12);
+  --nav-background: rgba(11, 20, 24, 0.78);
+  --vignette-color: rgba(0, 0, 0, 0.5);
+}
+
+@layer base {
+  b,
+  strong {
+    font-weight: 600;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
+
+  [hidden] {
+    display: none;
+  }
+
+  #__nuxt {
+    isolation: isolate;
+  }
+
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Sunlight-on-water selection. */
+  ::selection {
+    background: var(--color-burz-yellow-500);
+    color: #0b1418;
+  }
+}
+
+@layer components {
+  /* Scroll-reveal — paired with useScrollReveal(). CSS does the transition. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Film grain — fixed, subtle (<=6% or it reads childish). Animated in
+     steps() so it flickers like a film projector, not a smooth slide. */
+  .grain-overlay {
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain-shift 0.5s steps(3) infinite;
+  }
+
+  @keyframes grain-shift {
+    0% {
+      transform: translate(0, 0);
+    }
+    33% {
+      transform: translate(-4%, 3%);
+    }
+    66% {
+      transform: translate(3%, -5%);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+
+  /* Vignette — depth from darkness, not drop-shadows. Lighter in sea-foam. */
+  .vignette-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 120% at 50% 38%,
+      transparent 55%,
+      var(--vignette-color) 100%
+    );
+  }
+
+  /* The one flicker beat (linsho.bg) — the "SK" monogram on a long, irregular
+     cycle. A whisper, not a strobe. */
+  .flicker {
+    animation: flicker 6s steps(1) infinite;
+  }
+
+  @keyframes flicker {
+    0%,
+    97%,
+    100% {
+      opacity: 1;
+    }
+    97.5% {
+      opacity: 0.45;
+    }
+    98% {
+      opacity: 1;
+    }
+    98.5% {
+      opacity: 0.7;
+    }
+    99% {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      transition: none;
+    }
+    .grain-overlay,
+    .flicker {
+      animation: none;
+    }
+  }
+}
