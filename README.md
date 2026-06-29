@@ -1,45 +1,59 @@
-# Sagar Kapoor's Personal Website
+# Sagar Kapoor — Personal Site
 
-This repository contains the source code and the supplementary code required to
-maintain and develop the website - [sagarkapoor.eu](https://www.sagarkapoor.eu).
-The source code is made publicly available under the MIT License (see the
-[LICENSE](./LICENSE) document for details).
+The code behind [sagarkapoor.eu](https://www.sagarkapoor.eu) — the
+human-behind-the-company site for **Sagar Kapoor**, founder of
+[Weburz](https://weburz.com). Not the studio's site; the person's. ("Sagar"
+means _ocean_ — which is why everything here runs deep teal.)
 
-The project depends on the following tech stack:
+Built in public and MIT-licensed (see [LICENSE](./LICENSE)) — borrow whatever's
+useful.
 
-- [Nuxt.js 3](https://nuxt.com) to build the client-side website.
-- [Vercel](https://vercel.com/) for deployment and hosting.
+## What it is
 
-## About the Project
+A small, fast, opinionated corner of the web:
 
-We all have something to share. This is a piece of real e-state to do exactly
-that.
+- **Selected work** — Weburz case studies, told founder-first, not
+  portfolio-tile. Each one ends in a GSAP scroll-pinned walk through the
+  project.
+- **Writing** — long-form, markdown-driven, no trackers, no popups.
+- **Contact** — a _message in a bottle_. Throw one into the ocean; he checks the
+  tide most mornings.
 
-## Usage & Development Guidelines
+No newsletter modal will ambush you. Promise.
 
-For development, the following dependencies are required:
+## The stack
 
-1. [Node.js](https://nodejs.org/en)
-2. [PNPM](https://pnpm.io/)
-3. [Task](https://taskfile.dev/)
-4. [Pre Commit](https://pre-commit.com/)
+Boring where it counts, sharp where it shows:
 
-To get started with developing the project, follow these instructions:
+- **[Nuxt 4](https://nuxt.com)** + **[Nuxt UI 4](https://ui.nuxt.com)** +
+  **Tailwind v4** — the client.
+- **Nitro server routes** — the contact form relays through
+  [Resend](https://resend.com), gated by
+  [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/) and a
+  honeypot, so the real inbox never sits in the page source.
+- **[Cloudflare Pages](https://pages.cloudflare.com/)** — deployment, on the
+  edge.
+- **[GSAP](https://gsap.com)** — reserved for the one or two moments that
+  actually earn motion.
 
-1. Ensure the aforementioned dependencies are installed and available. Then fork
-   (and clone) the repository for further development.
-2. Invoke the `task setup` command to setup the development environment and
-   install all necessary dependencies.
-3. Invoke the `task dev` command to locally run the development version of the
-   website and access it over [localhost:3000](http://localhost:3000).
-4. Post development, invoke the `task qa-checks` command to lint and format
-   (using [ESLint](https://eslint.org) and [Prettier](https://prettier.org))
-   your code before making a commit.
-5. Push the commits to your fork and then create a Pull Request to the upstream
-   repository from the said fork whenever you are ready.
+## Run it locally
 
-## Licensing and Distribution Rights
+You'll want [Node.js](https://nodejs.org/en) 22+, [pnpm](https://pnpm.io/),
+[Task](https://taskfile.dev/), and [pre-commit](https://pre-commit.com/).
 
-This source code in this repository is made publicly available under the terms
-and conditions of the MIT License. You will find more details about thr
-distributions rights here in the [LICENSE](./LICENSE) document.
+```bash
+task setup      # install dependencies + git hooks
+task dev        # serve at http://localhost:3000
+task qa-checks  # ESLint + Prettier, before you commit
+```
+
+Then fork, branch, and open a PR. Commit messages follow
+[Conventional Commits](https://www.conventionalcommits.org/) with a 50-character
+subject cap — the `crisp` pre-commit hook will gently nag you if you drift.
+
+## Licensing & distribution
+
+This source is published under the MIT License — use it, learn from it, ship
+something good. The full terms live in the [LICENSE](./LICENSE) document.
+
+<sub>🐚</sub>
