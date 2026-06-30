@@ -1,59 +1,65 @@
 # Sagar Kapoor — Personal Site
 
-The code behind [sagarkapoor.eu](https://www.sagarkapoor.eu) — the
-human-behind-the-company site for **Sagar Kapoor**, founder of
-[Weburz](https://weburz.com). Not the studio's site; the person's. ("Sagar"
-means _ocean_ — which is why everything here runs deep teal.)
+> The human behind the company. Not the studio's site — the person's.
 
-Built in public and MIT-licensed (see [LICENSE](./LICENSE)) — borrow whatever's
-useful.
+The source behind **[sagarkapoor.eu](https://www.sagarkapoor.eu)**: the personal
+site of **Sagar Kapoor**, founder of [Weburz](https://weburz.com). _Sagar_ means
+**ocean** — so the whole thing runs deep teal, and the contact form is, fittingly,
+a message in a bottle.
 
-## What it is
+Built in public. MIT-licensed. Borrow whatever floats your boat.
 
-A small, fast, opinionated corner of the web:
+![Nuxt](https://img.shields.io/badge/Nuxt-4-00DC82?logo=nuxt&logoColor=white)
+![Nuxt UI](https://img.shields.io/badge/Nuxt_UI-4-00DC82?logo=nuxt&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38BDF8?logo=tailwindcss&logoColor=white)
+![Cloudflare Pages](https://img.shields.io/badge/Cloudflare-Pages-F38020?logo=cloudflare&logoColor=white)
+![License: MIT](https://img.shields.io/badge/License-MIT-fdd32a)
 
-- **Selected work** — Weburz case studies, told founder-first, not
-  portfolio-tile. Each one ends in a GSAP scroll-pinned walk through the
-  project.
-- **Writing** — long-form, markdown-driven, no trackers, no popups.
-- **Contact** — a _message in a bottle_. Throw one into the ocean; he checks the
-  tide most mornings.
+## What's here
 
-No newsletter modal will ambush you. Promise.
+A small, fast, opinionated corner of the web — and nothing it doesn't need:
 
-## The stack
+- **Work** — Weburz case studies, told founder-first, not portfolio-tile, each
+  closing on a vertical milestone walk through how it actually went.
+- **Writing** — long-form, markdown-driven. No trackers. No popups. No "you have
+  1 unread newsletter."
+- **Contact** — toss a message into the ocean; he reads the tide most mornings.
+
+What you _won't_ find: a cookie wall, a newsletter modal, or a single `mailto:`
+sitting around for the scrapers.
+
+## Under the hood
 
 Boring where it counts, sharp where it shows:
 
-- **[Nuxt 4](https://nuxt.com)** + **[Nuxt UI 4](https://ui.nuxt.com)** +
-  **Tailwind v4** — the client.
-- **Nitro server routes** — the contact form relays through
-  [Resend](https://resend.com), gated by
-  [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/) and a
-  honeypot, so the real inbox never sits in the page source.
-- **[Cloudflare Pages](https://pages.cloudflare.com/)** — deployment, on the
-  edge.
-- **[GSAP](https://gsap.com)** — reserved for the one or two moments that
-  actually earn motion.
+| Layer    | Tech                                                     |
+| -------- | -------------------------------------------------------- |
+| Frontend | Nuxt 4 · Nuxt UI 4 · Tailwind v4                         |
+| Server   | Nitro routes → Resend, behind Cloudflare Turnstile + a honeypot |
+| Hosting  | Cloudflare Pages, on the edge                            |
+| Motion   | GSAP — rationed to the moments that earn it              |
+
+The real inbox never appears in the page source, so scrapers go home hungry.
 
 ## Run it locally
 
-You'll want [Node.js](https://nodejs.org/en) 22+, [pnpm](https://pnpm.io/),
-[Task](https://taskfile.dev/), and [pre-commit](https://pre-commit.com/).
+Bring [Node 22+](https://nodejs.org/en), [pnpm](https://pnpm.io/),
+[Task](https://taskfile.dev/), and [pre-commit](https://pre-commit.com/). Then:
 
 ```bash
-task setup      # install dependencies + git hooks
-task dev        # serve at http://localhost:3000
+task setup      # dependencies + git hooks, once
+task dev        # http://localhost:3000
 task qa-checks  # ESLint + Prettier, before you commit
 ```
 
-Then fork, branch, and open a PR. Commit messages follow
+Fork → branch → PR. Commits ride
 [Conventional Commits](https://www.conventionalcommits.org/) with a 50-character
-subject cap — the `crisp` pre-commit hook will gently nag you if you drift.
+subject cap; the `crisp` pre-commit hook will tap you on the shoulder if you
+start to ramble.
 
-## Licensing & distribution
+## License
 
-This source is published under the MIT License — use it, learn from it, ship
-something good. The full terms live in the [LICENSE](./LICENSE) document.
+MIT — take it, learn from it, ship something good. Full terms in the
+[LICENSE](./LICENSE) document.
 
-<sub>🐚</sub>
+<sub>Made with salt water and stubbornness. 🐚</sub>
