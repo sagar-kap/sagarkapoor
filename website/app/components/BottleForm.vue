@@ -32,7 +32,7 @@
             required
             autocomplete="name"
             placeholder="Jane Cousteau"
-            class="w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/60 focus:border-teal-500 focus:outline-none"
+            class="w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none"
           />
         </label>
 
@@ -48,7 +48,7 @@
             required
             autocomplete="email"
             placeholder="you@example.com"
-            class="w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/60 focus:border-teal-500 focus:outline-none"
+            class="w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none"
           />
           <span
             v-if="fieldError === 'email'"
@@ -69,7 +69,7 @@
           v-model="subject"
           type="text"
           placeholder="A project, a question, a hello"
-          class="w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/60 focus:border-teal-500 focus:outline-none"
+          class="w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none"
         />
       </label>
 
@@ -85,7 +85,7 @@
             required
             rows="6"
             placeholder="Tell me what you're building…"
-            class="w-full resize-y rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 font-mono text-[0.95rem] tracking-[0.02em] text-(--color) caret-coral-500 placeholder:text-(--muted)/60 focus:border-teal-500 focus:outline-none"
+            class="w-full resize-y rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 font-mono text-[0.95rem] tracking-[0.02em] text-(--color) caret-coral-500 placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none"
           />
           <!-- Subtle typewriter cursor at rest. -->
           <span
