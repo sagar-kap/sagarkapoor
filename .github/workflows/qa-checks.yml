@@ -44,3 +44,6 @@ jobs:
         run: |
           pnpm run lint
           pnpm run format:check
+
+      - name: Build Website
+        run: pnpm run build
