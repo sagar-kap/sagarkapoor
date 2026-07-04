@@ -21,7 +21,7 @@
       <span class="hidden sm:inline">in Sofia · {{ status }}</span>
       <span
         class="ml-0.5"
-        :title="`${phaseName}, ${illuminationPct}% lit — ${tideLabel}`"
+        :title="`${phaseName}, ${illuminationPct}% lit — ${tideLabel} · ${tideReport}`"
         aria-hidden="true"
         >{{ emoji }}</span
       >
@@ -37,5 +37,5 @@
 
 <script setup lang="ts">
 const { time, isAwake, status } = useLocalTime();
-const { emoji, phaseName, tideLabel, illuminationPct } = useMoon();
+const { emoji, phaseName, tideLabel, illuminationPct, tideReport } = useMoon();
 </script>

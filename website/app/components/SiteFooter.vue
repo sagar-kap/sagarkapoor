@@ -1,8 +1,10 @@
 <template>
   <footer>
-    <!-- The shore: a tide rolls in just above the footer, swelling with the real
-         spring/neap strength of tonight's moon. "I'll write back from the shore." -->
-    <TideLine height="6rem" :strength="swell" />
+    <!-- The shore: a tide rolls in just above the footer — swelling with the
+         real spring/neap strength of tonight's moon, and riding at the real
+         water level of the Moon's tide over Sofia's meridian. High water on
+         the site is high water outside. "I'll write back from the shore." -->
+    <TideLine height="6rem" :strength="swell" :level="level" />
 
     <div class="border-t border-(--hairline)">
       <div
@@ -42,15 +44,22 @@ import { identity, socialLinks } from "../data/site";
 // Single bare year — no formatter needed.
 const year = new Date().getFullYear();
 
-// Real spring/neap swell from the moon. Start at the neutral default (matches
-// the tide's SSR render) and settle to tonight's true value once mounted, so
-// the waves visibly ease into spring or neap on load — no hydration mismatch.
-const { tideStrength } = useMoon();
+// Real spring/neap swell + real water level from the moon. Start at the
+// neutral defaults (matching the tide's SSR render) and settle to the true
+// values once mounted, so the sea visibly eases into its actual state on
+// load — no hydration mismatch. useMoon ticks, so the watchers keep the
+// waterline live through a long session.
+const { tideStrength, waterLevel } = useMoon();
 const swell = ref(0.6);
+const level = ref(0.5);
 onMounted(() => {
   swell.value = tideStrength.value;
+  level.value = waterLevel.value;
 });
 watch(tideStrength, (value) => {
   swell.value = value;
+});
+watch(waterLevel, (value) => {
+  level.value = value;
 });
 </script>

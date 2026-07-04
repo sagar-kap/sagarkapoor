@@ -4,7 +4,7 @@
        a soft BurzYellow crest on the front layer. Freezes under reduced-motion. -->
   <div
     class="tide pointer-events-none relative w-full overflow-hidden"
-    :style="{ height, '--swell': strength }"
+    :style="{ height, '--swell': strength, '--level': level }"
     aria-hidden="true"
   >
     <div class="wave wave-back" />
@@ -14,12 +14,17 @@
 </template>
 
 <script setup lang="ts">
-// `strength` (0 = slack neap, 1 = peak spring) scales the swell. Defaults to a
-// neutral mid so SSR + first paint match before the real moon value settles in.
-withDefaults(defineProps<{ height?: string; strength?: number }>(), {
-  height: "6rem",
-  strength: 0.6,
-});
+// `strength` (0 = slack neap, 1 = peak spring) scales the swell; `level`
+// (0 = low water, 1 = high water) moves the waterline itself. Both default to
+// a neutral mid so SSR + first paint match before the real values settle in.
+withDefaults(
+  defineProps<{ height?: string; strength?: number; level?: number }>(),
+  {
+    height: "6rem",
+    strength: 0.6,
+    level: 0.5,
+  },
+);
 </script>
 
 <style scoped>
@@ -29,21 +34,28 @@ withDefaults(defineProps<{ height?: string; strength?: number }>(), {
   background-repeat: repeat-x;
   background-position: 0 bottom;
   /* Swell: scale the wave height by the real spring/neap strength, anchored to
-     the waterline. Front layer reacts most. Eases when the moon value settles. */
+     the waterline. Front layer reacts most. Eases when the moon value settles.
+     Water level: the whole waterline sinks as the real tide ebbs (translateY
+     before scaleY, so the swell still scales about the waterline). level=1 is
+     pixel-identical to the old rendering, so the crest can never clip; at
+     level=0 the front layer drops ~1.9rem and the sea visibly pulls out. */
   transform-origin: bottom;
   transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .wave-back {
-  transform: scaleY(calc(0.78 + var(--swell, 0.6) * 0.32));
+  transform: translateY(calc((1 - var(--level, 0.5)) * 1.1rem))
+    scaleY(calc(0.78 + var(--swell, 0.6) * 0.32));
 }
 
 .wave-mid {
-  transform: scaleY(calc(0.74 + var(--swell, 0.6) * 0.46));
+  transform: translateY(calc((1 - var(--level, 0.5)) * 1.5rem))
+    scaleY(calc(0.74 + var(--swell, 0.6) * 0.46));
 }
 
 .wave-front {
-  transform: scaleY(calc(0.7 + var(--swell, 0.6) * 0.62));
+  transform: translateY(calc((1 - var(--level, 0.5)) * 1.9rem))
+    scaleY(calc(0.7 + var(--swell, 0.6) * 0.62));
 }
 
 /* Gentle swell, gradient-filled (teal, fading down). Used by back + mid. Each
