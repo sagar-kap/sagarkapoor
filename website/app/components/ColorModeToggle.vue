@@ -9,9 +9,10 @@
       @click="toggle"
     />
 
-    <!-- Reserve the slot during SSR so layout doesn't shift on hydration. -->
+    <!-- Reserve the slot during SSR so layout doesn't shift on hydration.
+         Matches the rendered sm icon UButton (28px), not a round size-8. -->
     <template #fallback>
-      <div class="size-8" aria-hidden="true" />
+      <div class="size-7" aria-hidden="true" />
     </template>
   </ClientOnly>
 </template>
