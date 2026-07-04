@@ -36,7 +36,7 @@
 
       <div class="flex items-center gap-1">
         <!-- Desktop nav -->
-        <nav class="hidden items-center gap-1 md:flex">
+        <nav aria-label="Primary" class="hidden items-center gap-1 md:flex">
           <UButton
             v-for="link in navLinks"
             :key="link.to"
@@ -76,6 +76,7 @@
     >
       <nav
         v-if="open"
+        aria-label="Primary (mobile)"
         class="border-t border-(--hairline) md:hidden"
         :style="{ backgroundColor: 'var(--nav-background)' }"
       >
