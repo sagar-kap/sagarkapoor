@@ -26,13 +26,22 @@ useHead({
 
 const description = `${identity.name} — ${identity.role}. ${identity.bio}`;
 
+// Static share card (public/og.png, 1200×630) — the footer shore, moon and
+// all. Absolute URL: scrapers don't resolve relative og:image paths.
+const ogImage = "https://sagarkapoor.eu/og.png";
+
 useSeoMeta({
   title: identity.name,
   ogTitle: `${identity.name} — ${identity.role}`,
   description,
   ogDescription: description,
   ogType: "website",
+  ogImage,
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  ogImageAlt: `${identity.name} — ${identity.role}`,
   twitterCard: "summary_large_image",
+  twitterImage: ogImage,
   themeColor: "#0b1418",
 });
 </script>
