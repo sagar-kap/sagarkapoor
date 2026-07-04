@@ -29,15 +29,17 @@
           </li>
         </ul>
 
-        <!-- Live tide report, driven by the actual moon phase (no API — the
-             Moon really does set whether tides run spring or neap). -->
+        <!-- Live tide report, driven by the actual Moon (no API — it really
+             does set spring vs neap, and its transit really is high water on
+             this meridian). The daily tide leads; spring/neap sits in the
+             title. -->
         <ClientOnly>
           <p
             class="mt-8 inline-flex items-center gap-2 rounded-full border border-(--hairline) px-3 py-1.5 font-mono text-xs tracking-[0.1em] text-(--muted) lowercase"
-            :title="`Moon ${illuminationPct}% lit`"
+            :title="`Moon ${illuminationPct}% lit · ${tideLabel}`"
           >
             <span aria-hidden="true">{{ emoji }}</span>
-            {{ phaseName }} · {{ tideLabel }} · {{ time }} in sofia
+            {{ phaseName }} · {{ tideReport }} · {{ time }} in sofia
           </p>
         </ClientOnly>
       </div>
@@ -58,7 +60,7 @@ useSeoMeta({
 });
 
 const { time } = useLocalTime();
-const { emoji, phaseName, tideLabel, illuminationPct } = useMoon();
+const { emoji, phaseName, tideLabel, illuminationPct, tideReport } = useMoon();
 
 const badges = [
   "Responds in 1-3 days",
