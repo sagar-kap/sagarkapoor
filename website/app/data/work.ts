@@ -33,11 +33,14 @@ export interface CaseStudy {
   quote?: { text: string; author: string; role: string };
   stack: string[];
   milestones: Milestone[];
+  /** Abstract card visual until real screenshots land (BrowserFrame). */
+  visual: "article" | "stage" | "mobile";
 }
 
 export const caseStudies: CaseStudy[] = [
   {
     slug: "kabbalah-india",
+    visual: "article",
     client: "Kabbalah India",
     project: "Teaching platform & public site",
     role: "Lead engineer · founder",
@@ -82,6 +85,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "natrixx",
+    visual: "stage",
     client: "Natrixx",
     project: "Official artist site",
     role: "Design engineer",
@@ -117,6 +121,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "absfit",
+    visual: "mobile",
     client: "ABSFit",
     project: "Coaching & membership site",
     role: "Lead engineer",
