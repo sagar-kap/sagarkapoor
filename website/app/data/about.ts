@@ -37,14 +37,15 @@ export const aboutContent = {
     {
       label: "@weburz/particle-canvas",
       note: "Open-source ambient particle field for Nuxt.",
-      href: "https://github.com/Weburz",
+      href: "https://github.com/weburz/particle-canvas",
     },
     {
       label: "@weburz/carousel",
       note: "Platform-aware media carousel.",
-      href: "https://github.com/Weburz",
+      href: "https://github.com/weburz/carousel",
     },
     {
+      // Private repo, so the link stays on the org.
       label: "BurzBlog",
       note: "Self-hosted headless CMS the writing here runs on.",
       href: "https://github.com/Weburz",
