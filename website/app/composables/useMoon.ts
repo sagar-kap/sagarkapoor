@@ -33,8 +33,6 @@ export const useMoon = () => {
     Math.round(((1 - Math.cos(2 * Math.PI * phase.value)) / 2) * 100),
   );
 
-  const isWaxing = computed(() => phase.value < 0.5);
-
   const NAMES = [
     "new moon",
     "waxing crescent",
@@ -139,7 +137,6 @@ export const useMoon = () => {
     emoji,
     tideLabel,
     illuminationPct,
-    isWaxing,
     tideStrength,
     waterLevel,
     isRising,

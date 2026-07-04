@@ -10,13 +10,8 @@ export const useFormattedDate = () => {
     year: "numeric",
   });
 
-  const yearFormatter = new Intl.DateTimeFormat("en-GB", { year: "numeric" });
-
   const formatDate = (isoDate: string) =>
     dateFormatter.format(new Date(isoDate));
 
-  const formatYear = (isoDate: string) =>
-    yearFormatter.format(new Date(isoDate));
-
-  return { formatDate, formatYear };
+  return { formatDate };
 };

@@ -30,7 +30,6 @@ export interface PostTeaserData {
   /** ISO date string. */
   date: string;
   readMinutes?: number;
-  words?: number;
   tags?: string[];
 }
 
@@ -40,7 +39,7 @@ const { formatDate } = useFormattedDate();
 const { formatReadTime } = useFormattedReadTime();
 
 const readLabel = computed(() =>
-  formatReadTime({ minutes: props.post.readMinutes, words: props.post.words }),
+  formatReadTime({ minutes: props.post.readMinutes }),
 );
 
 const firstTag = computed(() => props.post.tags?.[0]);
