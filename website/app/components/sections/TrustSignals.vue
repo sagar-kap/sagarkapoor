@@ -9,7 +9,11 @@
         :key="signal.label"
         class="bg-(--surface) px-6 py-8 text-center"
       >
-        <p class="font-display text-display-md font-semibold text-(--color)">
+        <!-- Fixed step below display-md: the fluid clamp crowds a 1/3 column
+             at mid widths and wraps values like "open source" awkwardly. -->
+        <p
+          class="font-display text-2xl font-semibold text-balance text-(--color) md:text-3xl"
+        >
           {{ signal.value }}
         </p>
         <p

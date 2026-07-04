@@ -32,6 +32,7 @@
         <BrowserFrame
           class="w-full shrink-0 sm:w-56 md:w-64"
           :label="study.client"
+          :visual="study.visual"
         />
       </div>
     </NuxtLink>
