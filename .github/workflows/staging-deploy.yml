@@ -24,7 +24,7 @@ jobs:
         working-directory: ./website
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7.0.1
 
       - name: Install pnpm
         uses: pnpm/action-setup@v5.0.0
