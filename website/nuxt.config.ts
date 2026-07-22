@@ -1,3 +1,5 @@
+import { fileURLToPath } from "node:url";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -60,17 +62,34 @@ export default defineNuxtConfig({
   nitro: {
     preset: "cloudflare-pages",
     compressPublicAssets: true,
+    // Bundle the writing markdown into the Nitro server build so
+    // server/routes/rss.xml.get.ts can read it via useStorage("assets:writing")
+    // — Vite's import.meta.glob (used app-side in app/utils/writing.ts) isn't
+    // available inside the Nitro server bundle. `dir` is an absolute path so
+    // it doesn't depend on Nitro's srcDir resolution (which is nuxt's
+    // serverDir, i.e. server/, not the project root).
+    serverAssets: [
+      {
+        baseName: "writing",
+        dir: fileURLToPath(new URL("./app/content/writing", import.meta.url)),
+      },
+    ],
     prerender: {
       crawlLinks: true,
       routes: ["/"],
-      // Blog posts are CMS-backed and rendered on-demand by the Worker (so new
-      // posts appear without a rebuild). If the crawler hits a /writing/[slug]
-      // while the CMS is unreachable at build time, skip it rather than fail.
+      // Blog posts are local markdown (app/content/writing/*.md), globbed at
+      // build time and prerendered to static HTML — same as the rest of the
+      // site, no CMS or on-demand rendering involved. If the crawler still
+      // trips on a /writing/[slug] route for some other reason, skip it
+      // rather than fail the whole build.
       failOnError: false,
     },
     routeRules: {
       // Never cache the contact endpoint at the edge.
       "/api/**": { headers: { "Cache-Control": "no-store" } },
+      // Feed is generated from static markdown at build time — bake it to a
+      // static file too, same philosophy as the static og.png.
+      "/rss.xml": { prerender: true },
     },
   },
 

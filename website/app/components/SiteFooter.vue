@@ -37,6 +37,15 @@
             variant="ghost"
             size="sm"
           />
+          <UButton
+            href="/rss.xml"
+            external
+            icon="i-lucide-rss"
+            aria-label="RSS feed"
+            color="neutral"
+            variant="ghost"
+            size="sm"
+          />
           <WaveBack />
           <ColorModeToggle />
         </div>
