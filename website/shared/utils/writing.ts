@@ -14,7 +14,7 @@
  *   ---
  */
 
-import yaml from "js-yaml";
+import { load } from "js-yaml";
 
 export interface WritingPostMeta {
   slug: string;
@@ -50,7 +50,7 @@ export const splitFrontmatter = (raw: string) => {
   const match = raw.match(FRONTMATTER_RE);
   if (!match) return { data: {} as Frontmatter, content: raw };
   return {
-    data: (yaml.load(match[1] ?? "") ?? {}) as Frontmatter,
+    data: (load(match[1] ?? "") ?? {}) as Frontmatter,
     content: match[2] ?? "",
   };
 };
