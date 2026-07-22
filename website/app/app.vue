@@ -21,6 +21,12 @@ useHead({
       sizes: "180x180",
       href: "/apple-touch-icon.png",
     },
+    {
+      rel: "alternate",
+      type: "application/rss+xml",
+      title: `${identity.name} — Writing`,
+      href: "/rss.xml",
+    },
   ],
 });
 
