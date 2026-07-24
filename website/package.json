@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.118",
-    "@iconify-json/simple-icons": "^1.2.50",
+    "@iconify-json/simple-icons": "^1.2.91",
     "@nuxt/eslint": "^1.15.2",
     "@types/js-yaml": "^4.0.9",
     "eslint": "^9.39.2",
