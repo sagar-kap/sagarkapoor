@@ -31,7 +31,7 @@
     "@iconify-json/simple-icons": "^1.2.91",
     "@nuxt/eslint": "^1.15.2",
     "@types/js-yaml": "^4.0.9",
-    "eslint": "^9.39.2",
+    "eslint": "^10.7.0",
     "prettier": "^3.9.6",
     "prettier-plugin-organize-imports": "^4.3.0",
     "typescript": "^6.0.3",
