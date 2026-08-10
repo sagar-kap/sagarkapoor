@@ -1,8 +1,8 @@
 <template>
-  <!-- overflow-x-clip: the contact bottle drifts to 115vw on cast (and split
-       headlines can momentarily overshoot); clip keeps that off the page's
-       horizontal scrollbar without creating a scroll container. -->
   <div class="relative flex min-h-screen flex-col overflow-x-clip">
+    <!-- overflow-x-clip: the contact bottle drifts to 115vw on cast (and split
+         headlines can momentarily overshoot); clip keeps that off the page's
+         horizontal scrollbar without creating a scroll container. -->
     <!-- Keyboard users skip the nav on every page. Visually hidden until
          focused, then surfaces above the sticky header (z-50). -->
     <a
