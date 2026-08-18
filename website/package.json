@@ -17,7 +17,7 @@
     "@nuxt/ui": "^4.10.0",
     "@nuxtjs/seo": "^5.3.12",
     "@nuxtjs/turnstile": "^1.0.0",
-    "@takumi-rs/core": "^2.8.0",
+    "@takumi-rs/core": "^2.9.2",
     "gsap": "^3.15.0",
     "js-yaml": "^5.2.3",
     "marked": "^18.0.9",
