@@ -14,7 +14,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/ui": "^4.10.0",
+    "@nuxt/ui": "^4.11.0",
     "@nuxtjs/seo": "^5.3.14",
     "@nuxtjs/turnstile": "^1.0.0",
     "@takumi-rs/core": "^2.12.0",
