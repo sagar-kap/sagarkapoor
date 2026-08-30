@@ -24,7 +24,7 @@
         <!-- Mobile tag filter -->
         <div v-if="tags.length" class="mb-8 flex flex-wrap gap-2 lg:hidden">
           <button
-            v-for="chip in tagChips"
+            v-for="chip in tags"
             :key="chip.slug"
             type="button"
             class="rounded-full border px-3 py-1 font-mono text-xs tracking-[0.1em] uppercase transition-colors"
@@ -56,7 +56,7 @@
           Filter
         </p>
         <ul class="mt-4 space-y-1">
-          <li v-for="chip in tagChips" :key="chip.slug">
+          <li v-for="chip in tags" :key="chip.slug">
             <button
               type="button"
               class="font-mono text-sm transition-colors"
@@ -93,8 +93,6 @@ const selectedTag = ref<string | undefined>(
 
 const { tags } = useWritingTags();
 const { posts } = useWritingPosts({ tag: selectedTag });
-
-const tagChips = computed(() => tags.value);
 
 const toggleTag = (slug: string) => {
   selectedTag.value = selectedTag.value === slug ? undefined : slug;

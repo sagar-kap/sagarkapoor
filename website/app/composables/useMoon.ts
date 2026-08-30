@@ -13,11 +13,38 @@
  * water level of the equilibrium tide at Sofia's meridian, rising to high
  * water every 12h25m as the Moon transits — so the footer tide is high when
  * the real tide is high.
+ *
+ * Astronomy constants, lookup tables, and the formatter are module-scope:
+ * they're pure and shared by every caller (footer, header, contact page).
  */
-export const useMoon = () => {
-  const SYNODIC_MONTH = 29.53058867; // days, mean new-moon to new-moon
-  const REF_NEW_MOON_JD = 2451550.1; // Julian Date of the 2000-01-06 new moon
+const SYNODIC_MONTH = 29.53058867; // days, mean new-moon to new-moon
+const REF_NEW_MOON_JD = 2451550.1; // Julian Date of the 2000-01-06 new moon
 
+const NAMES = [
+  "new moon",
+  "waxing crescent",
+  "first quarter",
+  "waxing gibbous",
+  "full moon",
+  "waning gibbous",
+  "last quarter",
+  "waning crescent",
+] as const;
+const EMOJIS = ["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"] as const;
+
+const LON_DEG = 23.32; // Sofia: local solar time = UTC + LON/15 hours
+const LUNAR_DAY_MS = 86_400_000 * (SYNODIC_MONTH / (SYNODIC_MONTH - 1)); // ≈ 24h 50m
+
+const frac = (x: number) => ((x % 1) + 1) % 1;
+
+const highWaterFormatter = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Europe/Sofia",
+  hour: "2-digit",
+  minute: "2-digit",
+  hourCycle: "h23",
+});
+
+export const useMoon = () => {
   const now = ref(new Date());
 
   const phase = computed(() => {
@@ -32,18 +59,6 @@ export const useMoon = () => {
   const illuminationPct = computed(() =>
     Math.round(((1 - Math.cos(2 * Math.PI * phase.value)) / 2) * 100),
   );
-
-  const NAMES = [
-    "new moon",
-    "waxing crescent",
-    "first quarter",
-    "waxing gibbous",
-    "full moon",
-    "waning gibbous",
-    "last quarter",
-    "waning crescent",
-  ] as const;
-  const EMOJIS = ["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"] as const;
 
   const bin = computed(() => Math.round(phase.value * 8) % 8);
   const phaseName = computed(() => NAMES[bin.value]);
@@ -65,11 +80,6 @@ export const useMoon = () => {
   // later each day). True transit can drift ±40 min (eccentricity,
   // declination) — fine for a footer. No lunitidal lag: that constant
   // describes a particular coastline's basin, and we don't have one.
-  const LON_DEG = 23.32; // local solar time = UTC + LON/15 hours
-  const LUNAR_DAY_MS = 86_400_000 * (SYNODIC_MONTH / (SYNODIC_MONTH - 1)); // ≈ 24h 50m
-
-  const frac = (x: number) => ((x % 1) + 1) % 1;
-
   // Moon's local hour angle as a fraction of the lunar day: 0 = upper
   // transit, 0.5 = lower transit (both high water), 0.25 / 0.75 = low water.
   const hourAngle = computed(() => {
@@ -86,13 +96,6 @@ export const useMoon = () => {
 
   // d(level)/dt ∝ −sin(4πh), so the tide floods while sin(4πh) < 0.
   const isRising = computed(() => Math.sin(4 * Math.PI * hourAngle.value) < 0);
-
-  const highWaterFormatter = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Europe/Sofia",
-    hour: "2-digit",
-    minute: "2-digit",
-    hourCycle: "h23",
-  });
 
   // hourAngle advances at exactly one cycle per lunar day, so extrapolating
   // to the next multiple of 0.5 is exact within this model.
