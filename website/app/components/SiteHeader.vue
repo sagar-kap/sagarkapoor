@@ -18,19 +18,10 @@
         }}</span>
         <!-- Live "is Sagar around?" pulse. -->
         <ClientOnly>
-          <span
-            class="relative flex size-2"
+          <PresenceDot
+            :is-awake="isAwake"
             :title="isAwake ? 'Sagar is probably around' : 'Sagar is asleep'"
-          >
-            <span
-              v-if="isAwake"
-              class="absolute inline-flex size-full animate-ping rounded-full bg-teal-400 opacity-60 motion-reduce:hidden"
-            />
-            <span
-              class="relative inline-flex size-2 rounded-full"
-              :class="isAwake ? 'bg-teal-400' : 'bg-(--muted)'"
-            />
-          </span>
+          />
         </ClientOnly>
       </NuxtLink>
 

@@ -13,8 +13,9 @@ export const useWritingPosts = (
 
   const posts = computed<PostTeaserData[]>(() => {
     let list = allPosts;
-    if (tag?.value) {
-      list = list.filter((post) => post.tags.includes(tag.value as string));
+    const selected = tag?.value;
+    if (selected) {
+      list = list.filter((post) => post.tags.includes(selected));
     }
     if (limit) {
       list = list.slice(0, limit);

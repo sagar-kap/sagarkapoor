@@ -65,22 +65,16 @@ onMounted(() => {
   year.value = new Date().getFullYear();
 });
 
-// Real spring/neap swell + real water level from the moon. Start at the
-// neutral defaults (matching the tide's SSR render) and settle to the true
-// values once mounted, so the sea visibly eases into its actual state on
-// load — no hydration mismatch. useMoon ticks, so the watchers keep the
-// waterline live through a long session.
+// Real spring/neap swell + real water level from the moon. Hold the neutral
+// defaults (matching the tide's SSR render) until mounted, then track the
+// live values — the sea visibly eases into its actual state on load, no
+// hydration mismatch, and useMoon's tick keeps the waterline moving through
+// a long session.
 const { tideStrength, waterLevel } = useMoon();
-const swell = ref(0.6);
-const level = ref(0.5);
+const mounted = ref(false);
 onMounted(() => {
-  swell.value = tideStrength.value;
-  level.value = waterLevel.value;
+  mounted.value = true;
 });
-watch(tideStrength, (value) => {
-  swell.value = value;
-});
-watch(waterLevel, (value) => {
-  level.value = value;
-});
+const swell = computed(() => (mounted.value ? tideStrength.value : 0.6));
+const level = computed(() => (mounted.value ? waterLevel.value : 0.5));
 </script>
