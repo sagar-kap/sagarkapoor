@@ -44,9 +44,26 @@
         </ClientOnly>
       </div>
 
-      <!-- The signature interaction -->
+      <!-- The signature interaction. The page owns the form state (see
+           useContactForm); BottleForm is a stateless render of it plus the
+           cast choreography. -->
       <div>
-        <BottleForm :latest-post-slug="latestPostSlug" />
+        <BottleForm
+          v-model:name="fields.name"
+          v-model:email="fields.email"
+          v-model:subject="fields.subject"
+          v-model:message="fields.message"
+          v-model:token="fields.token"
+          v-model:website="fields.website"
+          :state="state"
+          :field-error="fieldError"
+          :error-msg="errorMsg"
+          :fail-count="failCount"
+          :turnstile-enabled="turnstileEnabled"
+          :latest-post-slug="latestPostSlug"
+          @submit="submit"
+          @cast-complete="markSent"
+        />
       </div>
     </div>
   </section>
@@ -70,6 +87,17 @@ const badges = [
 
 const { posts } = useWritingPosts({ limit: 1 });
 const latestPostSlug = computed(() => posts.value[0]?.slug ?? "");
+
+const {
+  fields,
+  state,
+  fieldError,
+  errorMsg,
+  failCount,
+  turnstileEnabled,
+  submit,
+  markSent,
+} = useContactForm();
 
 const hook = ref<HTMLElement | null>(null);
 useScrollReveal(hook);

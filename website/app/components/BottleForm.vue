@@ -6,11 +6,11 @@
       ref="formEl"
       class="space-y-5"
       novalidate
-      @submit.prevent="onSubmit"
+      @submit.prevent="emit('submit')"
     >
       <!-- Honeypot: bots fill it, humans never see it. -->
       <input
-        v-model="trap"
+        v-model="website"
         type="text"
         name="website"
         tabindex="-1"
@@ -99,7 +99,7 @@
       </label>
 
       <!-- Cloudflare Turnstile. Renders only when a site key is configured. -->
-      <NuxtTurnstile v-if="turnstileSiteKey" v-model="token" />
+      <NuxtTurnstile v-if="turnstileEnabled" v-model="token" />
 
       <p
         v-if="fieldError === 'general'"
@@ -157,47 +157,50 @@
 </template>
 
 <script setup lang="ts">
-type FormState = "idle" | "sending" | "sent";
+import type {
+  ContactFieldError,
+  ContactFormState,
+} from "../composables/useContactForm";
 
-withDefaults(
+/**
+ * Stateless: every value comes in as a model or prop (see useContactForm),
+ * and the only thing this component owns is the DOM choreography — the
+ * shake on a rejected submit and the bottle cast on success.
+ */
+const props = withDefaults(
   defineProps<{
+    state: ContactFormState;
+    fieldError: ContactFieldError;
+    errorMsg: string;
+    /** Increments on every rejected submit; the form shakes on each bump. */
+    failCount: number;
+    /** Render the Turnstile widget (false when no site key is configured). */
+    turnstileEnabled: boolean;
     /** Slug of the most recent post, for the "read while you wait" link. */
     latestPostSlug?: string;
   }>(),
   { latestPostSlug: "" },
 );
 
+const emit = defineEmits<{
+  submit: [];
+  /** The cast animation has finished (or was skipped); mark the form sent. */
+  castComplete: [];
+}>();
+
+const name = defineModel<string>("name", { required: true });
+const email = defineModel<string>("email", { required: true });
+const subject = defineModel<string>("subject", { required: true });
+const message = defineModel<string>("message", { required: true });
+const token = defineModel<string>("token", { required: true });
+const website = defineModel<string>("website", { required: true });
+
 const { gsap, prefersReducedMotion } = useGsap();
-const runtimeConfig = useRuntimeConfig();
-const turnstileSiteKey = computed(
-  () =>
-    (runtimeConfig.public.turnstile as { siteKey?: string } | undefined)
-      ?.siteKey ?? "",
-);
-
-const state = ref<FormState>("idle");
-const errorMsg = ref("");
-const fieldError = ref<"" | "email" | "general">("");
-
-const name = ref("");
-const email = ref("");
-const subject = ref("");
-const message = ref("");
-const token = ref("");
-const trap = ref("");
 
 const stage = ref<HTMLElement | null>(null);
 const formEl = ref<HTMLElement | null>(null);
 const bottleEl = ref<HTMLElement | null>(null);
 const successEl = ref<HTMLElement | null>(null);
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const fail = (field: "email" | "general", msg: string) => {
-  fieldError.value = field;
-  errorMsg.value = msg;
-  shake();
-};
 
 const shake = () => {
   if (prefersReducedMotion || !formEl.value) return;
@@ -216,7 +219,7 @@ const shake = () => {
 // then reveal the note. Reduced motion → straight cross-fade, no bottle.
 const playCast = () => {
   if (prefersReducedMotion) {
-    state.value = "sent";
+    emit("castComplete");
     return;
   }
 
@@ -271,7 +274,7 @@ const playCast = () => {
 
   // 5. Reveal the note.
   tl.add(() => {
-    state.value = "sent";
+    emit("castComplete");
   });
   tl.from(
     successEl.value,
@@ -280,52 +283,14 @@ const playCast = () => {
   );
 };
 
-const onSubmit = async () => {
-  // Honeypot tripped → fake success, send nothing.
-  if (trap.value) {
-    state.value = "sent";
-    return;
-  }
+watch(() => props.failCount, shake);
 
-  fieldError.value = "";
-  errorMsg.value = "";
-
-  if (!name.value.trim() || !message.value.trim()) {
-    fail("general", "Name and message are both required.");
-    return;
-  }
-  if (!EMAIL_RE.test(email.value.trim())) {
-    fail("email", "That email doesn't look right.");
-    return;
-  }
-
-  // Dev affordance: with no Turnstile configured locally, preview the cast
-  // animation without hitting the API (which would reject the missing token).
-  if (import.meta.dev && !turnstileSiteKey.value) {
-    playCast();
-    return;
-  }
-
-  state.value = "sending";
-  try {
-    await $fetch("/api/contact", {
-      method: "POST",
-      body: {
-        name: name.value,
-        email: email.value,
-        subject: subject.value,
-        message: message.value,
-        turnstileToken: token.value,
-        website: trap.value,
-      },
-    });
-    playCast();
-  } catch (error) {
-    state.value = "idle";
-    const statusMessage = (error as { statusMessage?: string })?.statusMessage;
-    fail("general", statusMessage || "Couldn't send — please try again.");
-  }
-};
+watch(
+  () => props.state,
+  (next) => {
+    if (next === "casting") playCast();
+  },
+);
 </script>
 
 <style scoped>
