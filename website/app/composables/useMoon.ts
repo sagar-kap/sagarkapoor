@@ -45,7 +45,9 @@ const highWaterFormatter = new Intl.DateTimeFormat("en-GB", {
 });
 
 export const useMoon = () => {
-  const now = ref(new Date());
+  // Shared 30s tick — a long-open tab watches the tide actually move
+  // (steepest slope is ~0.004/min — smooth, never a visible jump).
+  const now = useSharedNow();
 
   const phase = computed(() => {
     // Julian Date from the JS epoch, then position within the synodic cycle.
@@ -118,21 +120,6 @@ export const useMoon = () => {
     // Between the extremes: are we heading toward spring or toward neap?
     const climbing = phase.value % 0.5 > 0.25; // second half of each half-cycle
     return climbing ? "tides building" : "tides easing";
-  });
-
-  // Tick every minute so a long-open tab watches the tide actually move
-  // (steepest slope is ~0.004/min — smooth, never a visible jump).
-  let timer: ReturnType<typeof setInterval> | undefined;
-
-  onMounted(() => {
-    now.value = new Date();
-    timer = setInterval(() => {
-      now.value = new Date();
-    }, 60_000);
-  });
-
-  onUnmounted(() => {
-    if (timer) clearInterval(timer);
   });
 
   return {

@@ -1,17 +1,19 @@
-import type { PostTeaserData } from "../components/PostTeaser.vue";
-import { allPosts } from "../utils/writing";
+import { allPosts, type WritingPostMeta } from "../utils/writing";
 
 /**
  * The writing index, straight from the git-controlled markdown bundle (no fetch,
  * no CMS). Returned as a `computed` per house convention; pass a reactive `tag`
- * to filter or a `limit` for teasers (home, contact).
+ * to filter or a `limit` for teasers (home, contact). Yields the full post
+ * meta — consumers like PostTeaser declare the narrower shape they need and
+ * TypeScript checks it structurally, so the data layer never depends on a
+ * component.
  */
 export const useWritingPosts = (
   options: { limit?: number; tag?: Ref<string | undefined> } = {},
 ) => {
   const { limit, tag } = options;
 
-  const posts = computed<PostTeaserData[]>(() => {
+  const posts = computed<WritingPostMeta[]>(() => {
     let list = allPosts;
     const selected = tag?.value;
     if (selected) {
@@ -20,14 +22,7 @@ export const useWritingPosts = (
     if (limit) {
       list = list.slice(0, limit);
     }
-    return list.map((post) => ({
-      slug: post.slug,
-      title: post.title,
-      excerpt: post.excerpt,
-      date: post.date,
-      readMinutes: post.readMinutes,
-      tags: post.tags,
-    }));
+    return list;
   });
 
   return { posts };

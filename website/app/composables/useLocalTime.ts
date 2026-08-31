@@ -22,7 +22,7 @@ const hourFormatter = new Intl.DateTimeFormat("en-GB", {
 });
 
 export const useLocalTime = () => {
-  const now = ref(new Date());
+  const now = useSharedNow();
 
   const time = computed(() => timeFormatter.format(now.value));
   const hour = computed(() => Number(hourFormatter.format(now.value)));
@@ -38,19 +38,6 @@ export const useLocalTime = () => {
     if (h < 18) return "deep in the work";
     if (h < 22) return "winding down";
     return "should be asleep, probably isn't";
-  });
-
-  let timer: ReturnType<typeof setInterval> | undefined;
-
-  onMounted(() => {
-    now.value = new Date();
-    timer = setInterval(() => {
-      now.value = new Date();
-    }, 30_000);
-  });
-
-  onUnmounted(() => {
-    if (timer) clearInterval(timer);
   });
 
   return { time, hour, isAwake, status };
