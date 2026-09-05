@@ -86,6 +86,23 @@
 
 /* ── Semantic surface tokens, split per theme ────────────────────────────── */
 
+/*
+ * Two families of colour live here, and the difference matters:
+ *
+ *   --color-teal-500 / --color-burz-yellow-500 / --color-coral-500 are the
+ *   brand ANCHORS. They stay exactly as they are and are used for FILLS,
+ *   RULES and MARKS — decoration, where no contrast floor applies.
+ *
+ *   --accent / --label / --danger below are the TEXT roles. Same identity,
+ *   but each one shifts along its own ramp per theme so small copy always
+ *   clears WCAG AA (4.5:1). Raw brand-500s as text failed badly: teal-500
+ *   measured 3.57:1 on dark surfaces, and burz-yellow-500 measured 1.26:1
+ *   on sea-foam — the light-mode section labels were effectively invisible.
+ *
+ * Rule of thumb: painting a shape, use the brand anchor; setting type, use
+ * the role token.
+ */
+
 /* LIGHT (default :root) — sea-foam paper. */
 :root {
   --background: #f4efe6;
@@ -95,6 +112,17 @@
   --hairline: oklch(from currentColor l c h / 0.12);
   --nav-background: rgba(244, 239, 230, 0.78);
   --vignette-color: rgba(11, 20, 24, 0.07);
+
+  /* Text roles — on #f4efe6 paper. */
+  --accent: var(--color-teal-700); /* 7.4:1 */
+  --accent-hover: var(--color-coral-700); /* 5.0:1 */
+  --label: var(--color-burz-yellow-950); /* 7.8:1 — deep amber, not pale gold */
+  --danger: var(--color-coral-700); /* 5.0:1 */
+
+  /* The coral CTA keeps its vivid brand fill in both themes; white on it is
+     only 2.96:1, so the label is deep-ocean ink instead (5.4:1). */
+  --cta-surface: var(--color-coral-500);
+  --cta-ink: var(--color-teal-950);
 
   /* Bridge to Nuxt UI primitives so <UButton>/<UCard> blend with the ocean. */
   --ui-bg: var(--background);
@@ -110,6 +138,14 @@
   --hairline: oklch(from currentColor l c h / 0.12);
   --nav-background: rgba(11, 20, 24, 0.78);
   --vignette-color: rgba(0, 0, 0, 0.5);
+
+  /* Text roles — on #0b1418 deep water. */
+  --accent: var(--color-teal-400); /* 7.1:1 */
+  --accent-hover: var(--color-coral-400); /* 7.7:1 */
+  --label: var(
+    --color-burz-yellow-500
+  ); /* 13.0:1 — unchanged, already strong */
+  --danger: var(--color-coral-400); /* 7.7:1 */
 }
 
 @layer base {
@@ -161,6 +197,17 @@
   .reveal.is-revealed {
     opacity: 1;
     transform: none;
+  }
+
+  /* Without JS nothing ever adds .is-revealed, so every revealed block would
+     stay at opacity 0 — the /about "Now" card, every post teaser and work
+     card, silently blank. Hand those readers the content unanimated. */
+  @media (scripting: none) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 
   /* Film grain — fixed, subtle (<=6% or it reads childish). Animated in

@@ -23,7 +23,7 @@
           >
             <UIcon
               name="i-lucide-check"
-              class="size-4 shrink-0 text-teal-500"
+              class="size-4 shrink-0 text-(--accent)"
             />
             {{ badge }}
           </li>

@@ -26,6 +26,32 @@ export interface ContactFields {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const FALLBACK_ERROR = "Couldn't send — please try again.";
+
+/**
+ * Pull the server's own wording out of a failed $fetch.
+ *
+ * h3's createError puts `statusMessage` in the JSON body, which ofetch exposes
+ * as `error.data`. It ALSO lands on `error.statusMessage` — but only because
+ * ofetch copies the HTTP reason phrase, and HTTP/2 (what Cloudflare serves)
+ * dropped reason phrases entirely. Reading only the top-level field therefore
+ * works in local dev over HTTP/1.1 and silently degrades to the generic
+ * fallback in production, hiding messages like "Message too long." Check the
+ * body first.
+ */
+export const serverMessage = (error: unknown): string => {
+  const e = error as {
+    data?: { statusMessage?: string; message?: string };
+    statusMessage?: string;
+  };
+  return (
+    e?.data?.statusMessage?.trim() ||
+    e?.data?.message?.trim() ||
+    e?.statusMessage?.trim() ||
+    FALLBACK_ERROR
+  );
+};
+
 export const useContactForm = () => {
   const runtimeConfig = useRuntimeConfig();
   const turnstileSiteKey =
@@ -56,6 +82,11 @@ export const useContactForm = () => {
   };
 
   const submit = async () => {
+    // Re-entry guard. The button's :disabled only takes effect on the next
+    // render, so two clicks inside one frame both reach this function and
+    // both POST — the visitor's message arrives twice.
+    if (state.value !== "idle") return;
+
     // Honeypot tripped → fake success, send nothing.
     if (fields.website) {
       state.value = "sent";
@@ -97,9 +128,7 @@ export const useContactForm = () => {
       state.value = "casting";
     } catch (error) {
       state.value = "idle";
-      const statusMessage = (error as { statusMessage?: string })
-        ?.statusMessage;
-      fail("general", statusMessage || "Couldn't send — please try again.");
+      fail("general", serverMessage(error));
     }
   };
 

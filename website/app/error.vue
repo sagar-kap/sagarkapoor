@@ -8,9 +8,7 @@
         class="bob mb-2 h-20 w-auto text-(--muted)"
         aria-hidden="true"
       />
-      <p
-        class="font-mono text-sm tracking-[0.25em] text-burz-yellow-500 uppercase"
-      >
+      <p class="font-mono text-sm tracking-[0.25em] text-(--label) uppercase">
         {{ error.statusCode }}
       </p>
       <h1

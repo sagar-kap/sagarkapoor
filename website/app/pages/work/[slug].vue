@@ -4,7 +4,7 @@
     <header class="mx-auto max-w-[64rem] px-6 pt-24 pb-12 md:pt-32">
       <NuxtLink
         to="/work"
-        class="inline-flex items-center gap-2 font-mono text-xs tracking-[0.12em] text-(--muted) uppercase transition-colors hover:text-teal-500"
+        class="-my-1.5 inline-flex items-center gap-2 py-1.5 font-mono text-xs tracking-[0.12em] text-(--muted) uppercase transition-colors hover:text-(--accent)"
       >
         <UIcon name="i-lucide-arrow-left" class="size-3.5" />
         All work
@@ -30,9 +30,7 @@
     <!-- Problem / Approach / Outcome -->
     <div class="mx-auto max-w-[64rem] space-y-16 px-6 pb-16">
       <section>
-        <h2
-          class="font-mono text-sm tracking-[0.2em] text-burz-yellow-500 uppercase"
-        >
+        <h2 class="font-mono text-sm tracking-[0.2em] text-(--label) uppercase">
           Problem
         </h2>
         <p class="mt-4 max-w-2xl text-lg leading-relaxed text-(--color)">
@@ -41,9 +39,7 @@
       </section>
 
       <section>
-        <h2
-          class="font-mono text-sm tracking-[0.2em] text-burz-yellow-500 uppercase"
-        >
+        <h2 class="font-mono text-sm tracking-[0.2em] text-(--label) uppercase">
           Approach
         </h2>
         <div class="mt-4 max-w-2xl space-y-4">
@@ -58,9 +54,7 @@
       </section>
 
       <section>
-        <h2
-          class="font-mono text-sm tracking-[0.2em] text-burz-yellow-500 uppercase"
-        >
+        <h2 class="font-mono text-sm tracking-[0.2em] text-(--label) uppercase">
           Outcome
         </h2>
         <p

@@ -11,14 +11,15 @@
           >
             {{ study.client }} · {{ study.period }}
           </span>
-          <h3
+          <component
+            :is="headingTag"
             class="mt-3 font-display text-2xl font-semibold text-(--color) md:text-3xl"
           >
             {{ study.project }}
-          </h3>
+          </component>
           <p class="mt-2 max-w-xl text-(--muted)">{{ study.outcome }}</p>
           <span
-            class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.12em] text-teal-500 uppercase transition-colors group-hover:text-coral-500"
+            class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.12em] text-(--accent) uppercase transition-colors group-hover:text-(--accent-hover)"
           >
             Read case study
             <UIcon
@@ -42,7 +43,14 @@
 <script setup lang="ts">
 import type { CaseStudy } from "../data/work";
 
-defineProps<{ study: CaseStudy }>();
+/**
+ * `headingTag` keeps the document outline honest: on the home page these
+ * cards sit under a section <h2>, so h3 is right; on /work they sit directly
+ * under the page <h1>, where h3 would skip a level.
+ */
+withDefaults(defineProps<{ study: CaseStudy; headingTag?: "h2" | "h3" }>(), {
+  headingTag: "h3",
+});
 
 const el = ref<HTMLElement | null>(null);
 useScrollReveal(el);

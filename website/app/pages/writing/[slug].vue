@@ -4,7 +4,7 @@
     <header class="mx-auto max-w-[44rem]">
       <NuxtLink
         to="/writing"
-        class="inline-flex items-center gap-2 font-mono text-xs tracking-[0.12em] text-(--muted) uppercase transition-colors hover:text-teal-500"
+        class="-my-1.5 inline-flex items-center gap-2 py-1.5 font-mono text-xs tracking-[0.12em] text-(--muted) uppercase transition-colors hover:text-(--accent)"
       >
         <UIcon name="i-lucide-arrow-left" class="size-3.5" />
         Writing
@@ -45,9 +45,11 @@
           </p>
           <p class="mt-1 max-w-md text-sm text-(--muted)">
             {{ identity.bio }}
+            <!-- Underlined on purpose: it sits inside a muted paragraph, so
+                 colour alone doesn't distinguish it (WCAG 1.4.1). -->
             <NuxtLink
               to="/about"
-              class="text-teal-500 transition-colors hover:text-coral-500"
+              class="text-(--accent) underline decoration-(--label)/60 underline-offset-[3px] transition-colors hover:text-(--accent-hover)"
             >
               More about me →
             </NuxtLink>
@@ -117,18 +119,14 @@ useSeoMeta({
 }
 
 .prose-ocean :deep(a) {
-  color: var(--color-teal-500);
+  color: var(--accent);
   text-decoration: underline;
-  text-decoration-color: color-mix(
-    in oklch,
-    var(--color-burz-yellow-500),
-    transparent 40%
-  );
+  text-decoration-color: color-mix(in oklch, var(--label), transparent 40%);
   text-underline-offset: 3px;
 }
 
 .prose-ocean :deep(a:hover) {
-  color: var(--color-coral-500);
+  color: var(--accent-hover);
 }
 
 .prose-ocean :deep(ul),
@@ -149,7 +147,7 @@ useSeoMeta({
 }
 
 .prose-ocean :deep(blockquote) {
-  border-inline-start: 2px solid var(--color-burz-yellow-500);
+  border-inline-start: 2px solid var(--label);
   padding-inline-start: 1.2em;
   font-style: italic;
   color: var(--muted);
@@ -170,6 +168,13 @@ useSeoMeta({
   border-radius: 0.75rem;
   background: var(--surface);
   padding: 1.1rem 1.25rem;
+}
+
+/* Code blocks are focusable (see withFocusableCodeBlocks) so they can be
+   scrolled by keyboard — which only helps if the focus is visible. */
+.prose-ocean :deep(pre:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .prose-ocean :deep(pre code) {

@@ -16,7 +16,7 @@
         <!-- Node + connector -->
         <div class="flex flex-col items-center">
           <span
-            class="flex size-11 shrink-0 items-center justify-center rounded-full border border-burz-yellow-500/60 bg-(--surface) font-mono text-xs font-semibold text-burz-yellow-500 sm:size-13"
+            class="flex size-11 shrink-0 items-center justify-center rounded-full border border-burz-yellow-500/60 bg-(--surface) font-mono text-xs font-semibold text-(--label) sm:size-13"
           >
             {{ milestone.label }}
           </span>
