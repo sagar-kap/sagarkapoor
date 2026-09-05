@@ -47,10 +47,19 @@ export const allPosts: WritingPostMeta[] = parsed
 
 export const allTags = [...new Set(allPosts.flatMap((p) => p.tags))].sort();
 
+// A <pre> that scrolls sideways is unreachable by keyboard unless it can take
+// focus (WCAG 2.1.1). marked emits a bare <pre>, so stamp tabindex on the way
+// out — a string pass over our own trusted output, no renderer subclassing.
+const withFocusableCodeBlocks = (html: string) =>
+  html.replaceAll("<pre>", '<pre tabindex="0">');
+
 export const getPost = (slug: string): WritingPostFull | null => {
   const post = parsed.find((p) => p.slug === slug);
   if (!post) return null;
 
   const { body, ...meta } = post;
-  return { ...meta, html: marked.parse(body) as string };
+  return {
+    ...meta,
+    html: withFocusableCodeBlocks(marked.parse(body) as string),
+  };
 };

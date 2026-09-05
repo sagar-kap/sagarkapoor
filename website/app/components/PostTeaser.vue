@@ -1,11 +1,12 @@
 <template>
   <article ref="el" class="reveal group border-t border-(--hairline) py-7">
     <NuxtLink :to="`/writing/${post.slug}`" class="block">
-      <h3
-        class="font-display text-xl font-semibold text-(--color) transition-colors group-hover:text-teal-500 md:text-2xl"
+      <component
+        :is="headingTag"
+        class="font-display text-xl font-semibold text-(--color) transition-colors group-hover:text-(--accent) md:text-2xl"
       >
         {{ post.title }}
-      </h3>
+      </component>
       <p class="mt-2 line-clamp-2 max-w-2xl text-(--muted)">
         {{ post.excerpt }}
       </p>
@@ -16,7 +17,7 @@
         <span v-if="readLabel" aria-hidden="true">·</span>
         <span v-if="readLabel">{{ readLabel }}</span>
         <span v-if="firstTag" aria-hidden="true">·</span>
-        <span v-if="firstTag" class="text-teal-500">{{ firstTag }}</span>
+        <span v-if="firstTag" class="text-(--accent)">{{ firstTag }}</span>
       </div>
     </NuxtLink>
   </article>
@@ -33,7 +34,15 @@ export interface PostTeaserData {
   tags?: string[];
 }
 
-const props = defineProps<{ post: PostTeaserData }>();
+/**
+ * `headingTag` keeps the document outline honest: on the home page these
+ * teasers sit under a section <h2>, so h3 is right; on /writing they sit
+ * directly under the page <h1>, where h3 would skip a level.
+ */
+const props = withDefaults(
+  defineProps<{ post: PostTeaserData; headingTag?: "h2" | "h3" }>(),
+  { headingTag: "h3" },
+);
 
 const { formatDate } = useFormattedDate();
 const { formatReadTime } = useFormattedReadTime();

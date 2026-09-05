@@ -27,10 +27,10 @@
             v-for="chip in tags"
             :key="chip.slug"
             type="button"
-            class="rounded-full border px-3 py-1 font-mono text-xs tracking-[0.1em] uppercase transition-colors"
+            class="rounded-full border px-3 py-1.5 font-mono text-xs tracking-[0.1em] uppercase transition-colors"
             :class="
               selectedTag === chip.slug
-                ? 'border-teal-500 text-teal-500'
+                ? 'border-teal-500 text-(--accent)'
                 : 'border-(--hairline) text-(--muted)'
             "
             @click="toggleTag(chip.slug)"
@@ -40,7 +40,12 @@
         </div>
 
         <div v-if="posts.length">
-          <PostTeaser v-for="post in posts" :key="post.slug" :post="post" />
+          <PostTeaser
+            v-for="post in posts"
+            :key="post.slug"
+            :post="post"
+            heading-tag="h2"
+          />
         </div>
         <p
           v-else
@@ -59,10 +64,10 @@
           <li v-for="chip in tags" :key="chip.slug">
             <button
               type="button"
-              class="font-mono text-sm transition-colors"
+              class="-my-1 py-1 font-mono text-sm transition-colors"
               :class="
                 selectedTag === chip.slug
-                  ? 'text-teal-500'
+                  ? 'text-(--accent)'
                   : 'text-(--muted) hover:text-(--color)'
               "
               @click="toggleTag(chip.slug)"
@@ -86,8 +91,11 @@ useSeoMeta({
 const route = useRoute();
 const router = useRouter();
 
-// Selected tag is mirrored in the URL (?tag=) so filtered views are linkable.
-const selectedTag = ref<string | undefined>(
+// The URL owns the filter — the ref used to be seeded from ?tag= once and then
+// updated by hand, which meant Back/Forward moved the URL without moving the
+// list. Deriving it keeps the two in step, and pushing (not replacing) makes
+// Back clear the filter instead of leaving the site.
+const selectedTag = computed(() =>
   typeof route.query.tag === "string" ? route.query.tag : undefined,
 );
 
@@ -95,9 +103,7 @@ const { tags } = useWritingTags();
 const { posts } = useWritingPosts({ tag: selectedTag });
 
 const toggleTag = (slug: string) => {
-  selectedTag.value = selectedTag.value === slug ? undefined : slug;
-  router.replace({
-    query: selectedTag.value ? { tag: selectedTag.value } : {},
-  });
+  const next = selectedTag.value === slug ? undefined : slug;
+  router.push({ query: next ? { tag: next } : {} });
 };
 </script>

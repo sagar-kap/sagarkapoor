@@ -46,9 +46,11 @@
         <div class="flex items-center gap-1 md:hidden">
           <ColorModeToggle />
           <UButton
+            ref="menuToggle"
             :icon="open ? 'i-lucide-x' : 'i-lucide-menu'"
             :aria-label="open ? 'Close menu' : 'Open menu'"
             :aria-expanded="open"
+            aria-controls="mobile-nav"
             color="neutral"
             variant="ghost"
             size="sm"
@@ -67,6 +69,7 @@
     >
       <nav
         v-if="open"
+        id="mobile-nav"
         aria-label="Primary (mobile)"
         class="border-t border-(--hairline) md:hidden"
         :style="{ backgroundColor: 'var(--nav-background)' }"
@@ -77,7 +80,7 @@
               :to="link.to"
               class="block py-3 font-mono text-sm tracking-[0.18em] text-(--muted) uppercase transition-colors hover:text-(--color)"
               active-class="!text-(--color)"
-              @click="open = false"
+              @click="closeMenu()"
             >
               {{ link.label }}
             </NuxtLink>
@@ -94,13 +97,31 @@ import { identity, navLinks } from "../data/site";
 const { isAwake } = useLocalTime();
 
 const open = ref(false);
+const menuToggle = ref<{ $el?: HTMLElement } | null>(null);
+
+// Escape closes the menu and hands focus back to the button that opened it,
+// so a keyboard user isn't stranded on a panel that just disappeared.
+const closeMenu = ({ restoreFocus = false } = {}) => {
+  open.value = false;
+  if (restoreFocus) nextTick(() => menuToggle.value?.$el?.focus());
+};
+
+const onKeydown = (event: KeyboardEvent) => {
+  if (event.key === "Escape") closeMenu({ restoreFocus: true });
+};
+
+// Listen only while the menu is open — no idle global handler.
+watch(open, (isOpen) => {
+  if (isOpen) window.addEventListener("keydown", onKeydown);
+  else window.removeEventListener("keydown", onKeydown);
+});
+
+onUnmounted(() => window.removeEventListener("keydown", onKeydown));
 
 // Close the mobile menu on route change.
 const route = useRoute();
 watch(
   () => route.path,
-  () => {
-    open.value = false;
-  },
+  () => closeMenu(),
 );
 </script>

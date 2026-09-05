@@ -9,7 +9,7 @@
         talking.
         <NuxtLink
           to="/about"
-          class="text-teal-500 underline decoration-burz-yellow-500/60 decoration-2 underline-offset-4 transition-colors hover:text-coral-500"
+          class="text-(--accent) underline decoration-burz-yellow-500/60 decoration-2 underline-offset-4 transition-colors hover:text-(--accent-hover)"
         >
           More about me →
         </NuxtLink>

@@ -17,9 +17,7 @@
 
     <!-- Why Weburz exists -->
     <section class="mt-16">
-      <h2
-        class="font-mono text-sm tracking-[0.2em] text-burz-yellow-500 uppercase"
-      >
+      <h2 class="font-mono text-sm tracking-[0.2em] text-(--label) uppercase">
         Why Weburz exists
       </h2>
       <div class="mt-5 space-y-5">
@@ -35,9 +33,7 @@
 
     <!-- What I believe -->
     <section class="mt-16">
-      <h2
-        class="font-mono text-sm tracking-[0.2em] text-burz-yellow-500 uppercase"
-      >
+      <h2 class="font-mono text-sm tracking-[0.2em] text-(--label) uppercase">
         What I believe
       </h2>
       <ul class="mt-6 space-y-5">
@@ -58,9 +54,7 @@
 
     <!-- Things I've shipped -->
     <section class="mt-16">
-      <h2
-        class="font-mono text-sm tracking-[0.2em] text-burz-yellow-500 uppercase"
-      >
+      <h2 class="font-mono text-sm tracking-[0.2em] text-(--label) uppercase">
         Things I've shipped
       </h2>
       <ul class="mt-6 space-y-4">
@@ -73,7 +67,7 @@
             :href="thing.href"
             target="_blank"
             rel="noopener noreferrer"
-            class="font-mono text-sm text-teal-500 transition-colors hover:text-coral-500"
+            class="-my-1 inline-block py-1 font-mono text-sm text-(--accent) transition-colors hover:text-(--accent-hover)"
           >
             {{ thing.label }} ↗
           </a>

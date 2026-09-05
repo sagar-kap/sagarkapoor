@@ -19,7 +19,12 @@
     </header>
 
     <div class="mt-14 flex flex-col gap-6">
-      <WorkCard v-for="study in caseStudies" :key="study.slug" :study="study" />
+      <WorkCard
+        v-for="study in caseStudies"
+        :key="study.slug"
+        :study="study"
+        heading-tag="h2"
+      />
     </div>
   </section>
 </template>

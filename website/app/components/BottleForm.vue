@@ -27,11 +27,15 @@
             Your name
           </span>
           <input
+            ref="nameInput"
             v-model="name"
             type="text"
             required
             autocomplete="name"
             placeholder="Jane Cousteau"
+            :aria-invalid="
+              (fieldError === 'general' && !name.trim()) || undefined
+            "
             class="w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none"
           />
         </label>
@@ -43,16 +47,23 @@
             Your email
           </span>
           <input
+            ref="emailInput"
             v-model="email"
             type="email"
             required
             autocomplete="email"
             placeholder="you@example.com"
+            :aria-invalid="fieldError === 'email' || undefined"
+            :aria-describedby="
+              fieldError === 'email' ? 'contact-email-error' : undefined
+            "
             class="w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none"
           />
           <span
             v-if="fieldError === 'email'"
-            class="mt-2 block font-mono text-xs tracking-[0.1em] text-coral-500 uppercase"
+            id="contact-email-error"
+            role="alert"
+            class="mt-2 block font-mono text-xs tracking-[0.1em] text-(--danger) uppercase"
           >
             {{ errorMsg }}
           </span>
@@ -81,16 +92,20 @@
         </span>
         <div class="relative">
           <textarea
+            ref="messageInput"
             v-model="message"
             required
             rows="6"
             placeholder="Tell me what you're building…"
+            :aria-invalid="
+              (fieldError === 'general' && !message.trim()) || undefined
+            "
             class="w-full resize-y rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 font-mono text-[0.95rem] tracking-[0.02em] text-(--color) caret-coral-500 placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none"
           />
           <!-- Subtle typewriter cursor at rest. -->
           <span
             v-if="!message"
-            class="pointer-events-none absolute bottom-3.5 left-4 hidden font-mono text-[0.95rem] text-coral-500 motion-safe:inline"
+            class="pointer-events-none absolute bottom-3.5 left-4 hidden font-mono text-[0.95rem] text-(--danger) motion-safe:inline"
             aria-hidden="true"
           >
             <span class="caret">▍</span>
@@ -103,7 +118,8 @@
 
       <p
         v-if="fieldError === 'general'"
-        class="font-mono text-xs tracking-[0.1em] text-coral-500 uppercase"
+        role="alert"
+        class="font-mono text-xs tracking-[0.1em] text-(--danger) uppercase"
       >
         {{ errorMsg }}
       </p>
@@ -111,7 +127,7 @@
       <button
         type="submit"
         :disabled="state === 'sending'"
-        class="inline-flex w-full items-center justify-center gap-2 rounded-md bg-coral-500 px-8 py-4 font-mono text-sm font-semibold tracking-[0.15em] text-white uppercase transition-colors duration-200 hover:bg-coral-600 disabled:opacity-60 sm:w-auto"
+        class="inline-flex w-full items-center justify-center gap-2 rounded-md bg-(--cta-surface) px-8 py-4 font-mono text-sm font-semibold tracking-[0.15em] text-(--cta-ink) uppercase transition-colors duration-200 hover:bg-coral-400 disabled:opacity-60 sm:w-auto"
       >
         <UIcon
           :name="
@@ -147,7 +163,7 @@
       <NuxtLink
         v-if="latestPostSlug"
         :to="`/writing/${latestPostSlug}`"
-        class="mt-5 inline-flex items-center gap-2 font-mono text-sm tracking-[0.12em] text-teal-500 uppercase transition-colors hover:text-coral-500"
+        class="mt-5 inline-flex items-center gap-2 font-mono text-sm tracking-[0.12em] text-(--accent) uppercase transition-colors hover:text-(--accent-hover)"
       >
         Read something while you wait
         <UIcon name="i-lucide-arrow-right" class="size-4" />
@@ -201,6 +217,18 @@ const stage = ref<HTMLElement | null>(null);
 const formEl = ref<HTMLElement | null>(null);
 const bottleEl = ref<HTMLElement | null>(null);
 const successEl = ref<HTMLElement | null>(null);
+
+const nameInput = ref<HTMLInputElement | null>(null);
+const emailInput = ref<HTMLInputElement | null>(null);
+const messageInput = ref<HTMLTextAreaElement | null>(null);
+
+// Put the caret where the problem is. Without this the error text appears far
+// from the keyboard user's position and they have to hunt for the bad field.
+const focusFirstInvalid = () => {
+  if (props.fieldError === "email") return emailInput.value?.focus();
+  if (!name.value.trim()) return nameInput.value?.focus();
+  if (!message.value.trim()) return messageInput.value?.focus();
+};
 
 const shake = () => {
   if (prefersReducedMotion || !formEl.value) return;
@@ -283,7 +311,13 @@ const playCast = () => {
   );
 };
 
-watch(() => props.failCount, shake);
+watch(
+  () => props.failCount,
+  () => {
+    shake();
+    nextTick(focusFirstInvalid);
+  },
+);
 
 watch(
   () => props.state,
