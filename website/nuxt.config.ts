@@ -37,6 +37,14 @@ export default defineNuxtConfig({
     defaultLocale: "en",
   },
 
+  // Post URLs (with lastmod) come from server/api/__sitemap__/urls.ts. Image
+  // discovery is off: the only <img> on a post is the byline avatar, which
+  // isn't content worth listing against every URL.
+  sitemap: {
+    discoverImages: false,
+    sources: ["/api/__sitemap__/urls"],
+  },
+
   // @nuxtjs/seo bundles nuxt-og-image, which pulls the takumi WASM renderer for
   // generated share cards. We don't render custom OG images (meta tags come from
   // useSeoMeta), so disable it to keep the edge Worker lean. Re-enable + add

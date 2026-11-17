@@ -84,7 +84,17 @@ useSeoMeta({
   title: post.title,
   description: post.excerpt,
   ogType: "article",
+  articlePublishedTime: post.date,
 });
+
+useSchemaOrg([
+  defineArticle({
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+  }),
+]);
 </script>
 
 <style scoped>

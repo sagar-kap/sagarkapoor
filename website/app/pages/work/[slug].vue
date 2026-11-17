@@ -129,7 +129,8 @@ if (!study.value) {
 }
 
 useSeoMeta({
-  title: () => (study.value ? `${study.value.project} — Work` : "Work"),
+  title: () =>
+    study.value ? `${study.value.client} — ${study.value.project}` : "Work",
   description: () => study.value?.outcome ?? "",
 });
 </script>
