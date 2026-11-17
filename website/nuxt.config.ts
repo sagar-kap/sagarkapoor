@@ -48,7 +48,7 @@ export default defineNuxtConfig({
   // @nuxtjs/seo bundles nuxt-og-image, which pulls the takumi WASM renderer for
   // generated share cards. We don't render custom OG images (meta tags come from
   // useSeoMeta), so disable it to keep the edge Worker lean. Re-enable + add
-  // @takumi-rs/wasm if branded share cards are wanted later.
+  // the takumi renderer package if branded share cards are wanted later.
   ogImage: { enabled: false },
 
   // Working light + dark toggle (deliberately unlike natrix's dark-only). Dark
@@ -107,11 +107,10 @@ export default defineNuxtConfig({
       crawlLinks: true,
       routes: ["/"],
       // Blog posts are local markdown (app/content/writing/*.md), globbed at
-      // build time and prerendered to static HTML — same as the rest of the
-      // site, no CMS or on-demand rendering involved. If the crawler still
-      // trips on a /writing/[slug] route for some other reason, skip it
-      // rather than fail the whole build.
-      failOnError: false,
+      // build time and prerendered to static HTML. A page that fails to
+      // prerender must fail the build — otherwise it is silently missing from
+      // the deploy.
+      failOnError: true,
       // Emit about.html, not about/index.html: Pages redirects the bare path
       // of a directory index to a trailing slash, but canonicals, sitemap,
       // RSS and internal links are all slash-free.
@@ -136,7 +135,7 @@ export default defineNuxtConfig({
   // request (which forces a dev page reload).
   vite: {
     optimizeDeps: {
-      include: ["gsap", "gsap/SplitText", "gsap/ScrollTrigger"],
+      include: ["gsap", "gsap/SplitText"],
     },
   },
 

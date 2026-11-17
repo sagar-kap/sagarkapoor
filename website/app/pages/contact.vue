@@ -3,12 +3,7 @@
     <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
       <!-- Hook -->
       <div ref="hook" class="reveal">
-        <span
-          class="flex items-center gap-3 font-mono text-xs tracking-[0.22em] text-(--muted) uppercase"
-        >
-          <span class="h-px w-8 bg-burz-yellow-500" aria-hidden="true" />
-          Contact
-        </span>
+        <SectionEyebrow>Contact</SectionEyebrow>
         <h1
           class="mt-4 max-w-lg font-display text-display-lg font-semibold text-balance text-(--color)"
         >

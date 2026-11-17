@@ -45,9 +45,16 @@
 </template>
 
 <script setup lang="ts">
+import { gsap as gsapCore } from "gsap";
+import { SplitText } from "gsap/SplitText";
 import { identity } from "../../data/site";
 
-const { gsap, SplitText, prefersReducedMotion } = useGsap();
+// Only the hero splits text, so the plugin is imported and registered here
+// (it lands in the home page chunk) rather than globally in the GSAP plugin.
+gsapCore.registerPlugin(SplitText);
+
+const { gsap } = useGsap();
+const reducedMotion = useReducedMotion();
 
 const eyebrowRef = ref<HTMLElement | null>(null);
 const headlineRef = ref<HTMLElement | null>(null);
@@ -57,7 +64,7 @@ const ctaRef = ref<HTMLElement | null>(null);
 let ctx: ReturnType<typeof gsap.context> | null = null;
 
 onMounted(() => {
-  if (prefersReducedMotion) return;
+  if (reducedMotion.value) return;
 
   ctx = gsap.context(() => {
     // Line-by-line clip reveal on the headline (the Weburz signature move),

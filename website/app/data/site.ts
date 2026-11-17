@@ -1,7 +1,10 @@
 /**
  * Single source of truth for site-wide chrome: identity, navigation, socials,
- * and the home trust-signals. Edit here, not in components.
+ * and the home trust-signals. Edit here, not in components. `identity` itself
+ * lives in shared/ so the RSS route can read it too.
  */
+
+export { identity } from "#shared/utils/identity";
 
 export interface NavLink {
   label: string;
@@ -13,16 +16,6 @@ export interface SocialLink {
   href: string;
   icon: string;
 }
-
-export const identity = {
-  name: "Sagar Kapoor",
-  monogram: "SK",
-  role: "Founder, Weburz",
-  city: "Sofia",
-  foundedYear: 2019,
-  // Short, human one-liner — used for SEO + the writing byline.
-  bio: "I run Weburz, a studio that builds software for the web. Sometimes I make games.",
-} as const;
 
 // Header nav — real routes, not anchors. No CTA button lives in the header.
 export const navLinks: NavLink[] = [

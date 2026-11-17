@@ -2,12 +2,7 @@
   <article class="mx-auto max-w-[44rem] px-6 py-24 md:py-32">
     <!-- Identity -->
     <header>
-      <span
-        class="flex items-center gap-3 font-mono text-xs tracking-[0.22em] text-(--muted) uppercase"
-      >
-        <span class="h-px w-8 bg-burz-yellow-500" aria-hidden="true" />
-        About
-      </span>
+      <SectionEyebrow>About</SectionEyebrow>
       <h1
         class="mt-4 font-display text-display-lg font-semibold text-balance text-(--color)"
       >
@@ -17,9 +12,7 @@
 
     <!-- Why Weburz exists -->
     <section class="mt-16">
-      <h2 class="font-mono text-sm tracking-[0.2em] text-(--label) uppercase">
-        Why Weburz exists
-      </h2>
+      <SectionLabel>Why Weburz exists</SectionLabel>
       <div class="mt-5 space-y-5">
         <p
           v-for="(para, i) in about.origin"
@@ -33,9 +26,7 @@
 
     <!-- What I believe -->
     <section class="mt-16">
-      <h2 class="font-mono text-sm tracking-[0.2em] text-(--label) uppercase">
-        What I believe
-      </h2>
+      <SectionLabel>What I believe</SectionLabel>
       <ul class="mt-6 space-y-5">
         <li
           v-for="(belief, i) in about.beliefs"
@@ -54,9 +45,7 @@
 
     <!-- Things I've shipped -->
     <section class="mt-16">
-      <h2 class="font-mono text-sm tracking-[0.2em] text-(--label) uppercase">
-        Things I've shipped
-      </h2>
+      <SectionLabel>Things I've shipped</SectionLabel>
       <ul class="mt-6 space-y-4">
         <li
           v-for="thing in about.shipped"

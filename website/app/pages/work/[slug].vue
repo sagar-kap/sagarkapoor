@@ -30,18 +30,14 @@
     <!-- Problem / Approach / Outcome -->
     <div class="mx-auto max-w-[64rem] space-y-16 px-6 pb-16">
       <section>
-        <h2 class="font-mono text-sm tracking-[0.2em] text-(--label) uppercase">
-          Problem
-        </h2>
+        <SectionLabel>Problem</SectionLabel>
         <p class="mt-4 max-w-2xl text-lg leading-relaxed text-(--color)">
           {{ study.problem }}
         </p>
       </section>
 
       <section>
-        <h2 class="font-mono text-sm tracking-[0.2em] text-(--label) uppercase">
-          Approach
-        </h2>
+        <SectionLabel>Approach</SectionLabel>
         <div class="mt-4 max-w-2xl space-y-4">
           <p
             v-for="(para, i) in study.approach"
@@ -54,9 +50,7 @@
       </section>
 
       <section>
-        <h2 class="font-mono text-sm tracking-[0.2em] text-(--label) uppercase">
-          Outcome
-        </h2>
+        <SectionLabel>Outcome</SectionLabel>
         <p
           class="mt-4 max-w-2xl font-display text-display-md font-semibold text-(--color)"
         >
@@ -87,9 +81,7 @@
 
     <!-- Stack -->
     <div class="mx-auto max-w-[64rem] px-6 pb-24">
-      <h2 class="font-mono text-sm tracking-[0.2em] text-(--muted) uppercase">
-        Built with
-      </h2>
+      <SectionLabel muted>Built with</SectionLabel>
       <div class="mt-4 flex flex-wrap gap-2">
         <UBadge
           v-for="tech in study.stack"

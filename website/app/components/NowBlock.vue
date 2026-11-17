@@ -4,9 +4,7 @@
     class="reveal rounded-xl border border-(--hairline) bg-(--surface) p-6 sm:p-8"
   >
     <div class="flex items-baseline justify-between gap-4">
-      <h3 class="font-mono text-sm tracking-[0.2em] text-(--label) uppercase">
-        Now
-      </h3>
+      <SectionLabel as="h3">Now</SectionLabel>
       <span
         class="font-mono text-xs tracking-[0.12em] text-(--muted) uppercase"
       >

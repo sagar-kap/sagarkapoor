@@ -1,12 +1,7 @@
 <template>
   <section class="mx-auto max-w-[72rem] px-6 py-24 md:py-32">
     <header class="max-w-3xl">
-      <span
-        class="flex items-center gap-3 font-mono text-xs tracking-[0.22em] text-(--muted) uppercase"
-      >
-        <span class="h-px w-8 bg-burz-yellow-500" aria-hidden="true" />
-        Writing
-      </span>
+      <SectionEyebrow>Writing</SectionEyebrow>
       <h1
         class="mt-4 font-display text-display-lg font-semibold text-(--color)"
       >
