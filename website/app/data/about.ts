@@ -47,7 +47,7 @@ export const aboutContent = {
     {
       // Private repo, so the link stays on the org.
       label: "BurzBlog",
-      note: "Self-hosted headless CMS the writing here runs on.",
+      note: "Self-hosted headless CMS.",
       href: "https://github.com/Weburz",
     },
   ],

@@ -9,7 +9,7 @@ One of the more honest things a developer can do is just hand you the code. Not 
 
 ## Trust you can clone
 
-Anyone can write "we care about quality" on a homepage; I've written something like it myself. It tends to mean more when you can go read the commits. So we try to build our tools in the open — the particle field behind a hero, the carousel on a client site, the CMS this blog runs on — partly because it keeps us honest, and partly because it lets you check the care is real before you commit to anything.
+Anyone can write "we care about quality" on a homepage; I've written something like it myself. It tends to mean more when you can go read the commits. So we try to build our tools in the open — the particle field behind a hero, the carousel on a client site — partly because it keeps us honest, and partly because it lets you check the care is real before you commit to anything.
 
 That's the relationship I hope for with clients: look at the work first, decide later. And if the open code doesn't win you over, that's completely fair.
 

@@ -28,7 +28,7 @@ export interface CaseStudy {
   problem: string;
   /** 2-3 paragraphs: what we did and why. */
   approach: string[];
-  /** One measurable sentence. */
+  /** One plain sentence on what changed for the client. */
   result: string;
   quote?: { text: string; author: string; role: string };
   stack: string[];
