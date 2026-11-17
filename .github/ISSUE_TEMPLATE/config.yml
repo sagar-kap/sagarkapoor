@@ -1,6 +1,1 @@
-blank_issues_enabled: false
-
-contact_links:
-  - name: Report Issues and/or Bugs
-    url: https://github.com/Sagar-Kap/sagarkapoor/issues
-    about: Please report bugs & other issues here.
+blank_issues_enabled: true
