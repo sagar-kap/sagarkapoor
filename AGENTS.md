@@ -55,19 +55,22 @@ comments, nothing.
 Pre-commit hooks to expect:
 
 - **crisp** (commit-msg): Conventional Commits with a **50-char header cap**.
-  Keep subjects short or the commit is rejected.
-- **prettier**: may reformat staged files and abort the first attempt —
-  `git add -A` and commit again with the same message.
+  Keep subjects short or the commit is rejected. It reads
+  `.git/COMMIT_EDITMSG` directly, so it fails inside a `git worktree` (where
+  `.git` is a file) — commit from a regular checkout or clone instead.
+- **prettier**: a local hook running the project's own prettier (from
+  `website/`) on staged files under `website/`. It may reformat them and abort
+  the first attempt — `git add -A` and commit again with the same message.
+  Files outside `website/` (root markdown, workflows) are not formatted by the
+  hook.
 
 ## CI
 
-Two workflows, both running the `[FRONT END] Code Quality Check` job on
-Node 22 + pnpm 11:
-
-- `qa-checks.yml` (PRs): lint, format check, **and a full `pnpm build`**.
-- `staging-deploy.yml` (push to main): lint + format check only — despite the
-  name it does not deploy anything yet. Actual deployment (CF Pages + DNS
-  cutover) is still pending.
+One workflow, `qa-checks.yml`, running the `[FRONT END] Code Quality Check` job
+on Node 22 + pnpm 11 for every PR and every push to `main`: lint, format
+check, and a full `pnpm build`. Nothing deploys yet — the CF Pages + DNS
+cutover is still pending. Keep the job name stable; the required status check
+on `main` is keyed on that name.
 
 ## Dependency management
 

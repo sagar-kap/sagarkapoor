@@ -2,14 +2,12 @@ name: Code QA Checks
 
 on:
   push:
+    branches:
+      - main
   pull_request:
-    types:
-      - ready_for_review
-      - opened
-      - edited
-      - synchronize
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
   ########################################################################
