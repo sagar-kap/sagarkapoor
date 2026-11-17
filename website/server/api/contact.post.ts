@@ -5,72 +5,52 @@
  * never in the DOM. The visitor's address goes into `reply_to`, so a reply in
  * his mail client answers them directly.
  *
- * Guards, in order: honeypot (`website` — hidden field bots fill, humans never
- * see), Cloudflare Turnstile verification, required-field + email-shape checks,
- * and length caps so the textarea can't fire huge payloads.
+ * Guards, in order: honeypot (`cork` — hidden field bots fill, humans never
+ * see), required-field + email-shape + length checks (shared with the client,
+ * see shared/utils/contact.ts), then Cloudflare Turnstile verification last, so
+ * a rejected form doesn't spend the visitor's single-use token.
  */
-
-interface ContactPayload {
-  name?: string;
-  email?: string;
-  subject?: string;
-  message?: string;
-  turnstileToken?: string;
-  website?: string; // honeypot — must stay empty
-}
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MAX = { name: 100, email: 200, subject: 150, message: 4000 } as const;
+import { validateContact } from "#shared/utils/contact";
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody<ContactPayload>(event);
+  // Rate limiting is not handled here: it will be a Cloudflare rate-limiting
+  // rule on /api/contact, configured in the dashboard at launch.
+
+  const body = await readBody<unknown>(event);
+
+  if (typeof body !== "object" || body === null) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "That message didn't come out right — please try again.",
+    });
+  }
+  const { cork, turnstileToken } = body as Record<string, unknown>;
 
   // Honeypot tripped → pretend success, send nothing. Bots get a 200 and leave.
-  if (body.website) return { ok: true };
+  if (cork) return { ok: true };
 
-  // Verify the Turnstile token before doing anything expensive.
-  const token = body.turnstileToken ?? "";
-  if (!token) {
+  // Fields and lengths first. A Turnstile token is single-use, so verifying it
+  // before a check that can still fail would burn the token and make every
+  // retry bounce with "Anti-spam check failed".
+  const checked = validateContact(body);
+  if (!checked.ok) {
+    throw createError({ statusCode: 400, statusMessage: checked.message });
+  }
+  const { name, email, subject, message } = checked.value;
+
+  if (typeof turnstileToken !== "string" || !turnstileToken) {
     throw createError({
       statusCode: 400,
       statusMessage: "Please complete the anti-spam check.",
     });
   }
 
-  const turnstile = await verifyTurnstileToken(token);
+  const turnstile = await verifyTurnstileToken(turnstileToken);
   if (!turnstile.success) {
     throw createError({
       statusCode: 400,
       statusMessage: "Anti-spam check failed — please try again.",
     });
-  }
-
-  const name = body.name?.trim() ?? "";
-  const email = body.email?.trim() ?? "";
-  const subject = body.subject?.trim() ?? "";
-  const message = body.message?.trim() ?? "";
-
-  if (!name || !email || !message) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: "Name, email, and message are all required.",
-    });
-  }
-
-  if (!EMAIL_RE.test(email)) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: "That email address doesn't look right.",
-    });
-  }
-
-  if (
-    name.length > MAX.name ||
-    email.length > MAX.email ||
-    subject.length > MAX.subject ||
-    message.length > MAX.message
-  ) {
-    throw createError({ statusCode: 400, statusMessage: "Message too long." });
   }
 
   const { contactTo, contactFrom } = useRuntimeConfig(event);

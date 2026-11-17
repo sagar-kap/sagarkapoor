@@ -8,11 +8,12 @@
       novalidate
       @submit.prevent="emit('submit')"
     >
-      <!-- Honeypot: bots fill it, humans never see it. -->
+      <!-- Honeypot: bots fill it, humans never see it. Deliberately not named
+           like anything autofill recognises (website, url, company…). -->
       <input
-        v-model="website"
+        v-model="cork"
         type="text"
-        name="website"
+        name="cork"
         tabindex="-1"
         autocomplete="off"
         aria-hidden="true"
@@ -31,6 +32,7 @@
             v-model="name"
             type="text"
             required
+            :maxlength="MAX.name"
             autocomplete="name"
             placeholder="Jane Cousteau"
             :aria-invalid="
@@ -51,6 +53,7 @@
             v-model="email"
             type="email"
             required
+            :maxlength="MAX.email"
             autocomplete="email"
             placeholder="you@example.com"
             :aria-invalid="fieldError === 'email' || undefined"
@@ -79,6 +82,7 @@
         <input
           v-model="subject"
           type="text"
+          :maxlength="MAX.subject"
           placeholder="A project, a question, a hello"
           class="w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none"
         />
@@ -95,6 +99,7 @@
             ref="messageInput"
             v-model="message"
             required
+            :maxlength="MAX.message"
             rows="6"
             placeholder="Tell me what you're building…"
             :aria-invalid="
@@ -114,7 +119,7 @@
       </label>
 
       <!-- Cloudflare Turnstile. Renders only when a site key is configured. -->
-      <NuxtTurnstile v-if="turnstileEnabled" v-model="token" />
+      <NuxtTurnstile v-if="turnstileEnabled" ref="turnstile" v-model="token" />
 
       <p
         v-if="fieldError === 'general'"
@@ -173,6 +178,7 @@
 </template>
 
 <script setup lang="ts">
+import { MAX } from "#shared/utils/contact";
 import type {
   ContactFieldError,
   ContactFormState,
@@ -209,7 +215,7 @@ const email = defineModel<string>("email", { required: true });
 const subject = defineModel<string>("subject", { required: true });
 const message = defineModel<string>("message", { required: true });
 const token = defineModel<string>("token", { required: true });
-const website = defineModel<string>("website", { required: true });
+const cork = defineModel<string>("cork", { required: true });
 
 const { gsap, prefersReducedMotion } = useGsap();
 
@@ -217,6 +223,8 @@ const stage = ref<HTMLElement | null>(null);
 const formEl = ref<HTMLElement | null>(null);
 const bottleEl = ref<HTMLElement | null>(null);
 const successEl = ref<HTMLElement | null>(null);
+
+const turnstile = ref<{ reset: () => void } | null>(null);
 
 const nameInput = ref<HTMLInputElement | null>(null);
 const emailInput = ref<HTMLInputElement | null>(null);
@@ -321,8 +329,11 @@ watch(
 
 watch(
   () => props.state,
-  (next) => {
+  (next, prev) => {
     if (next === "casting") playCast();
+    // A failed send (sending → idle) spent the single-use Turnstile token;
+    // fetch a fresh one so the visitor can simply try again.
+    if (prev === "sending" && next === "idle") turnstile.value?.reset();
   },
 );
 </script>

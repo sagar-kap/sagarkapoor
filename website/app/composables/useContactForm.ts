@@ -10,6 +10,8 @@
  * the form reports back via `markSent` when it's done (immediately under
  * reduced motion).
  */
+import { validateContact } from "#shared/utils/contact";
+
 export type ContactFormState = "idle" | "sending" | "casting" | "sent";
 export type ContactFieldError = "" | "email" | "general";
 
@@ -21,10 +23,8 @@ export interface ContactFields {
   /** Cloudflare Turnstile token, when the widget is rendered. */
   token: string;
   /** Honeypot — bots fill it, humans never see it. Must stay empty. */
-  website: string;
+  cork: string;
 }
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const FALLBACK_ERROR = "Couldn't send — please try again.";
 
@@ -65,7 +65,7 @@ export const useContactForm = () => {
     subject: "",
     message: "",
     token: "",
-    website: "",
+    cork: "",
   });
 
   const state = ref<ContactFormState>("idle");
@@ -88,7 +88,7 @@ export const useContactForm = () => {
     if (state.value !== "idle") return;
 
     // Honeypot tripped → fake success, send nothing.
-    if (fields.website) {
+    if (fields.cork) {
       state.value = "sent";
       return;
     }
@@ -96,12 +96,9 @@ export const useContactForm = () => {
     fieldError.value = "";
     errorMsg.value = "";
 
-    if (!fields.name.trim() || !fields.message.trim()) {
-      fail("general", "Name and message are both required.");
-      return;
-    }
-    if (!EMAIL_RE.test(fields.email.trim())) {
-      fail("email", "That email doesn't look right.");
+    const checked = validateContact(fields);
+    if (!checked.ok) {
+      fail(checked.field, checked.message);
       return;
     }
 
@@ -122,11 +119,14 @@ export const useContactForm = () => {
           subject: fields.subject,
           message: fields.message,
           turnstileToken: fields.token,
-          website: fields.website,
+          cork: fields.cork,
         },
       });
       state.value = "casting";
     } catch (error) {
+      // The token is single-use and this attempt spent it (or it expired).
+      // Drop it; BottleForm resets the widget when state returns to idle.
+      fields.token = "";
       state.value = "idle";
       fail("general", serverMessage(error));
     }
