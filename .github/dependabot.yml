@@ -4,7 +4,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
       time: "08:00"
       timezone: "Europe/Sofia"
     labels:
@@ -13,11 +13,17 @@ updates:
       - Sagar-Kap
     commit-message:
       prefix: "chore(deps): "
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    cooldown:
+      default-days: 3
 
   - package-ecosystem: "npm"
     directory: "/website"
     schedule:
-      interval: "daily"
+      interval: "weekly"
       time: "08:00"
       timezone: "Europe/Sofia"
     labels:
@@ -26,3 +32,12 @@ updates:
       - Sagar-Kap
     commit-message:
       prefix: "chore(deps): "
+    groups:
+      npm-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    cooldown:
+      default-days: 3
