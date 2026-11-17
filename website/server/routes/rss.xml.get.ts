@@ -37,10 +37,13 @@ export default defineEventHandler(async (event) => {
     })),
   });
 
-  // rivu has no support for content:encoded (or XML namespaces), so the full
-  // post HTML is spliced into the generated XML: declare the namespace on
-  // <rss> and add the element at the end of each <item>. Items come out in the
-  // order given above, so they pair with `posts` by index.
+  // rivu has no support for content:encoded (or custom XML namespaces; checked
+  // through 1.3.1), so the full post HTML is spliced into the generated XML:
+  // declare the namespace on <rss> (whatever attributes rivu emits there) and
+  // add the element at the end of each <item>. Items come out in the order
+  // given above, so they pair with `posts` by index. The splice is
+  // string-based, so verify it applied rather than ship a malformed feed.
+  const contentNamespace = "http://purl.org/rss/1.0/modules/content/";
   const contents = posts.map(({ meta, body }) =>
     absolutizeHtml(
       renderPostHtml(body, meta.slug),
@@ -51,18 +54,28 @@ export default defineEventHandler(async (event) => {
   let index = 0;
   const xml = feed
     .generate()
-    .replace(
-      '<rss version="2.0">',
-      '<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">',
+    .replace(/<rss\b([^>]*)>/, (tag, attributes: string) =>
+      attributes.includes("xmlns:content=")
+        ? tag
+        : `<rss${attributes} xmlns:content="${contentNamespace}">`,
     )
-    .replaceAll("    </item>", () => {
+    .replaceAll(/([ \t]*)<\/item>/g, (_match, indent: string) => {
       // A literal "]]>" would end the CDATA section early.
       const html = (contents[index++] ?? "").replaceAll(
         "]]>",
         "]]]]><![CDATA[>",
       );
-      return `      <content:encoded><![CDATA[${html}]]></content:encoded>\n    </item>`;
+      return `${indent}  <content:encoded><![CDATA[${html}]]></content:encoded>\n${indent}</item>`;
     });
+
+  if (!/<rss\b[^>]*\sxmlns:content="/.test(xml)) {
+    throw new Error("rss.xml: <rss> root does not declare xmlns:content");
+  }
+  if (index !== posts.length) {
+    throw new Error(
+      `rss.xml: inserted ${index} <content:encoded> elements for ${posts.length} posts`,
+    );
+  }
 
   setHeader(event, "Content-Type", "application/rss+xml; charset=utf-8");
   return xml;
