@@ -11,6 +11,14 @@
         Software, design, and the craft of running a studio. Written plainly,
         first person.
       </p>
+      <!-- Plain anchor: /rss.xml is a prerendered file, not a route. -->
+      <a
+        href="/rss.xml"
+        class="mt-6 inline-flex items-center gap-2 font-mono text-xs tracking-[0.12em] text-(--accent) uppercase transition-colors hover:text-(--accent-hover)"
+      >
+        <UIcon name="i-lucide-rss" class="size-3.5" />
+        Subscribe via RSS
+      </a>
     </header>
 
     <div class="mt-14 grid gap-10 lg:grid-cols-[1fr_14rem] lg:gap-16">
