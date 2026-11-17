@@ -24,6 +24,6 @@
 </template>
 
 <script setup lang="ts">
-// Three most recent posts from the git-controlled markdown bundle.
-const { posts } = useWritingPosts({ limit: 3 });
+// Three most recent posts, from the prerendered writing data.
+const { posts } = await useWritingPosts({ limit: 3 });
 </script>

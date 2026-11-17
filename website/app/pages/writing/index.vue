@@ -94,8 +94,8 @@ const selectedTag = computed(() =>
   typeof route.query.tag === "string" ? route.query.tag : undefined,
 );
 
-const { tags } = useWritingTags();
-const { posts } = useWritingPosts({ tag: selectedTag });
+const { tags } = await useWritingTags();
+const { posts } = await useWritingPosts({ tag: selectedTag });
 
 const toggleTag = (slug: string) => {
   const next = selectedTag.value === slug ? undefined : slug;

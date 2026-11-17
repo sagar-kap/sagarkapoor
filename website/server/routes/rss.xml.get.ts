@@ -4,49 +4,17 @@
  * nuxt.config.ts), so this handler only ever runs once, at build time; it
  * costs the edge Worker nothing at request time.
  *
- * Nitro can't use Vite's import.meta.glob (that's app-side, see
- * app/utils/writing.ts), so the markdown is bundled in separately as a Nitro
- * server asset (nitro.serverAssets in nuxt.config.ts) and read here through
- * useStorage. Frontmatter parsing is shared with the app via
- * shared/utils/writing.ts so the two don't drift.
+ * Posts come from readWritingPosts (server/utils/writing.ts), which reads the
+ * markdown from the Nitro server asset (nitro.serverAssets in nuxt.config.ts)
+ * — the same source as the sitemap and the /api/writing routes.
  */
 
 import { identity } from "#shared/utils/identity";
 import { Feed } from "rivu";
 
-interface FeedPostMeta {
-  slug: string;
-  title: string;
-  date: string;
-  excerpt: string;
-  tags: string[];
-}
-
 export default defineEventHandler(async (event) => {
-  const storage = useStorage("assets:writing");
-  const keys = await storage.getKeys();
-
-  const posts: FeedPostMeta[] = [];
-  for (const key of keys) {
-    if (!key.endsWith(".md")) continue;
-
-    // Server assets can come back as raw Buffers rather than strings —
-    // getItemRaw + toString covers both cases.
-    const raw = await storage.getItemRaw(key);
-    const text = Buffer.isBuffer(raw) ? raw.toString("utf-8") : String(raw);
-
-    const { data: fm } = splitFrontmatter(text);
-    posts.push({
-      slug: slugFromPath(key),
-      title: fm.title ?? "Untitled",
-      date: toIsoDate(fm.date),
-      excerpt: fm.excerpt ?? "",
-      tags: fm.tags ?? [],
-    });
-  }
-
-  // Reverse-chronological — same ordering as allPosts app-side.
-  posts.sort((a, b) => b.date.localeCompare(a.date));
+  // Already reverse-chronological.
+  const posts = (await readWritingPosts()).map(({ meta }) => meta);
 
   const siteUrl = getSiteConfig(event).url;
   const description = `${identity.name} — ${identity.role}. ${identity.bio}`;

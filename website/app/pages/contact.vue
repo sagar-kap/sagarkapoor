@@ -80,7 +80,7 @@ const badges = [
   "No newsletter subscription",
 ];
 
-const { posts } = useWritingPosts({ limit: 1 });
+const { posts } = await useWritingPosts({ limit: 1 });
 const latestPostSlug = computed(() => posts.value[0]?.slug ?? "");
 
 const {

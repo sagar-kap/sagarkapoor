@@ -62,13 +62,27 @@
 
 <script setup lang="ts">
 import { identity } from "../../data/site";
-import { getPost } from "../../utils/writing";
+import type { WritingPostDocument } from "#shared/utils/writing";
 
 const route = useRoute();
 const { formatDate } = useFormattedDate();
 const { formatReadTime } = useFormattedReadTime();
 
-const post = getPost(route.params.slug as string);
+const slug = route.params.slug as string;
+
+// Rendered HTML comes from the prerendered /api/writing/<slug>.json (server/api/
+// writing) — the markdown pipeline never runs in the browser. Cached for the
+// session for the same reason as the index (see useWritingIndex).
+const { data } = await useFetch(`/api/writing/${slug}.json`, {
+  transform: ({ data: { id, attributes } }: WritingPostDocument) => ({
+    slug: id,
+    ...attributes,
+  }),
+  getCachedData: (key, nuxtApp) =>
+    nuxtApp.payload.data[key] ?? nuxtApp.static.data[key],
+});
+
+const post = data.value;
 
 if (!post) {
   throw createError({

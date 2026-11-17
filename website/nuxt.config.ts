@@ -1,4 +1,15 @@
+import { readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+
+const writingDir = fileURLToPath(
+  new URL("./app/content/writing", import.meta.url),
+);
+
+// One static JSON file per post (see server/api/writing/[slug].get.ts). Nitro
+// can't discover these by crawling — nothing links to them — so list them here.
+const writingDataRoutes = readdirSync(writingDir)
+  .filter((file) => file.endsWith(".md"))
+  .map((file) => `/api/writing/${file.replace(/\.md$/, "")}.json`);
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -77,6 +88,7 @@ export default defineNuxtConfig({
         routes: {
           exclude: [
             "/index.xml",
+            "/api/writing/*",
             "/blog/*",
             "/posts/*",
             "/tags/*",
@@ -92,24 +104,25 @@ export default defineNuxtConfig({
       },
     },
     // Bundle the writing markdown into the Nitro server build so
-    // server/routes/rss.xml.get.ts can read it via useStorage("assets:writing")
-    // — Vite's import.meta.glob (used app-side in app/utils/writing.ts) isn't
-    // available inside the Nitro server bundle. `dir` is an absolute path so
-    // it doesn't depend on Nitro's srcDir resolution (which is nuxt's
-    // serverDir, i.e. server/, not the project root).
+    // server/utils/writing.ts can read it via useStorage("assets:writing") —
+    // the RSS feed, the sitemap source and /api/writing all go through it, and
+    // the markdown never reaches the client. `dir` is an absolute path so it
+    // doesn't depend on Nitro's srcDir resolution (which is nuxt's serverDir,
+    // i.e. server/, not the project root).
     serverAssets: [
       {
         baseName: "writing",
-        dir: fileURLToPath(new URL("./app/content/writing", import.meta.url)),
+        dir: writingDir,
       },
     ],
     prerender: {
       crawlLinks: true,
-      routes: ["/"],
-      // Blog posts are local markdown (app/content/writing/*.md), globbed at
-      // build time and prerendered to static HTML. A page that fails to
-      // prerender must fail the build — otherwise it is silently missing from
-      // the deploy.
+      routes: ["/", "/api/writing/index.json", ...writingDataRoutes],
+      // Blog posts are local markdown (app/content/writing/*.md), read by
+      // server/utils/writing.ts and prerendered to static HTML, as is the
+      // /api/writing/*.json data the pages fetch (see writingDataRoutes). A
+      // page that fails to prerender must fail the build — otherwise it is
+      // silently missing from the deploy.
       failOnError: true,
       // Emit about.html, not about/index.html: Pages redirects the bare path
       // of a directory index to a trailing slash, but canonicals, sitemap,
@@ -125,8 +138,9 @@ export default defineNuxtConfig({
     },
   },
 
-  // Nothing uses useAsyncData/useFetch, so every _payload.json is an empty
-  // stub. Skipping them keeps _routes.json (100-rule cap) from filling up.
+  // Page data is inlined in each prerendered HTML file instead of a sibling
+  // _payload.json per route: those would each add a _routes.json rule (100-rule
+  // cap). Client-side navigation fetches the shared /api/writing/*.json files.
   experimental: {
     payloadExtraction: false,
   },

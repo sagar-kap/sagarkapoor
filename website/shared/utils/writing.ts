@@ -1,20 +1,12 @@
 /**
- * Frontmatter parsing shared between the app (Vite-globbed markdown, see
- * app/utils/writing.ts) and the server (Nitro server assets, see
- * server/routes/rss.xml.get.ts). Lives under shared/ so both sides — the
- * client bundle and the Nitro server bundle — can import it via the
- * #shared alias without duplicating the parsing logic.
+ * Wire types for the writing API (server/api/writing), shared so the Nitro
+ * routes that produce them and the composables/pages that consume them can't
+ * drift. Types only — the markdown pipeline (js-yaml, marked) lives in
+ * server/utils/writing.ts and must never be imported from client code.
  *
- * Frontmatter:
- *   ---
- *   title: "…"
- *   date: "2026-05-18"   # quote it so it stays a string
- *   excerpt: "…"
- *   tags: ["studio"]
- *   ---
+ * Responses follow the JSON:API document shape (`data` resource objects with
+ * `type`/`id`/`attributes`, `meta` for non-resource data).
  */
-
-import { load } from "js-yaml";
 
 export interface WritingPostMeta {
   slug: string;
@@ -25,32 +17,21 @@ export interface WritingPostMeta {
   readMinutes: number;
 }
 
-export interface Frontmatter {
-  title?: string;
-  date?: string | Date;
-  excerpt?: string;
-  tags?: string[];
+export interface WritingPostFull extends WritingPostMeta {
+  html: string;
 }
 
-export const toIsoDate = (value: string | Date | undefined) => {
-  if (!value) return "";
-  if (value instanceof Date) return value.toISOString().slice(0, 10);
-  return value;
-};
+export interface WritingPostResource<T extends WritingPostMeta> {
+  type: "posts";
+  id: string;
+  attributes: Omit<T, "slug">;
+}
 
-export const slugFromPath = (path: string) =>
-  path.split("/").pop()!.replace(/\.md$/, "");
+export interface WritingIndexDocument {
+  data: WritingPostResource<WritingPostMeta>[];
+  meta: { tags: string[] };
+}
 
-// Split the `---` YAML frontmatter from the markdown body. We parse the YAML
-// with js-yaml directly (NOT gray-matter, whose engine loader uses eval — which
-// Cloudflare Workers reject at runtime).
-export const FRONTMATTER_RE = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/;
-
-export const splitFrontmatter = (raw: string) => {
-  const match = raw.match(FRONTMATTER_RE);
-  if (!match) return { data: {} as Frontmatter, content: raw };
-  return {
-    data: (load(match[1] ?? "") ?? {}) as Frontmatter,
-    content: match[2] ?? "",
-  };
-};
+export interface WritingPostDocument {
+  data: WritingPostResource<WritingPostFull>;
+}
