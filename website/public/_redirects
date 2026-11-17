@@ -1,0 +1,12 @@
+# Old Hugo URLs (see issue 496). The three old posts are not ported.
+/index.xml /rss.xml 301
+/blog/* /writing 301
+/posts/* /writing 301
+/tags/* /writing 301
+/categories/* /writing 301
+/raspberry-pi4-headless-ubuntu-from-usb /writing 301
+/raspberry-pi4-headless-ubuntu-from-usb/ /writing 301
+/getting-started-with-git /writing 301
+/getting-started-with-git/ /writing 301
+/how-to-scrape-with-python /writing 301
+/how-to-scrape-with-python/ /writing 301
