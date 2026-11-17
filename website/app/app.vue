@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { identity } from "./data/site";
+import { identity, socialLinks } from "./data/site";
 
 useHead({
   htmlAttrs: { lang: "en" },
@@ -30,6 +30,14 @@ useHead({
   ],
 });
 
+useSchemaOrg([
+  definePerson({
+    name: identity.name,
+    jobTitle: identity.role,
+    sameAs: socialLinks.map((link) => link.href),
+  }),
+]);
+
 const description = `${identity.name} — ${identity.role}. ${identity.bio}`;
 
 // Static share card (public/og.png, 1200×630) — the footer shore, moon and
@@ -38,9 +46,7 @@ const ogImage = "https://sagarkapoor.eu/og.png";
 
 useSeoMeta({
   title: identity.name,
-  ogTitle: `${identity.name} — ${identity.role}`,
   description,
-  ogDescription: description,
   ogType: "website",
   ogImage,
   ogImageWidth: 1200,
