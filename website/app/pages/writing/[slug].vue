@@ -22,6 +22,10 @@
         <span v-if="post.date">{{ formatDate(post.date) }}</span>
         <span v-if="readLabel" aria-hidden="true">·</span>
         <span v-if="readLabel">{{ readLabel }}</span>
+        <template v-if="post.updated">
+          <span aria-hidden="true">·</span>
+          <span>Updated {{ formatDate(post.updated) }}</span>
+        </template>
       </div>
     </header>
 
@@ -57,6 +61,16 @@
         </div>
       </div>
     </footer>
+
+    <!-- Neighbours -->
+    <div class="mx-auto mt-16 max-w-[44rem]">
+      <Divider />
+      <PostNav
+        class="mt-10"
+        :previous="neighbours.previous"
+        :next="neighbours.next"
+      />
+    </div>
   </article>
 </template>
 
@@ -74,15 +88,16 @@ const slug = route.params.slug as string;
 // writing) — the markdown pipeline never runs in the browser. Cached for the
 // session for the same reason as the index (see useWritingIndex).
 const { data } = await useFetch(`/api/writing/${slug}.json`, {
-  transform: ({ data: { id, attributes } }: WritingPostDocument) => ({
-    slug: id,
-    ...attributes,
+  transform: ({ data: { id, attributes }, meta }: WritingPostDocument) => ({
+    post: { slug: id, ...attributes },
+    neighbours: meta,
   }),
   getCachedData: (key, nuxtApp) =>
     nuxtApp.payload.data[key] ?? nuxtApp.static.data[key],
 });
 
-const post = data.value;
+const post = data.value?.post;
+const neighbours = data.value?.neighbours ?? { previous: null, next: null };
 
 if (!post) {
   throw createError({
@@ -99,6 +114,7 @@ useSeoMeta({
   description: post.excerpt,
   ogType: "article",
   articlePublishedTime: post.date,
+  articleModifiedTime: post.updated,
 });
 
 useSchemaOrg([
@@ -107,6 +123,7 @@ useSchemaOrg([
     headline: post.title,
     description: post.excerpt,
     datePublished: post.date,
+    dateModified: post.updated,
   }),
 ]);
 </script>
@@ -208,7 +225,63 @@ useSchemaOrg([
   line-height: 1.6;
 }
 
+/* Syntax highlighting (server/utils/highlight.ts). Shiki emits both themes as
+   CSS variables on every token; the colour-mode class on <html> picks one, so
+   the markup is the same in both modes. Its own background is ignored — the
+   <pre> keeps the site surface. */
+.prose-ocean :deep(.shiki),
+.prose-ocean :deep(.shiki span) {
+  color: var(--shiki-light);
+}
+
+.dark .prose-ocean :deep(.shiki),
+.dark .prose-ocean :deep(.shiki span) {
+  color: var(--shiki-dark);
+}
+
+/* Heading anchors: a "#" link after h2/h3 text. Always present for keyboard
+   and touch; on hover-capable devices it fades in with the heading. */
+.prose-ocean :deep(h2),
+.prose-ocean :deep(h3) {
+  scroll-margin-top: 6rem;
+}
+
+.prose-ocean :deep(.heading-anchor) {
+  margin-inline-start: 0.35em;
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  font-weight: 400;
+  text-decoration: none;
+  color: var(--muted);
+}
+
+.prose-ocean :deep(.heading-anchor:hover),
+.prose-ocean :deep(.heading-anchor:focus-visible) {
+  color: var(--accent);
+}
+
+.prose-ocean :deep(.heading-anchor:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 0.125rem;
+}
+
+@media (hover: hover) {
+  .prose-ocean :deep(.heading-anchor) {
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .prose-ocean :deep(h2:hover .heading-anchor),
+  .prose-ocean :deep(h3:hover .heading-anchor),
+  .prose-ocean :deep(.heading-anchor:focus-visible) {
+    opacity: 1;
+  }
+}
+
 .prose-ocean :deep(img) {
+  max-width: 100%;
+  height: auto;
   margin-block: 1.8em;
   border-radius: 0.75rem;
 }

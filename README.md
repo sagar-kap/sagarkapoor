@@ -17,7 +17,10 @@ Nothing exotic. Nuxt 4 with Nuxt UI 4 and Tailwind v4 on the front end, Nitro
 server routes out back. The contact form posts to a Nitro route that hands off to
 Resend, with Cloudflare Turnstile and a honeypot field doing the bouncer work.
 Blog posts are plain markdown in `app/content/writing`, so there's no CMS to keep
-alive. Everything ships to Cloudflare Pages.
+alive. Frontmatter is validated at build (a typo'd field fails it), `draft: true`
+keeps a post out of production, and post images live in
+`public/writing/<slug>/`; the full conventions are in the doc comment at the top
+of `website/server/utils/writing.ts`. Everything ships to Cloudflare Pages.
 
 And yes, the contact form is a literal message in a bottle. "Sagar" means ocean.
 I had to.

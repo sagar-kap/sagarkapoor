@@ -12,6 +12,8 @@ export interface WritingPostMeta {
   slug: string;
   title: string;
   date: string;
+  /** YYYY-MM-DD, only present when the post has been revised. */
+  updated?: string;
   excerpt: string;
   tags: string[];
   readMinutes: number;
@@ -32,6 +34,17 @@ export interface WritingIndexDocument {
   meta: { tags: string[] };
 }
 
+/** A chronological neighbour, enough to render a link. */
+export interface WritingPostLink {
+  slug: string;
+  title: string;
+}
+
 export interface WritingPostDocument {
   data: WritingPostResource<WritingPostFull>;
+  /** `previous` is the next-older post, `next` the next-newer; null at the ends. */
+  meta: {
+    previous: WritingPostLink | null;
+    next: WritingPostLink | null;
+  };
 }

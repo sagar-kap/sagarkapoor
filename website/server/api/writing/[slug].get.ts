@@ -1,5 +1,6 @@
 /**
- * One post with its rendered HTML. Requested by the app as
+ * One post with its rendered HTML and its chronological neighbours (in `meta`,
+ * so the page needs no second request). Requested by the app as
  * /api/writing/<slug>.json; the suffix is what gives the prerendered static
  * file a JSON content type on Cloudflare Pages, and is stripped here.
  */
@@ -21,8 +22,9 @@ export default defineEventHandler(
       data: {
         type: "posts",
         id,
-        attributes: { ...attributes, html: renderPostHtml(post.body) },
+        attributes: { ...attributes, html: renderPostHtml(post.body, id) },
       },
+      meta: findNeighbours(posts, id),
     };
   },
 );

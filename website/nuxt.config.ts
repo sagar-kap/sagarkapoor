@@ -1,14 +1,32 @@
-import { readdirSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { splitFrontmatter } from "./server/utils/frontmatter";
 
 const writingDir = fileURLToPath(
   new URL("./app/content/writing", import.meta.url),
 );
 
+const writingFiles = readdirSync(writingDir).filter((file) =>
+  file.endsWith(".md"),
+);
+
+// Drafts (`draft: true` in frontmatter) must stay out of the prerendered
+// routes. Only that one flag is read here — full validation happens when the
+// posts are rendered (server/utils/frontmatter.ts), which fails the build.
+const draftFiles = writingFiles.filter(
+  (file) =>
+    (
+      splitFrontmatter(readFileSync(join(writingDir, file), "utf-8")).data as
+        { draft?: unknown } | undefined
+    )?.draft === true,
+);
+
 // One static JSON file per post (see server/api/writing/[slug].get.ts). Nitro
 // can't discover these by crawling — nothing links to them — so list them here.
-const writingDataRoutes = readdirSync(writingDir)
-  .filter((file) => file.endsWith(".md"))
+// `nuxt dev` serves drafts live and never prerenders, so filtering is harmless.
+const writingDataRoutes = writingFiles
+  .filter((file) => !draftFiles.includes(file))
   .map((file) => `/api/writing/${file.replace(/\.md$/, "")}.json`);
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
@@ -108,13 +126,8 @@ export default defineNuxtConfig({
     // the RSS feed, the sitemap source and /api/writing all go through it, and
     // the markdown never reaches the client. `dir` is an absolute path so it
     // doesn't depend on Nitro's srcDir resolution (which is nuxt's serverDir,
-    // i.e. server/, not the project root).
-    serverAssets: [
-      {
-        baseName: "writing",
-        dir: writingDir,
-      },
-    ],
+    // i.e. server/, not the project root). Declared per environment in
+    // $development / $production below.
     prerender: {
       crawlLinks: true,
       routes: ["/", "/api/writing/index.json", ...writingDataRoutes],
@@ -150,6 +163,20 @@ export default defineNuxtConfig({
   vite: {
     optimizeDeps: {
       include: ["gsap", "gsap/SplitText"],
+    },
+  },
+
+  // Dev serves drafts, so every post is a server asset. Production builds
+  // leave drafts out of the bundle entirely — otherwise an unpublished post
+  // would still ship, as source, inside _worker.js.
+  $development: {
+    nitro: { serverAssets: [{ baseName: "writing", dir: writingDir }] },
+  },
+  $production: {
+    nitro: {
+      serverAssets: [
+        { baseName: "writing", dir: writingDir, ignore: draftFiles },
+      ],
     },
   },
 
