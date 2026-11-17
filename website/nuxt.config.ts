@@ -69,7 +69,28 @@ export default defineNuxtConfig({
   // Settings → Functions → Compatibility flags, for both production & preview).
   nitro: {
     preset: "cloudflare-pages",
-    compressPublicAssets: true,
+    // Old Hugo URLs are handled by public/_redirects. Pages only applies
+    // _redirects to requests it serves as assets, so these paths must be
+    // excluded from the Worker in _routes.json or the Worker 404s them first.
+    cloudflare: {
+      pages: {
+        routes: {
+          exclude: [
+            "/index.xml",
+            "/blog/*",
+            "/posts/*",
+            "/tags/*",
+            "/categories/*",
+            "/raspberry-pi4-headless-ubuntu-from-usb",
+            "/raspberry-pi4-headless-ubuntu-from-usb/",
+            "/getting-started-with-git",
+            "/getting-started-with-git/",
+            "/how-to-scrape-with-python",
+            "/how-to-scrape-with-python/",
+          ],
+        },
+      },
+    },
     // Bundle the writing markdown into the Nitro server build so
     // server/routes/rss.xml.get.ts can read it via useStorage("assets:writing")
     // — Vite's import.meta.glob (used app-side in app/utils/writing.ts) isn't
@@ -91,6 +112,10 @@ export default defineNuxtConfig({
       // trips on a /writing/[slug] route for some other reason, skip it
       // rather than fail the whole build.
       failOnError: false,
+      // Emit about.html, not about/index.html: Pages redirects the bare path
+      // of a directory index to a trailing slash, but canonicals, sitemap,
+      // RSS and internal links are all slash-free.
+      autoSubfolderIndex: false,
     },
     routeRules: {
       // Never cache the contact endpoint at the edge.
@@ -99,6 +124,12 @@ export default defineNuxtConfig({
       // static file too, same philosophy as the static og.png.
       "/rss.xml": { prerender: true },
     },
+  },
+
+  // Nothing uses useAsyncData/useFetch, so every _payload.json is an empty
+  // stub. Skipping them keeps _routes.json (100-rule cap) from filling up.
+  experimental: {
+    payloadExtraction: false,
   },
 
   // Pre-bundle the GSAP entrypoints Vite would otherwise discover on first
