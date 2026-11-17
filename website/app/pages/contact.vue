@@ -54,7 +54,7 @@
           v-model:subject="fields.subject"
           v-model:message="fields.message"
           v-model:token="fields.token"
-          v-model:website="fields.website"
+          v-model:cork="fields.cork"
           :state="state"
           :field-error="fieldError"
           :error-msg="errorMsg"
