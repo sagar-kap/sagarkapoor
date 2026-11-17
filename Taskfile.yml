@@ -18,8 +18,7 @@ tasks:
       Setup the dev environment.
 
       This command will automatically setup the development environment for you.
-      It will setup the pre-commit hooks, build the appropriate Docker commands
-      and more such commands will be automated using this command.
+      It will install the pre-commit hooks and the website dependencies.
     cmds:
       - pre-commit install --install-hooks
       - pre-commit install --hook-type commit-msg
@@ -54,8 +53,9 @@ tasks:
     cmd: pnpm install
     sources:
       - package.json
-    generates:
       - pnpm-lock.yaml
+    status:
+      - test -d node_modules
 
   ##########################################################################
   # Tasks to format the code for different services
@@ -66,4 +66,4 @@ tasks:
     dir: ./website
     cmds:
       - pnpm run lint
-      - pnpm run format
+      - pnpm run format:check

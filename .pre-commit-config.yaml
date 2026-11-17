@@ -3,7 +3,7 @@ repos:
   # Generic pre-commit hooks
   ###################################################################
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -22,17 +22,13 @@ repos:
   # Hooks to QA the frontend source code for the Blog
   ###################################################################
 
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v4.0.0-alpha.8
+  # Runs the project's own Prettier (same version, config and plugin as CI).
+  # pnpm runs from website/, where the config and .prettierignore live, so the
+  # repo-root-relative paths pre-commit passes get their "website/" stripped.
+  - repo: local
     hooks:
       - id: prettier
         name: run Prettier on Front End source code
-        types: [file]
-        types_or:
-          - javascript
-          - ts
-          - vue
-          - sass
-        args:
-          - --config
-          - ./front-end/.prettierrc.json
+        language: system
+        files: ^website/
+        entry: bash -c 'pnpm --dir website exec prettier --write --ignore-unknown "${@#website/}"' --
