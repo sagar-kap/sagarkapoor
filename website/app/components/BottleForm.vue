@@ -38,7 +38,7 @@
             :aria-invalid="
               (fieldError === 'general' && !name.trim()) || undefined
             "
-            class="w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none"
+            :class="FIELD_CLASS"
           />
         </label>
 
@@ -60,7 +60,7 @@
             :aria-describedby="
               fieldError === 'email' ? 'contact-email-error' : undefined
             "
-            class="w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none"
+            :class="FIELD_CLASS"
           />
           <span
             v-if="fieldError === 'email'"
@@ -84,7 +84,7 @@
           type="text"
           :maxlength="MAX.subject"
           placeholder="A project, a question, a hello"
-          class="w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none"
+          :class="FIELD_CLASS"
         />
       </label>
 
@@ -105,7 +105,10 @@
             :aria-invalid="
               (fieldError === 'general' && !message.trim()) || undefined
             "
-            class="w-full resize-y rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 font-mono text-[0.95rem] tracking-[0.02em] text-(--color) caret-coral-500 placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none"
+            :class="[
+              FIELD_CLASS,
+              'resize-y font-mono text-[0.95rem] tracking-[0.02em] caret-coral-500',
+            ]"
           />
           <!-- Subtle typewriter cursor at rest. -->
           <span
@@ -217,7 +220,12 @@ const message = defineModel<string>("message", { required: true });
 const token = defineModel<string>("token", { required: true });
 const cork = defineModel<string>("cork", { required: true });
 
-const { gsap, prefersReducedMotion } = useGsap();
+// Shared by every text field; the message textarea layers its own look on top.
+const FIELD_CLASS =
+  "w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none";
+
+const { gsap } = useGsap();
+const reducedMotion = useReducedMotion();
 
 const stage = ref<HTMLElement | null>(null);
 const formEl = ref<HTMLElement | null>(null);
@@ -239,7 +247,7 @@ const focusFirstInvalid = () => {
 };
 
 const shake = () => {
-  if (prefersReducedMotion || !formEl.value) return;
+  if (reducedMotion.value || !formEl.value) return;
   gsap.fromTo(
     formEl.value,
     { x: 0 },
@@ -254,7 +262,7 @@ const shake = () => {
 // The signature beat: roll the form shut, send the bottle off on the tide,
 // then reveal the note. Reduced motion → straight cross-fade, no bottle.
 const playCast = () => {
-  if (prefersReducedMotion) {
+  if (reducedMotion.value) {
     emit("castComplete");
     return;
   }

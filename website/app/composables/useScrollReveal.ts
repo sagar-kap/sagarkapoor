@@ -6,15 +6,13 @@
  * Pair with the `reveal` utility classes in main.css's components layer.
  */
 export const useScrollReveal = (target: Ref<HTMLElement | null>) => {
+  const reducedMotion = useReducedMotion();
+
   onMounted(() => {
     const el = target.value;
     if (!el) return;
 
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    if (reduceMotion) {
+    if (reducedMotion.value) {
       el.classList.add("is-revealed");
       return;
     }
@@ -35,6 +33,17 @@ export const useScrollReveal = (target: Ref<HTMLElement | null>) => {
     );
 
     observer.observe(el);
-    onUnmounted(() => observer.disconnect());
+
+    // Preference flipped on mid-session: stop waiting for the viewport.
+    const stop = watch(reducedMotion, (reduce) => {
+      if (!reduce) return;
+      el.classList.add("is-revealed");
+      observer.disconnect();
+    });
+
+    onUnmounted(() => {
+      stop();
+      observer.disconnect();
+    });
   });
 };

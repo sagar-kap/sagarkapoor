@@ -1,13 +1,8 @@
 <template>
   <section ref="el" class="reveal mx-auto max-w-[64rem] px-6 py-16 md:py-20">
-    <span
-      class="flex items-center gap-3 font-mono text-xs tracking-[0.22em] text-(--muted) uppercase"
-    >
-      <span class="h-px w-8 bg-burz-yellow-500" aria-hidden="true" />
-      How it went
-    </span>
+    <SectionEyebrow>How it went</SectionEyebrow>
 
-    <ol class="timeline mt-10">
+    <ol class="mt-10">
       <li
         v-for="(milestone, i) in milestones"
         :key="milestone.label"

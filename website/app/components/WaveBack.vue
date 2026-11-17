@@ -30,19 +30,16 @@ interface Bubble {
 
 const GLYPHS = ["🫧", "🐚", "🌊", "💧"];
 
+const reducedMotion = useReducedMotion();
 const animating = ref(false);
 const bubbles = ref<Bubble[]>([]);
 let seed = 0;
 
 const waveBack = () => {
   // Respect reduced motion — no confetti of bubbles, just a tiny acknowledgement.
-  const reduce =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
   animating.value = true;
   window.setTimeout(() => (animating.value = false), 600);
-  if (reduce) return;
+  if (reducedMotion.value) return;
 
   const batch: Bubble[] = Array.from({ length: 5 }, (_, i) => {
     seed += 1;

@@ -11,8 +11,8 @@
  * shared/utils/writing.ts so the two don't drift.
  */
 
+import { identity } from "#shared/utils/identity";
 import { Feed } from "rivu";
-import { identity } from "../../app/data/site";
 
 interface FeedPostMeta {
   slug: string;
@@ -48,19 +48,20 @@ export default defineEventHandler(async (event) => {
   // Reverse-chronological — same ordering as allPosts app-side.
   posts.sort((a, b) => b.date.localeCompare(a.date));
 
+  const siteUrl = getSiteConfig(event).url;
   const description = `${identity.name} — ${identity.role}. ${identity.bio}`;
 
   const feed = new Feed({
     title: identity.name,
-    link: "https://sagarkapoor.eu/",
+    link: `${siteUrl}/`,
     description,
     language: "en",
     lastBuildDate: new Date(),
     docs: "https://www.rssboard.org/rss-specification",
     items: posts.map((post) => ({
       title: post.title,
-      link: `https://sagarkapoor.eu/writing/${post.slug}`,
-      guid: `https://sagarkapoor.eu/writing/${post.slug}`,
+      link: `${siteUrl}/writing/${post.slug}`,
+      guid: `${siteUrl}/writing/${post.slug}`,
       description: post.excerpt,
       pubDate: new Date(post.date),
       category: post.tags[0],
