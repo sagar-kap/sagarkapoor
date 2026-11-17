@@ -210,34 +210,16 @@
     }
   }
 
-  /* Film grain — fixed, subtle (<=6% or it reads childish). Animated in
-     steps() so it flickers like a film projector, not a smooth slide. */
+  /* Film grain — fixed, subtle (<=6% or it reads childish). Static: an
+     infinitely animated full-screen blend layer re-composites every frame. */
   .grain-overlay {
     position: fixed;
-    inset: -50%;
-    width: 200%;
-    height: 200%;
+    inset: 0;
     z-index: 100;
     pointer-events: none;
     opacity: 0.05;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    animation: grain-shift 0.5s steps(3) infinite;
-  }
-
-  @keyframes grain-shift {
-    0% {
-      transform: translate(0, 0);
-    }
-    33% {
-      transform: translate(-4%, 3%);
-    }
-    66% {
-      transform: translate(3%, -5%);
-    }
-    100% {
-      transform: translate(0, 0);
-    }
   }
 
   /* Vignette — depth from darkness, not drop-shadows. Lighter in sea-foam. */
@@ -283,7 +265,6 @@
     .reveal {
       transition: none;
     }
-    .grain-overlay,
     .flicker {
       animation: none;
     }

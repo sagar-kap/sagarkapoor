@@ -31,6 +31,7 @@
             :key="chip.slug"
             type="button"
             class="rounded-full border px-3 py-1.5 font-mono text-xs tracking-[0.1em] uppercase transition-colors"
+            :aria-pressed="selectedTag === chip.slug"
             :class="
               selectedTag === chip.slug
                 ? 'border-teal-500 text-(--accent)'
@@ -68,6 +69,7 @@
             <button
               type="button"
               class="-my-1 py-1 font-mono text-sm transition-colors"
+              :aria-pressed="selectedTag === chip.slug"
               :class="
                 selectedTag === chip.slug
                   ? 'text-(--accent)'
@@ -98,8 +100,19 @@ const router = useRouter();
 // updated by hand, which meant Back/Forward moved the URL without moving the
 // list. Deriving it keeps the two in step, and pushing (not replacing) makes
 // Back clear the filter instead of leaving the site.
+//
+// The page is prerendered without a query (static hosting ignores it), so the
+// server HTML always lists every post. The filter therefore only applies after
+// mount: hydration renders what the server did, then the list narrows.
+const mounted = ref(false);
+onMounted(() => {
+  mounted.value = true;
+});
+
 const selectedTag = computed(() =>
-  typeof route.query.tag === "string" ? route.query.tag : undefined,
+  mounted.value && typeof route.query.tag === "string"
+    ? route.query.tag
+    : undefined,
 );
 
 const { tags } = await useWritingTags();

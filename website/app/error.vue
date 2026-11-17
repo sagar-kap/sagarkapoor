@@ -47,6 +47,14 @@ import type { NuxtError } from "#app";
 
 const props = defineProps<{ error: NuxtError }>();
 
+// Error pages shouldn't be indexed, whatever the status code. useRobotsRule
+// throws while the error page renders (event.context.robots isn't populated
+// there), which drops the server-rendered body — so set the meta tag and
+// overwrite the X-Robots-Tag header nuxt-robots stamped before render by hand.
+const robots = "noindex, nofollow";
+useSeoMeta({ robots });
+useResponseHeader("X-Robots-Tag").value = robots;
+
 const isNotFound = computed(() => props.error.statusCode === 404);
 
 const heading = computed(() =>

@@ -6,13 +6,14 @@
       color="neutral"
       variant="ghost"
       size="sm"
+      class="size-11 justify-center"
       @click="toggle"
     />
 
     <!-- Reserve the slot during SSR so layout doesn't shift on hydration.
-         Matches the rendered sm icon UButton (28px), not a round size-8. -->
+         Matches the rendered size-11 (44px) icon UButton. -->
     <template #fallback>
-      <div class="size-7" aria-hidden="true" />
+      <div class="size-11" aria-hidden="true" />
     </template>
   </ClientOnly>
 </template>
