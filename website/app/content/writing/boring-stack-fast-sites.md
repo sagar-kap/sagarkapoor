@@ -14,7 +14,7 @@ Every interesting dependency is a small promise to my future self: _I'll keep un
 That's not a knock on anyone reaching for newer, shinier things; plenty of them are great, and I reach for them too when they earn their place. It's only where I've landed after enough late nights debugging my own cleverness.
 
 ```ts
-// The most exciting line in the whole codebase is a cache header.
+// The most exciting line in the whole codebase is a prerender rule.
 routeRules: {
   "/**": { prerender: true },
 }

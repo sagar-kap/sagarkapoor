@@ -35,7 +35,7 @@ import { caseStudies } from "../../data/work";
 useSeoMeta({
   title: "Work",
   description:
-    "Selected Weburz case studies — the problem, the approach, and the measurable outcome for each engagement.",
+    "Selected Weburz case studies — the problem, the approach, and what changed for each engagement.",
 });
 
 const head = ref<HTMLElement | null>(null);

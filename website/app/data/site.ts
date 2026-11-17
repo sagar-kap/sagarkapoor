@@ -41,7 +41,7 @@ export const socialLinks: SocialLink[] = [
   },
   {
     label: "X",
-    href: "https://x.com/sagarkapoor",
+    href: "https://x.com/SagarKapr",
     icon: "i-simple-icons-x",
   },
 ];
