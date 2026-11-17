@@ -1,20 +1,24 @@
-import { allPosts, type WritingPostMeta } from "../utils/writing";
+import type { WritingPostMeta } from "#shared/utils/writing";
 
 /**
- * The writing index, straight from the git-controlled markdown bundle (no fetch,
- * no CMS). Returned as a `computed` per house convention; pass a reactive `tag`
- * to filter or a `limit` for teasers (home, contact). Yields the full post
- * meta — consumers like PostTeaser declare the narrower shape they need and
- * TypeScript checks it structurally, so the data layer never depends on a
- * component.
+ * The writing index, read from the prerendered /api/writing data (see
+ * useWritingIndex) — no CMS, no markdown in the client. Returned as a
+ * `computed` per house convention; pass a reactive `tag` to filter or a `limit`
+ * for teasers (home, contact). Yields the full post meta — consumers like
+ * PostTeaser declare the narrower shape they need and TypeScript checks it
+ * structurally, so the data layer never depends on a component.
+ *
+ * Async: await it in `<script setup>` so the list is there before first render
+ * on client-side navigation too.
  */
-export const useWritingPosts = (
+export const useWritingPosts = async (
   options: { limit?: number; tag?: Ref<string | undefined> } = {},
 ) => {
   const { limit, tag } = options;
+  const { index } = await useWritingIndex();
 
   const posts = computed<WritingPostMeta[]>(() => {
-    let list = allPosts;
+    let list = index.value?.posts ?? [];
     const selected = tag?.value;
     if (selected) {
       list = list.filter((post) => post.tags.includes(selected));
