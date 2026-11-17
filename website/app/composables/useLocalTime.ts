@@ -21,12 +21,19 @@ const hourFormatter = new Intl.DateTimeFormat("en-GB", {
   hourCycle: "h23",
 });
 
+// The one presence rule: awake 08:00-22:00 Sofia time, asleep otherwise. The
+// header dot, the footer line and their hover titles all read `isAwake`.
+const AWAKE_FROM_HOUR = 8;
+const AWAKE_UNTIL_HOUR = 22;
+
 export const useLocalTime = () => {
   const now = useSharedNow();
 
   const time = computed(() => timeFormatter.format(now.value));
   const hour = computed(() => Number(hourFormatter.format(now.value)));
-  const isAwake = computed(() => hour.value >= 8);
+  const isAwake = computed(
+    () => hour.value >= AWAKE_FROM_HOUR && hour.value < AWAKE_UNTIL_HOUR,
+  );
 
   // Cute, hour-aware status. Deterministic so it never flickers on re-render.
   const status = computed(() => {
@@ -36,7 +43,7 @@ export const useLocalTime = () => {
     if (h < 12) return "heads-down, building";
     if (h < 14) return "lunch, most likely";
     if (h < 18) return "deep in the work";
-    if (h < 22) return "winding down";
+    if (h < AWAKE_UNTIL_HOUR) return "winding down";
     return "should be asleep, probably isn't";
   });
 

@@ -54,6 +54,7 @@
             color="neutral"
             variant="ghost"
             size="sm"
+            class="size-11 justify-center"
             @click="open = !open"
           />
         </div>

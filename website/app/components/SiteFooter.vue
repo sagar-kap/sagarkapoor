@@ -24,7 +24,7 @@
           <LocalTime />
         </div>
 
-        <div class="flex items-center gap-1">
+        <div class="flex items-center">
           <UButton
             v-for="social in socialLinks"
             :key="social.href"
@@ -36,6 +36,7 @@
             color="neutral"
             variant="ghost"
             size="sm"
+            class="size-11 justify-center"
           />
           <UButton
             href="/rss.xml"
@@ -45,6 +46,7 @@
             color="neutral"
             variant="ghost"
             size="sm"
+            class="size-11 justify-center"
           />
           <WaveBack />
           <ColorModeToggle />

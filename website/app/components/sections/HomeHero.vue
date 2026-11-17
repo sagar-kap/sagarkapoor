@@ -23,7 +23,7 @@
       <div ref="ctaRef" class="mt-10 flex flex-wrap items-center gap-3">
         <UButton
           to="/work"
-          label="See what we build"
+          label="See what I build"
           trailing-icon="i-lucide-arrow-right"
           color="primary"
           size="xl"

@@ -3,7 +3,7 @@
        it spawns a little drift of bubbles and shells. -->
   <button
     type="button"
-    class="wave-btn relative inline-flex size-7 items-center justify-center rounded-full text-base transition-transform hover:scale-110"
+    class="wave-btn relative inline-flex size-11 items-center justify-center rounded-full text-base transition-transform hover:scale-110"
     :class="{ waving: animating }"
     aria-label="Wave back"
     @click="waveBack"
