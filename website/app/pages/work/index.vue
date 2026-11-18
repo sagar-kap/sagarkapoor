@@ -21,11 +21,28 @@
         heading-tag="h2"
       />
     </div>
+
+    <section class="mt-16">
+      <h2 class="font-display text-2xl font-semibold">More projects</h2>
+      <ul class="mt-4 flex flex-wrap gap-x-8 gap-y-3">
+        <li v-for="project in linkedProjects" :key="project.url">
+          <a class="underline underline-offset-4" :href="project.url">
+            {{ project.name }}
+          </a>
+        </li>
+      </ul>
+    </section>
   </section>
 </template>
 
 <script setup lang="ts">
 import { caseStudies } from "../../data/work";
+
+const linkedProjects = [
+  { name: "linsho.bg", url: "https://linsho.bg" },
+  { name: "avtoclima.com", url: "https://avtoclima.com" },
+  { name: "BurzBlog", url: "https://burzblog.weburz.com" },
+];
 
 useSeoMeta({
   title: "Work",
