@@ -19,9 +19,10 @@ export interface CaseStudy {
   client: string;
   project: string;
   /** Sagar's role on the engagement. */
-  role: string;
+  role?: string;
   /** Human period string, e.g. "2023 — 2024". */
-  period: string;
+  period?: string;
+  url: string;
   /** One-line outcome for the card teaser. */
   outcome: string;
   /** 2-3 sentences: what was broken or absent. */
@@ -39,6 +40,7 @@ export interface CaseStudy {
 export const caseStudies: CaseStudy[] = [
   {
     slug: "natrixx",
+    url: "https://natrixxofficial.com",
     screenshot: "/projects/natrixx.webp",
     client: "Natrixx",
     project: "Official artist site",
@@ -74,39 +76,22 @@ export const caseStudies: CaseStudy[] = [
     ],
   },
   {
-    slug: "absfit",
-    screenshot: "/projects/absfit.webp",
-    client: "ABSFit",
-    project: "Coaching & membership site",
-    role: "Lead engineer",
-    period: "2024",
-    outcome: "A sign-up that feels easy on a phone.",
+    slug: "linsho",
+    url: "https://linsho.bg",
+    screenshot: "/projects/linsho.webp",
+    client: "Linsho",
+    project: "Music, games, and collaborations",
+    outcome: "One homepage with two doors, one for fans and one for brands.",
     problem:
-      "A growing fitness brand was losing sign-ups to a checkout that broke on phones and a site that took too long to load on gym Wi-Fi. The funnel leaked at exactly the moment people were ready to pay.",
+      "Someone looking for Linsho’s latest song and someone planning a collaboration arrive at the same address. They need different things from the first click.",
     approach: [
-      "I rebuilt the front end mobile-first and measured the real journey — most members arrive on a phone, mid-session, on bad signal — then made that path the fast one.",
-      "We simplified the membership flow to the fewest honest steps and wired it to a payment path that doesn't fall over on mobile Safari.",
-      "Everything ships from the edge, so the first screen is instant even when the network isn't.",
+      "The homepage opens on Linsho in front of a neon sign. Two buttons do the navigation work: Фенове (Fans) and Брандове (Brands).",
+      "On the fan side you can find songs, look up events, and play two browser games. On the brand side you can browse past projects and get in touch about a collaboration.",
     ],
-    result: "Signing up on a phone got a lot easier.",
-    stack: ["Nuxt", "TypeScript", "Vercel"],
-    milestones: [
-      {
-        label: "01",
-        title: "Measure",
-        body: "Instrumented the real funnel and found where mobile users dropped.",
-      },
-      {
-        label: "02",
-        title: "Rebuild",
-        body: "Mobile-first front end with the fastest path made the default path.",
-      },
-      {
-        label: "03",
-        title: "Convert",
-        body: "Cut the membership flow to the fewest honest steps.",
-      },
-    ],
+    result:
+      "A fan can go straight from the homepage to a game. A potential partner can follow an equally short path to the project archive.",
+    stack: ["Nuxt", "Vue", "TypeScript", "Phaser"],
+    milestones: [],
   },
 ];
 
@@ -115,12 +100,7 @@ export const featuredCaseStudies = caseStudies.slice(0, 3);
 export const findCaseStudy = (slug: string) =>
   caseStudies.find((study) => study.slug === slug);
 
-export const linkedProjects = [
-  {
-    name: "linsho.bg",
-    screenshot: "/projects/linsho.webp",
-    url: "https://linsho.bg",
-  },
+const otherProjects = [
   {
     name: "avtoclima.com",
     screenshot: "/projects/avtoclima.webp",
@@ -131,4 +111,18 @@ export const linkedProjects = [
     screenshot: "/projects/burzblog.webp",
     url: "https://burzblog.weburz.com",
   },
+];
+
+export const linkedProjects = [
+  { name: "linsho.bg", url: "https://linsho.bg" },
+  ...otherProjects,
+];
+
+export const galleryProjects = [
+  {
+    name: "ABSFit",
+    screenshot: "/projects/absfit.webp",
+    url: "https://absfit.in",
+  },
+  ...otherProjects,
 ];

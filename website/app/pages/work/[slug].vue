@@ -13,7 +13,8 @@
       <span
         class="mt-8 block font-mono text-xs tracking-[0.22em] text-(--muted) uppercase"
       >
-        {{ study.client }} · {{ study.period }}
+        {{ study.client
+        }}<template v-if="study.period"> · {{ study.period }}</template>
       </span>
       <h1
         class="mt-3 max-w-3xl font-display text-display-lg font-semibold text-(--color)"
@@ -21,6 +22,7 @@
         {{ study.project }}
       </h1>
       <p
+        v-if="study.role"
         class="mt-4 font-mono text-xs tracking-[0.15em] text-(--muted) uppercase"
       >
         {{ study.role }}
@@ -67,7 +69,10 @@
     </div>
 
     <!-- Project milestones, as a vertical timeline -->
-    <CaseStudyMilestones :milestones="study.milestones" />
+    <CaseStudyMilestones
+      v-if="study.milestones.length"
+      :milestones="study.milestones"
+    />
 
     <!-- Pull quote -->
     <div v-if="study.quote" class="mx-auto max-w-[64rem] px-6 py-16 md:py-24">
@@ -102,8 +107,8 @@
 
       <div class="mt-16">
         <UButton
-          to="/contact"
-          label="Say hello"
+          :href="study.url"
+          label="Visit site"
           trailing-icon="i-lucide-arrow-right"
           color="primary"
           size="xl"

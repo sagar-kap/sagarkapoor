@@ -13,7 +13,7 @@
     <section class="mt-12">
       <h2 class="font-display text-2xl font-semibold">More projects</h2>
       <ul class="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <li v-for="project in linkedProjects" :key="project.url">
+        <li v-for="project in galleryProjects" :key="project.url">
           <a
             class="block overflow-hidden rounded-xl border border-(--hairline) bg-(--surface) transition-colors hover:border-(--accent)"
             :href="project.url"
@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { caseStudies, linkedProjects } from "../../data/work";
+import { caseStudies, galleryProjects } from "../../data/work";
 
 useSeoMeta({
   title: "Work",
