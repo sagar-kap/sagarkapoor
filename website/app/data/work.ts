@@ -1,5 +1,5 @@
 /**
- * Selected Weburz case studies, CEO-told (not portfolio tiles). Three surface
+ * Selected Weburz case studies, CEO-told (not portfolio tiles). Up to three surface
  * on the home page; all live at /work and /work/[slug].
  *
  * Copy here is a first draft in Sagar's voice — first person, specific,
@@ -38,51 +38,6 @@ export interface CaseStudy {
 }
 
 export const caseStudies: CaseStudy[] = [
-  {
-    slug: "kabbalah-india",
-    visual: "article",
-    client: "Kabbalah India",
-    project: "Teaching platform & public site",
-    role: "Lead engineer · founder",
-    period: "2023 — 2024",
-    outcome: "Publishing got simple again — a lesson goes up in minutes.",
-    problem:
-      "The team published long-form teaching through a tangle of third-party tools that no one fully controlled. Every new lesson meant copy-pasting between five services, and the site itself was a slow, un-styleable template they couldn't change.",
-    approach: [
-      "I replaced the stack with a single Nuxt site backed by our own headless CMS, so editors write once and it lands everywhere — site, feeds, and share cards — without touching a developer.",
-      "We built the reading experience around the words: a paper-like long-form surface, real typography, and a content model that matches how they actually teach rather than how a SaaS template assumed they would.",
-      "The whole thing prerenders to a CDN, so a lesson that used to take a day to format and ship now goes live in the time it takes to write it.",
-    ],
-    result: "What used to take a couple of days now takes a few minutes.",
-    quote: {
-      text: "We stopped fighting our own website. Now we just teach.",
-      author: "The Kabbalah India team",
-      role: "Client",
-    },
-    stack: ["Nuxt", "TypeScript", "Headless CMS", "Cloudflare"],
-    milestones: [
-      {
-        label: "01",
-        title: "Audit",
-        body: "Mapped the five-tool publishing chain and found where time actually went.",
-      },
-      {
-        label: "02",
-        title: "Model",
-        body: "Designed a content model around how they teach, not how a template assumed.",
-      },
-      {
-        label: "03",
-        title: "Build",
-        body: "One Nuxt site + our CMS, prerendered to the edge for instant reads.",
-      },
-      {
-        label: "04",
-        title: "Ship",
-        body: "Migrated the archive and handed editors a one-screen workflow.",
-      },
-    ],
-  },
   {
     slug: "natrixx",
     visual: "stage",
