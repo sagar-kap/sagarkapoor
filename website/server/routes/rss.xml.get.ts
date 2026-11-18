@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
 
   const siteUrl = getSiteConfig(event).url;
   const postUrl = (slug: string) => `${siteUrl}/writing/${slug}`;
-  const description = `${identity.name} — ${identity.role}. ${identity.bio}`;
+  const description = `${identity.name}. ${identity.bio}`;
 
   const feed = new Feed({
     title: identity.name,

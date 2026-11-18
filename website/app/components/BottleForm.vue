@@ -101,7 +101,7 @@
             required
             :maxlength="MAX.message"
             rows="6"
-            placeholder="Tell me what you're building…"
+            placeholder="What's on your mind?"
             :aria-invalid="
               (fieldError === 'general' && !message.trim()) || undefined
             "

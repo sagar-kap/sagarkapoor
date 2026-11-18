@@ -10,34 +10,6 @@
       </h1>
     </header>
 
-    <!-- Why Weburz exists -->
-    <section class="mt-16">
-      <SectionLabel>Why Weburz exists</SectionLabel>
-      <div class="mt-5 space-y-5">
-        <p
-          v-for="(para, i) in about.origin"
-          :key="i"
-          class="text-lg leading-[1.7] text-(--color)"
-        >
-          {{ para }}
-        </p>
-      </div>
-    </section>
-
-    <!-- What I believe -->
-    <section class="mt-16">
-      <SectionLabel>What I believe</SectionLabel>
-      <ul class="mt-6 space-y-5">
-        <li
-          v-for="(belief, i) in about.beliefs"
-          :key="i"
-          class="border-l-2 border-(--hairline) pl-5 text-lg leading-[1.6] text-(--color)"
-        >
-          {{ belief }}
-        </li>
-      </ul>
-    </section>
-
     <!-- Now -->
     <section class="mt-16">
       <NowBlock :now="about.now" />
@@ -64,20 +36,6 @@
         </li>
       </ul>
     </section>
-
-    <!-- CTA -->
-    <section class="mt-20">
-      <Divider />
-      <div class="mt-10">
-        <UButton
-          to="/contact"
-          label="Throw a message in the ocean"
-          trailing-icon="i-lucide-arrow-right"
-          color="primary"
-          size="xl"
-        />
-      </div>
-    </section>
   </article>
 </template>
 
@@ -86,7 +44,6 @@ import { aboutContent as about } from "../data/about";
 
 useSeoMeta({
   title: "About",
-  description:
-    "How I think about software, clients, and pricing — and what I'm doing now. The founder behind Weburz.",
+  description: "A little about Sagar Kapoor, his interests, and his projects.",
 });
 </script>

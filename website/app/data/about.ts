@@ -6,28 +6,13 @@
  */
 
 export const aboutContent = {
-  identity: "I run Weburz from Sofia, and I make things on the side.",
-
-  origin: [
-    "I started Weburz to build software the way I think it should be built — properly, in the open, by the people actually writing the code.",
-    "We keep it focused: a handful of projects at a time, done well, with you talking straight to the people building it.",
-    "Open source, our own products, and client work I'd put my name on. The throughline is trust — you can see exactly how it's made.",
-  ],
-
-  beliefs: [
-    "I'd rather give you a date I believe than the one that's easiest to hear.",
-    "Sturdy, proven tools beat clever ones. I pick boring on purpose.",
-    "I build in the open, so you can see how something's made before you trust it.",
-    "Design should help you do the thing, then get out of the way.",
-    "Good software takes the time it takes. I'd rather be honest about that than rush it.",
-  ],
+  identity: "I'm Sagar Kapoor. I live in Sofia.",
 
   now: {
     updated: "2026-06-01",
     items: [
       "Building a particle-canvas module and a few small Nuxt tools in the open.",
-      "Shipping client work across Bulgaria and beyond from the Sofia office.",
-      "Reading more about game design than is strictly justifiable for a studio founder.",
+      "Reading about game design.",
       "Prototyping a side game in Unreal — slowly, on purpose.",
       "Trying to write here more often than I rebuild the site.",
     ],
@@ -45,10 +30,9 @@ export const aboutContent = {
       href: "https://github.com/weburz/carousel",
     },
     {
-      // Private repo, so the link stays on the org.
       label: "BurzBlog",
       note: "Self-hosted headless CMS.",
-      href: "https://github.com/Weburz",
+      href: "https://burzblog.weburz.com",
     },
   ],
 } as const;

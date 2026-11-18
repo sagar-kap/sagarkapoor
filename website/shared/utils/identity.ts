@@ -7,9 +7,6 @@
 export const identity = {
   name: "Sagar Kapoor",
   monogram: "SK",
-  role: "Founder, Weburz",
-  city: "Sofia",
-  foundedYear: 2019,
   // Short, human one-liner — used for SEO + the writing byline.
-  bio: "I run Weburz, a studio that builds software for the web. Sometimes I make games.",
+  bio: "I live in Sofia. My interests include trading, Kabbalah, and making games.",
 } as const;
