@@ -1,57 +1,31 @@
 <template>
-  <div ref="el" class="reveal">
-    <NuxtLink
-      :to="`/work/${study.slug}`"
-      class="group block rounded-xl border border-(--hairline) bg-(--surface) p-6 transition-all duration-300 hover:border-burz-yellow-500/40 hover:shadow-[0_18px_50px_oklch(from_var(--color-teal-500)_l_c_h_/_0.18)] sm:p-8"
-    >
-      <div class="flex flex-col gap-6 sm:flex-row sm:items-center">
-        <div class="min-w-0 flex-1">
-          <span
-            class="font-mono text-xs tracking-[0.2em] text-(--muted) uppercase"
-          >
-            {{ study.client }} · {{ study.period }}
-          </span>
-          <component
-            :is="headingTag"
-            class="mt-3 font-display text-2xl font-semibold text-(--color) md:text-3xl"
-          >
-            {{ study.project }}
-          </component>
-          <p class="mt-2 max-w-xl text-(--muted)">{{ study.outcome }}</p>
-          <span
-            class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.12em] text-(--accent) uppercase transition-colors group-hover:text-(--accent-hover)"
-          >
-            Read case study
-            <UIcon
-              name="i-lucide-arrow-right"
-              class="size-3.5 transition-transform group-hover:translate-x-0.5"
-            />
-          </span>
-        </div>
-
-        <!-- Small chrome-framed visual placeholder; swap in real shots later. -->
-        <BrowserFrame
-          class="w-full shrink-0 sm:w-56 md:w-64"
-          :label="study.client"
-          :visual="study.visual"
-        />
-      </div>
-    </NuxtLink>
-  </div>
+  <NuxtLink
+    :to="`/work/${study.slug}`"
+    class="group block overflow-hidden rounded-xl border border-(--hairline) bg-(--surface) transition-colors hover:border-(--accent)"
+  >
+    <img
+      :src="study.screenshot"
+      alt=""
+      width="1280"
+      height="720"
+      class="w-full border-b border-(--hairline)"
+    />
+    <div class="p-5">
+      <component :is="headingTag" class="font-display text-2xl font-semibold">
+        {{ study.client }}
+      </component>
+      <p class="mt-1 text-(--muted)">{{ study.project }}</p>
+      <span class="mt-4 inline-flex items-center gap-2 text-sm text-(--accent)"
+        >Read case study <UIcon name="i-lucide-arrow-right"
+      /></span>
+    </div>
+  </NuxtLink>
 </template>
 
 <script setup lang="ts">
 import type { CaseStudy } from "../data/work";
 
-/**
- * `headingTag` keeps the document outline honest: on the home page these
- * cards sit under a section <h2>, so h3 is right; on /work they sit directly
- * under the page <h1>, where h3 would skip a level.
- */
 withDefaults(defineProps<{ study: CaseStudy; headingTag?: "h2" | "h3" }>(), {
   headingTag: "h3",
 });
-
-const el = ref<HTMLElement | null>(null);
-useScrollReveal(el);
 </script>
