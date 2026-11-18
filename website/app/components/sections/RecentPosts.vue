@@ -1,5 +1,5 @@
 <template>
-  <section class="mx-auto max-w-[72rem] px-6 py-24 md:py-32">
+  <section>
     <div class="flex flex-wrap items-baseline justify-between gap-4">
       <h2 class="font-display text-display-md font-semibold">Latest posts</h2>
       <UButton
@@ -12,7 +12,7 @@
       />
     </div>
 
-    <div class="mt-10">
+    <div class="mt-6">
       <PostTeaser v-for="post in posts" :key="post.slug" :post="post" />
     </div>
   </section>

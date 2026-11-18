@@ -36,13 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { caseStudies } from "../../data/work";
-
-const linkedProjects = [
-  { name: "linsho.bg", url: "https://linsho.bg" },
-  { name: "avtoclima.com", url: "https://avtoclima.com" },
-  { name: "BurzBlog", url: "https://burzblog.weburz.com" },
-];
+import { caseStudies, linkedProjects } from "../../data/work";
 
 useSeoMeta({
   title: "Work",
