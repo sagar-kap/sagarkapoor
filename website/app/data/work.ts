@@ -33,14 +33,13 @@ export interface CaseStudy {
   quote?: { text: string; author: string; role: string };
   stack: string[];
   milestones: Milestone[];
-  /** Abstract card visual until real screenshots land (BrowserFrame). */
-  visual: "article" | "stage" | "mobile";
+  screenshot: string;
 }
 
 export const caseStudies: CaseStudy[] = [
   {
     slug: "natrixx",
-    visual: "stage",
+    screenshot: "/projects/natrixx.webp",
     client: "Natrixx",
     project: "Official artist site",
     role: "Design engineer",
@@ -76,7 +75,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "absfit",
-    visual: "mobile",
+    screenshot: "/projects/absfit.webp",
     client: "ABSFit",
     project: "Coaching & membership site",
     role: "Lead engineer",
@@ -117,7 +116,19 @@ export const findCaseStudy = (slug: string) =>
   caseStudies.find((study) => study.slug === slug);
 
 export const linkedProjects = [
-  { name: "linsho.bg", url: "https://linsho.bg" },
-  { name: "avtoclima.com", url: "https://avtoclima.com" },
-  { name: "BurzBlog", url: "https://burzblog.weburz.com" },
+  {
+    name: "linsho.bg",
+    screenshot: "/projects/linsho.webp",
+    url: "https://linsho.bg",
+  },
+  {
+    name: "avtoclima.com",
+    screenshot: "/projects/avtoclima.webp",
+    url: "https://avtoclima.com",
+  },
+  {
+    name: "BurzBlog",
+    screenshot: "/projects/burzblog.webp",
+    url: "https://burzblog.weburz.com",
+  },
 ];

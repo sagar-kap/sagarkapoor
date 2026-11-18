@@ -25,6 +25,13 @@
       >
         {{ study.role }}
       </p>
+      <img
+        :src="study.screenshot"
+        :alt="study.client + ' homepage'"
+        width="1280"
+        height="720"
+        class="mt-8 w-full rounded-lg border border-(--hairline)"
+      />
     </header>
 
     <!-- Problem / Approach / Outcome -->
