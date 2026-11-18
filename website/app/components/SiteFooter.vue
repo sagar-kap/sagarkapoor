@@ -19,7 +19,7 @@
       >
         <div class="flex flex-col items-center gap-2 sm:items-start">
           <p class="font-mono text-xs tracking-[0.12em] text-(--muted)">
-            © {{ year }} {{ identity.name }} · Built in public on Cloudflare
+            © {{ year }} {{ identity.name }}
           </p>
           <LocalTime />
         </div>
