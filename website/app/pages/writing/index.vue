@@ -1,16 +1,11 @@
 <template>
   <section class="mx-auto max-w-[72rem] px-6 py-24 md:py-32">
     <header class="max-w-3xl">
-      <SectionEyebrow>Writing</SectionEyebrow>
       <h1
         class="mt-4 font-display text-display-lg font-semibold text-(--color)"
       >
-        Notes from the workshop.
+        Writing
       </h1>
-      <p class="mt-5 text-lg text-(--muted)">
-        Software, design, and the craft of running a studio. Written plainly,
-        first person.
-      </p>
       <!-- Plain anchor: /rss.xml is a prerendered file, not a route. -->
       <a
         href="/rss.xml"
@@ -89,8 +84,7 @@
 <script setup lang="ts">
 useSeoMeta({
   title: "Writing",
-  description:
-    "Essays on building software and running a studio — engineering, design, clients, and pricing.",
+  description: "Posts from Sagar Kapoor’s personal notebook.",
 });
 
 const route = useRoute();

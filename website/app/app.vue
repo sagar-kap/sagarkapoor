@@ -12,7 +12,9 @@ import { identity, socialLinks } from "./data/site";
 useHead({
   htmlAttrs: { lang: "en" },
   titleTemplate: (titleChunk) =>
-    titleChunk ? `${titleChunk} · ${identity.name}` : identity.name,
+    titleChunk && titleChunk !== identity.name
+      ? `${titleChunk} · ${identity.name}`
+      : identity.name,
   link: [
     { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
     { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
@@ -33,12 +35,11 @@ useHead({
 useSchemaOrg([
   definePerson({
     name: identity.name,
-    jobTitle: identity.role,
     sameAs: socialLinks.map((link) => link.href),
   }),
 ]);
 
-const description = `${identity.name} — ${identity.role}. ${identity.bio}`;
+const description = `${identity.name}. ${identity.bio}`;
 
 // Static share card (public/og.png, 1200×630) — the footer shore, moon and
 // all. Absolute URL: scrapers don't resolve relative og:image paths.
@@ -51,7 +52,7 @@ useSeoMeta({
   ogImage,
   ogImageWidth: 1200,
   ogImageHeight: 630,
-  ogImageAlt: `${identity.name} — ${identity.role}`,
+  ogImageAlt: identity.name,
   twitterCard: "summary_large_image",
   twitterImage: ogImage,
   themeColor: "#0b1418",

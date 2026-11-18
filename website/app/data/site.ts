@@ -19,8 +19,8 @@ export interface SocialLink {
 
 // Header nav — real routes, not anchors. No CTA button lives in the header.
 export const navLinks: NavLink[] = [
-  { label: "Work", to: "/work" },
   { label: "Writing", to: "/writing" },
+  { label: "Work", to: "/work" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
 ];
