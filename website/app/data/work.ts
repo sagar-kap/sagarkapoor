@@ -115,3 +115,9 @@ export const featuredCaseStudies = caseStudies.slice(0, 3);
 
 export const findCaseStudy = (slug: string) =>
   caseStudies.find((study) => study.slug === slug);
+
+export const linkedProjects = [
+  { name: "linsho.bg", url: "https://linsho.bg" },
+  { name: "avtoclima.com", url: "https://avtoclima.com" },
+  { name: "BurzBlog", url: "https://burzblog.weburz.com" },
+];
