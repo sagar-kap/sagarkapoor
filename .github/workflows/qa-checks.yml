@@ -46,3 +46,6 @@ jobs:
 
       - name: Build Website
         run: pnpm run build
+
+      - name: Test built Pages Worker
+        run: pnpm run test:built

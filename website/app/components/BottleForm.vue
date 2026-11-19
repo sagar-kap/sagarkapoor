@@ -22,11 +22,7 @@
 
       <div class="grid gap-5 sm:grid-cols-2">
         <label class="block">
-          <span
-            class="mb-2 block font-mono text-xs tracking-[0.15em] text-(--muted) uppercase"
-          >
-            Your name
-          </span>
+          <span :class="LABEL_CLASS"> Your name </span>
           <input
             ref="nameInput"
             v-model="name"
@@ -43,11 +39,7 @@
         </label>
 
         <label class="block">
-          <span
-            class="mb-2 block font-mono text-xs tracking-[0.15em] text-(--muted) uppercase"
-          >
-            Your email
-          </span>
+          <span :class="LABEL_CLASS"> Your email </span>
           <input
             ref="emailInput"
             v-model="email"
@@ -74,11 +66,7 @@
       </div>
 
       <label class="block">
-        <span
-          class="mb-2 block font-mono text-xs tracking-[0.15em] text-(--muted) uppercase"
-        >
-          What's this about?
-        </span>
+        <span :class="LABEL_CLASS"> What's this about? </span>
         <input
           v-model="subject"
           type="text"
@@ -89,11 +77,7 @@
       </label>
 
       <label class="block">
-        <span
-          class="mb-2 block font-mono text-xs tracking-[0.15em] text-(--muted) uppercase"
-        >
-          Your message
-        </span>
+        <span :class="LABEL_CLASS"> Your message </span>
         <div class="relative">
           <textarea
             ref="messageInput"
@@ -122,7 +106,15 @@
       </label>
 
       <!-- Cloudflare Turnstile. Renders only when a site key is configured. -->
-      <NuxtTurnstile v-if="turnstileEnabled" ref="turnstile" v-model="token" />
+      <NuxtTurnstile
+        v-if="turnstileEnabled"
+        ref="turnstile"
+        v-model="token"
+        :options="{
+          'expired-callback': clearToken,
+          'error-callback': clearToken,
+        }"
+      />
 
       <p
         v-if="fieldError === 'general'"
@@ -221,7 +213,13 @@ const message = defineModel<string>("message", { required: true });
 const token = defineModel<string>("token", { required: true });
 const cork = defineModel<string>("cork", { required: true });
 
+const clearToken = () => {
+  token.value = "";
+};
+
 // Shared by every text field; the message textarea layers its own look on top.
+const LABEL_CLASS =
+  "mb-2 block font-mono text-xs tracking-[0.15em] text-(--muted) uppercase";
 const FIELD_CLASS =
   "w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none";
 

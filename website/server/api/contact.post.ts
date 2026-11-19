@@ -10,7 +10,7 @@
  * see shared/utils/contact.ts), then Cloudflare Turnstile verification last, so
  * a rejected form doesn't spend the visitor's single-use token.
  */
-import { validateContact } from "#shared/utils/contact";
+import { TURNSTILE_REQUIRED, validateContact } from "#shared/utils/contact";
 
 export default defineEventHandler(async (event) => {
   // Rate limiting is not handled here: it will be a Cloudflare rate-limiting
@@ -41,11 +41,11 @@ export default defineEventHandler(async (event) => {
   if (typeof turnstileToken !== "string" || !turnstileToken) {
     throw createError({
       statusCode: 400,
-      statusMessage: "Please complete the anti-spam check.",
+      statusMessage: TURNSTILE_REQUIRED,
     });
   }
 
-  const turnstile = await verifyTurnstileToken(turnstileToken);
+  const turnstile = await verifyTurnstileToken(turnstileToken, event);
   if (!turnstile.success) {
     throw createError({
       statusCode: 400,

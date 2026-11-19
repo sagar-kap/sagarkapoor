@@ -26,7 +26,7 @@
           to="/"
           color="primary"
           size="xl"
-          @click="handleClear"
+          external
         />
         <UButton
           label="Read the writing"
@@ -35,7 +35,7 @@
           variant="ghost"
           size="xl"
           class="font-mono text-xs tracking-[0.12em] uppercase"
-          @click="handleClear"
+          external
         />
       </div>
     </section>
@@ -66,8 +66,6 @@ const subline = computed(() =>
     ? "The tide took it somewhere I can't follow. Try home, or read something instead."
     : "An unexpected current — try again, or head back to shore.",
 );
-
-const handleClear = () => clearError();
 </script>
 
 <style scoped>
