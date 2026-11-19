@@ -40,6 +40,7 @@ jobs:
 
       - name: Run QA Check Tools
         run: |
+          pnpm test
           pnpm run lint
           pnpm run format:check
 

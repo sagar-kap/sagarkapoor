@@ -8,7 +8,7 @@
     aria-label="Wave back"
     @click="waveBack"
   >
-    <span aria-hidden="true">🌊</span>
+    <span aria-hidden="true" @animationend="animating = false">🌊</span>
 
     <span
       v-for="bubble in bubbles"
@@ -16,6 +16,7 @@
       class="bubble pointer-events-none absolute text-sm"
       :style="bubble.style"
       aria-hidden="true"
+      @animationend="bubbles = bubbles.filter((item) => item.id !== bubble.id)"
       >{{ bubble.glyph }}</span
     >
   </button>
@@ -35,11 +36,16 @@ const animating = ref(false);
 const bubbles = ref<Bubble[]>([]);
 let seed = 0;
 
+watch(reducedMotion, (reduce) => {
+  if (reduce) {
+    animating.value = false;
+    bubbles.value = [];
+  }
+});
+
 const waveBack = () => {
-  // Respect reduced motion — no confetti of bubbles, just a tiny acknowledgement.
-  animating.value = true;
-  window.setTimeout(() => (animating.value = false), 600);
   if (reducedMotion.value) return;
+  animating.value = true;
 
   const batch: Bubble[] = Array.from({ length: 5 }, (_, i) => {
     seed += 1;
@@ -56,10 +62,6 @@ const waveBack = () => {
   });
 
   bubbles.value.push(...batch);
-  const ids = new Set(batch.map((b) => b.id));
-  window.setTimeout(() => {
-    bubbles.value = bubbles.value.filter((b) => !ids.has(b.id));
-  }, 1500);
 };
 </script>
 

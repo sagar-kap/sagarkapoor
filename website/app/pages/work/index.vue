@@ -9,12 +9,7 @@
       />
     </header>
     <div class="mt-8 grid gap-6 sm:grid-cols-2">
-      <WorkCard
-        v-for="study in caseStudies"
-        :key="study.slug"
-        :study="study"
-        heading-tag="h2"
-      />
+      <WorkCard v-for="study in caseStudies" :key="study.slug" :study="study" />
     </div>
 
     <section class="mt-12">

@@ -7,7 +7,7 @@ const reducedMotion = ref(false);
 let listening = false;
 
 /**
- * Reactive `prefers-reduced-motion: reduce` flag, shared by the GSAP plugin,
+ * Reactive `prefers-reduced-motion: reduce` flag, shared by
  * useScrollReveal, WaveBack and BottleForm. Read `.value` at the moment you
  * animate, not once at setup.
  */

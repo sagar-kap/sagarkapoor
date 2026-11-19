@@ -12,7 +12,8 @@ export default defineEventHandler(
     const slug = getRouterParam(event, "slug")?.replace(/\.json$/, "");
 
     const posts = await readWritingPosts();
-    const post = posts.find((p) => p.meta.slug === slug);
+    const index = posts.findIndex((post) => post.meta.slug === slug);
+    const post = posts[index];
     if (!post) {
       throw createError({ statusCode: 404, statusMessage: "Post not found" });
     }
@@ -24,7 +25,7 @@ export default defineEventHandler(
         id,
         attributes: { ...attributes, html: renderPostHtml(post.body, id) },
       },
-      meta: findNeighbours(posts, id),
+      meta: findNeighbours(posts, index),
     };
   },
 );

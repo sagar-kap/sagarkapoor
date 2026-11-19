@@ -44,6 +44,9 @@ importers:
       vue-router:
         specifier: ^5.5.1
         version: 5.5.1(@vue/compiler-sfc@3.5.45)(esbuild@0.28.2)(rolldown@1.2.19)(rollup@4.68.4)(vite@8.3.8(@types/node@26.6.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))(vue@3.5.45(typescript@6.0.3))
+      xmlbuilder2:
+        specifier: 4.0.3
+        version: 4.0.3
     devDependencies:
       '@iconify-json/lucide':
         specifier: ^1.2.154
