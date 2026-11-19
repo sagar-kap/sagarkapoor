@@ -39,6 +39,20 @@ task qa-checks  # lint and format
 Commits follow Conventional Commits, and the `crisp` hook politely refuses
 anything with a subject line over 50 characters. Branch, push, open a PR.
 
+## Cloudflare Pages
+
+Connect the GitHub repository to Pages with production branch `main`, root
+directory `website`, build command `pnpm build`, and output directory `dist`.
+Use Node 22 and enable `nodejs_compat` for preview and production. The output
+includes the Worker that handles contact submissions.
+
+Set the Resend and Turnstile variables listed in [the environment example](website/.env.example)
+in the Pages dashboard. Store the Resend API key and Turnstile secret as secrets.
+For production, set `NUXT_PUBLIC_UMAMI_WEBSITE_ID` to the website ID for
+`sagarkapoor.eu` on `umami.weburz.com` before building. Rebuild after changing
+it so the prerendered pages pick up the value. The tracker counts visits on the
+apex domain.
+
 ## License
 
 MIT. Borrow anything that's useful; the full terms are in [LICENSE](./LICENSE).
