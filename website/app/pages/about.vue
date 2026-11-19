@@ -41,6 +41,7 @@
         </li>
       </ul>
     </section>
+    <TradingStudy />
   </article>
 </template>
 
