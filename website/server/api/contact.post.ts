@@ -89,7 +89,7 @@ export default defineEventHandler(async (event) => {
       from: contactFrom,
       to: recipients,
       replyTo: email,
-      subject: `Message in a bottle — ${name}: ${headline} [${submittedAt}]`,
+      subject: `[sagarkapoor.eu] ${name}: ${headline} [${submittedAt}]`,
       text,
     });
   } catch (error) {
