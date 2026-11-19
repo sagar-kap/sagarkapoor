@@ -8,5 +8,5 @@ export const identity = {
   name: "Sagar Kapoor",
   monogram: "SK",
   // Short, human one-liner — used for SEO + the writing byline.
-  bio: "I live in Sofia and build software for the web. I like my code clean and my trading charts covered in ICT scribbles. I’m also into Kabbalah and making games.",
+  bio: "I live in Sofia and build software for the web. I’m also into trading, Kabbalah, and making games.",
 } as const;
