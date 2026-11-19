@@ -31,15 +31,7 @@
 </template>
 
 <script setup lang="ts">
-export interface PostTeaserData {
-  slug: string;
-  title: string;
-  excerpt: string;
-  /** ISO date string. */
-  date: string;
-  readMinutes?: number;
-  tags?: string[];
-}
+import type { WritingPostMeta } from "#shared/utils/writing";
 
 /**
  * `headingTag` keeps the document outline honest: on the home page these
@@ -48,7 +40,7 @@ export interface PostTeaserData {
  */
 const props = withDefaults(
   defineProps<{
-    post: PostTeaserData;
+    post: WritingPostMeta;
     headingTag?: "h2" | "h3";
     featured?: boolean;
   }>(),
@@ -62,5 +54,5 @@ const readLabel = computed(() =>
   formatReadTime({ minutes: props.post.readMinutes }),
 );
 
-const firstTag = computed(() => props.post.tags?.[0]);
+const firstTag = computed(() => props.post.tags[0]);
 </script>

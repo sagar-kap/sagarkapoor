@@ -3,7 +3,7 @@ import type { WritingIndexDocument } from "#shared/utils/writing";
 /**
  * The writing index as the app consumes it: flat post meta plus the tag list.
  * Fetched once from the prerendered /api/writing/index.json (server/api/writing)
- * and shared by useWritingPosts and useWritingTags under one key.
+ * and reused by the home, writing and contact pages.
  *
  * First load of a prerendered page: the data is already inlined in the HTML
  * payload, so nothing is fetched. Client-side navigation: the first page that
@@ -26,5 +26,8 @@ export const useWritingIndex = async () => {
       nuxtApp.payload.data[key] ?? nuxtApp.static.data[key],
   });
 
-  return { index: data };
+  return {
+    posts: computed(() => data.value?.posts ?? []),
+    tags: computed(() => data.value?.tags ?? []),
+  };
 };

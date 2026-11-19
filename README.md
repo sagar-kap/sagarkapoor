@@ -20,7 +20,7 @@ Blog posts are plain markdown in `app/content/writing`, so there's no CMS to kee
 alive. Frontmatter is validated at build (a typo'd field fails it), `draft: true`
 keeps a post out of production, and post images live in
 `public/writing/<slug>/`; the full conventions are in the doc comment at the top
-of `website/server/utils/writing.ts`. Everything ships to Cloudflare Pages.
+of `website/server/utils/writing.ts`. [jarmos/rivu](https://github.com/Jarmos-san/rivu) generates the full-text [RSS feed](https://sagarkapoor.eu/rss.xml) from those same posts. Everything ships to Cloudflare Pages.
 
 And yes, the contact form is a literal message in a bottle. "Sagar" means ocean.
 I had to.

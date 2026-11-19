@@ -19,6 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import type { PostTeaserData } from "../PostTeaser.vue";
-defineProps<{ posts: PostTeaserData[] }>();
+import type { WritingPostMeta } from "#shared/utils/writing";
+defineProps<{ posts: WritingPostMeta[] }>();
 </script>

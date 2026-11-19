@@ -24,10 +24,10 @@
 </template>
 
 <script setup lang="ts">
+import type { WritingPostMeta } from "#shared/utils/writing";
 import { identity } from "../../data/site";
-import type { PostTeaserData } from "../PostTeaser.vue";
 
-defineProps<{ post?: PostTeaserData }>();
+defineProps<{ post?: WritingPostMeta }>();
 </script>
 
 <style scoped>

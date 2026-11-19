@@ -53,25 +53,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const { contactTo, contactFrom } = useRuntimeConfig(event);
-
-  if (!contactTo || !contactFrom) {
-    throw createError({
-      statusCode: 500,
-      statusMessage: "Email is not configured on the server.",
-    });
-  }
-
-  // ISO timestamp goes in the subject so every submission is unique and Gmail /
-  // Outlook don't thread separate enquiries into one collapsed conversation.
   const submittedAt = new Date().toISOString();
-
-  // NUXT_CONTACT_TO may be a single address or a comma-separated list.
-  const recipients = contactTo
-    .split(",")
-    .map((address) => address.trim())
-    .filter(Boolean);
-
   const headline = subject || "No subject";
 
   const text = [
@@ -84,21 +66,11 @@ export default defineEventHandler(async (event) => {
     message,
   ].join("\n");
 
-  try {
-    await sendEmail(event, {
-      from: contactFrom,
-      to: recipients,
-      replyTo: email,
-      subject: `[sagarkapoor.eu] ${name}: ${headline} [${submittedAt}]`,
-      text,
-    });
-  } catch (error) {
-    console.error("[api/contact] Resend send failed:", error);
-    throw createError({
-      statusCode: 502,
-      statusMessage: "Couldn't send right now — please try again shortly.",
-    });
-  }
+  await sendContactEmail(event, {
+    replyTo: email,
+    subject: `[sagarkapoor.eu] ${name}: ${headline} [${submittedAt}]`,
+    text,
+  });
 
   return { ok: true };
 });

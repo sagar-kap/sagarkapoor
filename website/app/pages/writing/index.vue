@@ -15,6 +15,14 @@
           <UIcon name="i-lucide-rss" class="size-3.5" />
           Subscribe via RSS
         </a>
+        <p class="mt-1 text-xs text-(--muted)">
+          Feed generated with
+          <a
+            href="https://github.com/Jarmos-san/rivu"
+            class="underline underline-offset-2"
+            >jarmos/rivu</a
+          >.
+        </p>
       </div>
       <PixelScene scene="desk" label="Writing desk lamp" class="max-w-64" />
     </header>
@@ -27,19 +35,19 @@
         class="mb-6 flex flex-wrap gap-2"
       >
         <button
-          v-for="chip in tags"
-          :key="chip.slug"
+          v-for="tag in tags"
+          :key="tag"
           type="button"
           class="rounded-full border px-3 py-1.5 font-mono text-xs tracking-[0.1em] uppercase transition-colors"
-          :aria-pressed="selectedTag === chip.slug"
+          :aria-pressed="selectedTag === tag"
           :class="
-            selectedTag === chip.slug
+            selectedTag === tag
               ? 'border-teal-500 text-(--accent)'
               : 'border-(--hairline) text-(--muted)'
           "
-          @click="toggleTag(chip.slug)"
+          @click="toggleTag(tag)"
         >
-          {{ chip.name }}
+          {{ tag }}
         </button>
       </div>
 
@@ -89,8 +97,13 @@ const selectedTag = computed(() =>
     : undefined,
 );
 
-const { tags } = await useWritingTags();
-const { posts } = await useWritingPosts({ tag: selectedTag });
+const { tags, posts: allPosts } = await useWritingIndex();
+const posts = computed(() => {
+  const tag = selectedTag.value;
+  return tag
+    ? allPosts.value.filter((post) => post.tags.includes(tag))
+    : allPosts.value;
+});
 
 const toggleTag = (slug: string) => {
   const next = selectedTag.value === slug ? undefined : slug;

@@ -10,16 +10,12 @@
  * the form reports back via `markSent` when it's done (immediately under
  * reduced motion).
  */
-import { validateContact } from "#shared/utils/contact";
+import { validateContact, type ContactInput } from "#shared/utils/contact";
 
 export type ContactFormState = "idle" | "sending" | "casting" | "sent";
 export type ContactFieldError = "" | "email" | "general";
 
-export interface ContactFields {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
+export interface ContactFields extends ContactInput {
   /** Cloudflare Turnstile token, when the widget is rendered. */
   token: string;
   /** Honeypot — bots fill it, humans never see it. Must stay empty. */
@@ -114,10 +110,7 @@ export const useContactForm = () => {
       await $fetch("/api/contact", {
         method: "POST",
         body: {
-          name: fields.name,
-          email: fields.email,
-          subject: fields.subject,
-          message: fields.message,
+          ...checked.value,
           turnstileToken: fields.token,
           cork: fields.cork,
         },

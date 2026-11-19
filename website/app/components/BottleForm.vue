@@ -1,5 +1,5 @@
 <template>
-  <div ref="stage" class="relative">
+  <div class="relative">
     <!-- The form -->
     <form
       v-show="state !== 'sent'"
@@ -182,6 +182,7 @@
 
 <script setup lang="ts">
 import { MAX } from "#shared/utils/contact";
+import { gsap } from "gsap";
 import type {
   ContactFieldError,
   ContactFormState,
@@ -224,10 +225,15 @@ const cork = defineModel<string>("cork", { required: true });
 const FIELD_CLASS =
   "w-full rounded-md border border-(--hairline) bg-(--surface) px-4 py-3 text-(--color) placeholder:text-(--muted)/80 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 focus:outline-none";
 
-const { gsap } = useGsap();
 const reducedMotion = useReducedMotion();
 
-const stage = ref<HTMLElement | null>(null);
+let shakeTween: gsap.core.Tween | undefined;
+let castTimeline: gsap.core.Timeline | undefined;
+
+onBeforeUnmount(() => {
+  shakeTween?.kill();
+  castTimeline?.kill();
+});
 const formEl = ref<HTMLElement | null>(null);
 const bottleEl = ref<HTMLElement | null>(null);
 const successEl = ref<HTMLElement | null>(null);
@@ -248,7 +254,8 @@ const focusFirstInvalid = () => {
 
 const shake = () => {
   if (reducedMotion.value || !formEl.value) return;
-  gsap.fromTo(
+  shakeTween?.kill();
+  shakeTween = gsap.fromTo(
     formEl.value,
     { x: 0 },
     {
@@ -268,6 +275,7 @@ const playCast = () => {
   }
 
   const tl = gsap.timeline();
+  castTimeline = tl;
 
   // 1. The form rolls into itself like a scroll closing.
   tl.to(formEl.value, {
@@ -326,6 +334,13 @@ const playCast = () => {
     "+=0.05",
   );
 };
+
+watch(reducedMotion, (reduce) => {
+  if (reduce) {
+    shakeTween?.progress(1);
+    castTimeline?.progress(1);
+  }
+});
 
 watch(
   () => props.failCount,

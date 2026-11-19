@@ -1,10 +1,3 @@
-/**
- * Long-form bio content for /about. First person, opinionated, specific. The
- * `now` block is meant to be hand-updated every few weeks (nownownow.com style).
- *
- * Draft copy in Sagar's voice — refine before launch.
- */
-
 export const aboutContent = {
   identity: "I'm Sagar Kapoor. I live in Sofia.",
 

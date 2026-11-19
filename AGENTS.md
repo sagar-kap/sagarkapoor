@@ -35,6 +35,7 @@ currently pnpm 11). Node ≥ 22 required.
 | --- | --- |
 | Install | `pnpm install` |
 | Dev server | `PORT=3210 pnpm dev` — **never** `pnpm dev --port 3210` |
+| Regression tests | `pnpm test` |
 | Lint + typecheck | `pnpm lint` (runs `nuxt typecheck` then `eslint .`) |
 | Format | `pnpm format` (write) / `pnpm format:check` |
 | Build | `pnpm build` |
@@ -67,7 +68,7 @@ Pre-commit hooks to expect:
 ## CI
 
 One workflow, `qa-checks.yml`, running the `[FRONT END] Code Quality Check` job
-on Node 22 + pnpm 11 for every PR and every push to `main`: lint, format
+on Node 22 + pnpm 11 for every PR and every push to `main`: tests, lint, format
 check, and a full `pnpm build`. Pages Git integration and DNS cutover are managed in Cloudflare.
 See README for build settings and the production Umami website ID variable. Keep the job name stable; the required status check
 on `main` is keyed on that name.

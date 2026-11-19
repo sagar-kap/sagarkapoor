@@ -14,13 +14,26 @@ const writingFiles = readdirSync(writingDir).filter((file) =>
 // Drafts (`draft: true` in frontmatter) must stay out of the prerendered
 // routes. Only that one flag is read here — full validation happens when the
 // posts are rendered (server/utils/frontmatter.ts), which fails the build.
-const draftFiles = writingFiles.filter(
-  (file) =>
-    (
-      splitFrontmatter(readFileSync(join(writingDir, file), "utf-8")).data as
-        { draft?: unknown } | undefined
-    )?.draft === true,
-);
+const draftFiles = writingFiles.filter((file) => {
+  const path = join(writingDir, file);
+  const { data } = splitFrontmatter(readFileSync(path, "utf-8"), path);
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    "draft" in data &&
+    data.draft === true
+  );
+});
+
+// Cloudflare handles redirects before the Worker only for asset-routed paths.
+const redirectSources = readFileSync(
+  new URL("./public/_redirects", import.meta.url),
+  "utf-8",
+)
+  .split(/\r?\n/)
+  .map((line) => line.trim())
+  .filter((line) => line.startsWith("/"))
+  .map((line) => line.split(/\s+/, 1)[0]!);
 
 // One static JSON file per post (see server/api/writing/[slug].get.ts). Nitro
 // can't discover these by crawling — nothing links to them — so list them here.
@@ -109,20 +122,7 @@ export default defineNuxtConfig({
     cloudflare: {
       pages: {
         routes: {
-          exclude: [
-            "/index.xml",
-            "/api/writing/*",
-            "/blog/*",
-            "/posts/*",
-            "/tags/*",
-            "/categories/*",
-            "/raspberry-pi4-headless-ubuntu-from-usb",
-            "/raspberry-pi4-headless-ubuntu-from-usb/",
-            "/getting-started-with-git",
-            "/getting-started-with-git/",
-            "/how-to-scrape-with-python",
-            "/how-to-scrape-with-python/",
-          ],
+          exclude: ["/api/writing/*", ...redirectSources],
         },
       },
     },
@@ -167,7 +167,7 @@ export default defineNuxtConfig({
   // request (which forces a dev page reload).
   vite: {
     optimizeDeps: {
-      include: ["gsap", "gsap/SplitText"],
+      include: ["gsap"],
     },
   },
 

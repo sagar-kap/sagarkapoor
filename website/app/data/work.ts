@@ -1,12 +1,3 @@
-/**
- * Selected Weburz case studies, CEO-told (not portfolio tiles). Up to three surface
- * on the home page; all live at /work and /work/[slug].
- *
- * Copy here is a first draft in Sagar's voice — first person, specific,
- * opinionated, no corporate verbs. Swap names/metrics for the final approved
- * versions before launch.
- */
-
 export interface Milestone {
   /** Mono step label, e.g. "01". */
   label: string;
@@ -23,7 +14,7 @@ export interface CaseStudy {
   /** Human period string, e.g. "2023 — 2024". */
   period?: string;
   url: string;
-  /** One-line outcome for the card teaser. */
+  /** One-line summary for search and share previews. */
   outcome: string;
   /** 2-3 sentences: what was broken or absent. */
   problem: string;
@@ -94,8 +85,6 @@ export const caseStudies: CaseStudy[] = [
     milestones: [],
   },
 ];
-
-export const featuredCaseStudies = caseStudies.slice(0, 3);
 
 export const findCaseStudy = (slug: string) =>
   caseStudies.find((study) => study.slug === slug);

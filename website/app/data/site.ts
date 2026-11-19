@@ -1,9 +1,3 @@
-/**
- * Single source of truth for site-wide chrome: identity, navigation, socials,
- * and the home trust-signals. Edit here, not in components. `identity` itself
- * lives in shared/ so the RSS route can read it too.
- */
-
 export { identity } from "#shared/utils/identity";
 
 export interface NavLink {
@@ -38,10 +32,3 @@ export const socialLinks: SocialLink[] = [
     icon: "i-simple-icons-x",
   },
 ];
-
-// Home "signals" — quiet truths rather than a metrics flex. No counters.
-export const trustSignals = [
-  { value: "since 2019", label: "building Weburz" },
-  { value: "Sofia", label: "& worldwide" },
-  { value: "open source", label: "by default" },
-] as const;

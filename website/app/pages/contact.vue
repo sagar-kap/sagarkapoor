@@ -37,7 +37,7 @@ useSeoMeta({
   description: "Send Sagar Kapoor a message.",
 });
 
-const { posts } = await useWritingPosts({ limit: 1 });
+const { posts } = await useWritingIndex();
 const latestPostSlug = computed(() => posts.value[0]?.slug ?? "");
 
 const {

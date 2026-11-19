@@ -4,7 +4,7 @@
     <div
       class="mt-14 grid items-start gap-12 border-t border-(--hairline) pt-10 lg:grid-cols-[minmax(0,2fr)_minmax(16rem,1fr)] lg:gap-16"
     >
-      <RecentPosts :posts="posts.slice(1)" />
+      <RecentPosts :posts="posts.slice(1, 4)" />
       <aside class="lg:border-l lg:border-(--hairline) lg:pl-8">
         <SectionLabel>Projects</SectionLabel>
         <ul class="mt-4">
@@ -34,5 +34,5 @@
 <script setup lang="ts">
 import { linkedProjects } from "../data/work";
 
-const { posts } = await useWritingPosts({ limit: 4 });
+const { posts } = await useWritingIndex();
 </script>

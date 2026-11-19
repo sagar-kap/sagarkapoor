@@ -34,11 +34,11 @@ const KNOWN_KEYS = new Set([
 // with js-yaml directly (NOT gray-matter, whose engine loader uses eval — which
 // Cloudflare Workers reject at runtime). The data is unvalidated here; see
 // validateFrontmatter.
-export const splitFrontmatter = (raw: string) => {
+export const splitFrontmatter = (raw: string, file: string) => {
   const match = raw.match(FRONTMATTER_RE);
   if (!match) return { data: undefined, content: raw };
   return {
-    data: load(match[1] ?? "") ?? {},
+    data: load(match[1] ?? "", { filename: file }) ?? {},
     content: match[2] ?? "",
   };
 };
@@ -49,9 +49,14 @@ const asIsoDate = (value: unknown) =>
     ? value.toISOString().slice(0, 10)
     : value;
 
-const isRealDate = (value: string) =>
-  ISO_DATE_RE.test(value) &&
-  new Date(value).toISOString().slice(0, 10) === value;
+const isRealDate = (value: string) => {
+  if (!ISO_DATE_RE.test(value)) return false;
+  const timestamp = Date.parse(value);
+  return (
+    Number.isFinite(timestamp) &&
+    new Date(timestamp).toISOString().startsWith(value)
+  );
+};
 
 // Hand-written on purpose — five fields don't justify a schema library. Every
 // problem is collected so one build run reports the whole file, and the error
