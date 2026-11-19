@@ -1,13 +1,20 @@
 <template>
-  <article ref="el" class="reveal group border-t border-(--hairline) py-7">
+  <article
+    class="group"
+    :class="featured ? 'pt-4 pb-7' : 'border-t border-(--hairline) py-7'"
+  >
     <NuxtLink :to="`/writing/${post.slug}`" class="block">
       <component
         :is="headingTag"
-        class="font-display text-xl font-semibold text-(--color) transition-colors group-hover:text-(--accent) md:text-2xl"
+        class="font-serif leading-tight text-balance text-(--color) transition-colors group-hover:text-(--accent)"
+        :class="featured ? 'text-4xl md:text-5xl' : 'text-2xl md:text-3xl'"
       >
         {{ post.title }}
       </component>
-      <p class="mt-2 line-clamp-2 max-w-2xl text-(--muted)">
+      <p
+        class="mt-2 max-w-2xl text-(--muted)"
+        :class="{ 'line-clamp-2': !featured }"
+      >
         {{ post.excerpt }}
       </p>
       <div
@@ -40,7 +47,11 @@ export interface PostTeaserData {
  * directly under the page <h1>, where h3 would skip a level.
  */
 const props = withDefaults(
-  defineProps<{ post: PostTeaserData; headingTag?: "h2" | "h3" }>(),
+  defineProps<{
+    post: PostTeaserData;
+    headingTag?: "h2" | "h3";
+    featured?: boolean;
+  }>(),
   { headingTag: "h3" },
 );
 
@@ -52,7 +63,4 @@ const readLabel = computed(() =>
 );
 
 const firstTag = computed(() => props.post.tags?.[0]);
-
-const el = ref<HTMLElement | null>(null);
-useScrollReveal(el);
 </script>

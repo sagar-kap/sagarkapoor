@@ -1,10 +1,10 @@
 <template>
   <div class="mx-auto max-w-[72rem] px-6 pt-12 pb-24 md:pt-20 md:pb-32">
-    <HomeHero />
+    <HomeHero :post="posts[0]" />
     <div
       class="mt-14 grid items-start gap-12 border-t border-(--hairline) pt-10 lg:grid-cols-[minmax(0,2fr)_minmax(16rem,1fr)] lg:gap-16"
     >
-      <RecentPosts />
+      <RecentPosts :posts="posts.slice(1)" />
       <aside class="lg:border-l lg:border-(--hairline) lg:pl-8">
         <SectionLabel>Projects</SectionLabel>
         <ul class="mt-4">
@@ -33,4 +33,6 @@
 
 <script setup lang="ts">
 import { linkedProjects } from "../data/work";
+
+const { posts } = await useWritingPosts({ limit: 4 });
 </script>
