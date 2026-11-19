@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="flex flex-wrap items-baseline justify-between gap-4">
-      <h2 class="font-display text-display-md font-semibold">Latest posts</h2>
+      <h2 class="font-display text-display-md font-semibold">More writing</h2>
       <UButton
         to="/writing"
         label="All posts"
@@ -19,6 +19,6 @@
 </template>
 
 <script setup lang="ts">
-// Three most recent posts, from the prerendered writing data.
-const { posts } = await useWritingPosts({ limit: 3 });
+import type { PostTeaserData } from "../PostTeaser.vue";
+defineProps<{ posts: PostTeaserData[] }>();
 </script>

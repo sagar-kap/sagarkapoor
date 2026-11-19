@@ -1,5 +1,5 @@
 <template>
-  <section class="mx-auto max-w-[72rem] px-6 py-24 md:py-32">
+  <section class="mx-auto max-w-[54rem] px-6 pt-12 pb-24 md:pt-20 md:pb-32">
     <header class="max-w-3xl">
       <h1
         class="mt-4 font-display text-display-lg font-semibold text-(--color)"
@@ -16,67 +16,44 @@
       </a>
     </header>
 
-    <div class="mt-14 grid gap-10 lg:grid-cols-[1fr_14rem] lg:gap-16">
-      <!-- Post list -->
-      <div>
-        <!-- Mobile tag filter -->
-        <div v-if="tags.length" class="mb-8 flex flex-wrap gap-2 lg:hidden">
-          <button
-            v-for="chip in tags"
-            :key="chip.slug"
-            type="button"
-            class="rounded-full border px-3 py-1.5 font-mono text-xs tracking-[0.1em] uppercase transition-colors"
-            :aria-pressed="selectedTag === chip.slug"
-            :class="
-              selectedTag === chip.slug
-                ? 'border-teal-500 text-(--accent)'
-                : 'border-(--hairline) text-(--muted)'
-            "
-            @click="toggleTag(chip.slug)"
-          >
-            {{ chip.name }}
-          </button>
-        </div>
-
-        <div v-if="posts.length">
-          <PostTeaser
-            v-for="post in posts"
-            :key="post.slug"
-            :post="post"
-            heading-tag="h2"
-          />
-        </div>
-        <p
-          v-else
-          class="border-t border-(--hairline) py-10 font-mono text-sm text-(--muted)"
+    <div class="mt-8">
+      <div
+        v-if="tags.length"
+        role="group"
+        aria-label="Filter posts by tag"
+        class="mb-6 flex flex-wrap gap-2"
+      >
+        <button
+          v-for="chip in tags"
+          :key="chip.slug"
+          type="button"
+          class="rounded-full border px-3 py-1.5 font-mono text-xs tracking-[0.1em] uppercase transition-colors"
+          :aria-pressed="selectedTag === chip.slug"
+          :class="
+            selectedTag === chip.slug
+              ? 'border-teal-500 text-(--accent)'
+              : 'border-(--hairline) text-(--muted)'
+          "
+          @click="toggleTag(chip.slug)"
         >
-          Nothing under that tag yet — try another.
-        </p>
+          {{ chip.name }}
+        </button>
       </div>
 
-      <!-- Desktop tag sidebar -->
-      <aside v-if="tags.length" class="hidden lg:block">
-        <p class="font-mono text-xs tracking-[0.2em] text-(--muted) uppercase">
-          Filter
-        </p>
-        <ul class="mt-4 space-y-1">
-          <li v-for="chip in tags" :key="chip.slug">
-            <button
-              type="button"
-              class="-my-1 py-1 font-mono text-sm transition-colors"
-              :aria-pressed="selectedTag === chip.slug"
-              :class="
-                selectedTag === chip.slug
-                  ? 'text-(--accent)'
-                  : 'text-(--muted) hover:text-(--color)'
-              "
-              @click="toggleTag(chip.slug)"
-            >
-              {{ selectedTag === chip.slug ? "→ " : "" }}{{ chip.name }}
-            </button>
-          </li>
-        </ul>
-      </aside>
+      <div v-if="posts.length">
+        <PostTeaser
+          v-for="post in posts"
+          :key="post.slug"
+          :post="post"
+          heading-tag="h2"
+        />
+      </div>
+      <p
+        v-else
+        class="border-t border-(--hairline) py-10 font-mono text-sm text-(--muted)"
+      >
+        Nothing under that tag yet — try another.
+      </p>
     </div>
   </section>
 </template>
