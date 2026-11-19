@@ -29,11 +29,6 @@
       </div>
     </header>
 
-    <LazySweepReplay
-      v-if="post.slug === 'reading-a-sweep'"
-      class="mx-auto mt-8 max-w-[44rem]"
-    />
-
     <!-- Body. Markdown is first-party (these files live in the repo) and is
          rendered to HTML at build time by marked. -->
     <!-- eslint-disable-next-line vue/no-v-html -->
