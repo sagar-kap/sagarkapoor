@@ -1,6 +1,13 @@
 <template>
   <section class="mx-auto max-w-[72rem] px-6 pt-12 pb-24 md:pt-16 md:pb-32">
-    <h1 class="font-display text-display-lg font-semibold">Work</h1>
+    <header class="flex items-center justify-between gap-6">
+      <h1 class="font-display text-display-lg font-semibold">Work</h1>
+      <PixelScene
+        scene="studio"
+        label="Studio monitor power"
+        class="max-w-32 sm:max-w-56"
+      />
+    </header>
     <div class="mt-8 grid gap-6 sm:grid-cols-2">
       <WorkCard
         v-for="study in caseStudies"

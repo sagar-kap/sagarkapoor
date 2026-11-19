@@ -1,5 +1,5 @@
 <template>
-  <article class="mx-auto max-w-[44rem] px-6 py-24 md:py-32">
+  <article class="mx-auto max-w-[44rem] px-6 pt-12 pb-24 md:pt-20 md:pb-32">
     <!-- Identity -->
     <header>
       <SectionEyebrow>About</SectionEyebrow>
@@ -8,15 +8,20 @@
       >
         {{ about.identity }}
       </h1>
+      <PixelScene
+        scene="city"
+        label="City lights below the mountains"
+        class="mt-6"
+      />
     </header>
 
     <!-- Now -->
-    <section class="mt-16">
+    <section class="mt-10">
       <NowBlock :now="about.now" />
     </section>
 
     <!-- Things I've shipped -->
-    <section class="mt-16">
+    <section class="mt-10">
       <SectionLabel>Things I've shipped</SectionLabel>
       <ul class="mt-6 space-y-4">
         <li

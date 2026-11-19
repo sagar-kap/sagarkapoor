@@ -1,7 +1,7 @@
 <template>
   <article v-if="study">
     <!-- Header -->
-    <header class="mx-auto max-w-[64rem] px-6 pt-24 pb-12 md:pt-32">
+    <header class="mx-auto max-w-[64rem] px-6 pt-12 pb-12 md:pt-20">
       <NuxtLink
         to="/work"
         class="-my-1.5 inline-flex items-center gap-2 py-1.5 font-mono text-xs tracking-[0.12em] text-(--muted) uppercase transition-colors hover:text-(--accent)"
@@ -27,13 +27,31 @@
       >
         {{ study.role }}
       </p>
-      <img
-        :src="study.screenshot"
-        :alt="study.client + ' homepage'"
-        width="1280"
-        height="720"
-        class="mt-8 w-full rounded-lg border border-(--hairline)"
-      />
+      <figure
+        class="mt-8 overflow-hidden rounded-lg border border-(--hairline) bg-(--surface)"
+      >
+        <figcaption class="flex items-center gap-2 px-4 py-2">
+          <img
+            src="/scenes/studio-lit.png"
+            alt=""
+            width="240"
+            height="78"
+            class="w-14 rounded-sm [image-rendering:pixelated]"
+          />
+          <a
+            :href="study.url"
+            class="ml-auto inline-flex items-center gap-2 text-sm text-(--accent) underline underline-offset-4"
+            >Visit {{ study.client }} <UIcon name="i-lucide-arrow-up-right"
+          /></a>
+        </figcaption>
+        <img
+          :src="study.screenshot"
+          :alt="study.client + ' homepage'"
+          width="1280"
+          height="720"
+          class="w-full border-t border-(--hairline)"
+        />
+      </figure>
     </header>
 
     <!-- Problem / Approach / Outcome -->

@@ -1,5 +1,5 @@
 <template>
-  <article v-if="post" class="px-6 py-24 md:py-32">
+  <article v-if="post" class="px-6 pt-12 pb-24 md:pt-20 md:pb-32">
     <!-- Hero -->
     <header class="mx-auto max-w-[44rem]">
       <NuxtLink
@@ -11,7 +11,7 @@
       </NuxtLink>
 
       <h1
-        class="mt-8 font-display text-display-lg font-semibold text-balance text-(--color)"
+        class="mt-6 font-serif text-display-lg leading-tight text-balance text-(--color)"
       >
         {{ post.title }}
       </h1>
@@ -36,7 +36,14 @@
 
     <!-- Byline -->
     <footer class="mx-auto mt-16 max-w-[44rem]">
-      <Divider />
+      <img
+        src="/scenes/desk-lit.png"
+        alt=""
+        width="240"
+        height="78"
+        loading="lazy"
+        class="w-36 rounded-sm [image-rendering:pixelated]"
+      />
       <div class="mt-10 flex items-start gap-4">
         <UAvatar
           src="https://github.com/Sagar-Kap.png"
