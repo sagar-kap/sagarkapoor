@@ -7,6 +7,7 @@
       >
         {{ identity.bio }} This is where I keep my notes.
       </p>
+      <PixelShoreline />
     </div>
     <section
       v-if="post"
