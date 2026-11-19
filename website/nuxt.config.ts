@@ -49,7 +49,10 @@ export default defineNuxtConfig({
   // The Turnstile secret is added to runtimeConfig by @nuxtjs/turnstile itself
   //   (NUXT_TURNSTILE_SECRET_KEY); the site key below is public.
   runtimeConfig: {
-    public: { umamiWebsiteId: "" },
+    public: {
+      umamiWebsiteId: "",
+      shareImageOrigin: process.env.CF_PAGES_URL || "",
+    },
     resendApiKey: "",
     contactTo: "",
     contactFrom: "",
@@ -71,6 +74,7 @@ export default defineNuxtConfig({
   // discovery is off: the only <img> on a post is the byline avatar, which
   // isn't content worth listing against every URL.
   sitemap: {
+    xsl: false,
     discoverImages: false,
     sources: ["/api/__sitemap__/urls"],
   },

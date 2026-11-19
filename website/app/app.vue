@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { identity, socialLinks } from "./data/site";
 
-const { umamiWebsiteId } = useRuntimeConfig().public;
+const { umamiWebsiteId, shareImageOrigin } = useRuntimeConfig().public;
 
 useHead({
   script: umamiWebsiteId
@@ -53,9 +53,9 @@ useSchemaOrg([
 
 const description = `${identity.name}. ${identity.bio}`;
 
-// Static share card (public/og.png, 1200×630) — the footer shore, moon and
-// all. Absolute URL: scrapers don't resolve relative og:image paths.
-const ogImage = `${useSiteConfig().url}/og.png`;
+// Pages previews can go live before the canonical domain points to Pages.
+const ogImage = new URL("/og.png", shareImageOrigin || useSiteConfig().url)
+  .href;
 
 useSeoMeta({
   title: identity.name,
