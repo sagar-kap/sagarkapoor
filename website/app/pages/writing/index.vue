@@ -1,19 +1,22 @@
 <template>
   <section class="mx-auto max-w-[54rem] px-6 pt-12 pb-24 md:pt-20 md:pb-32">
-    <header class="max-w-3xl">
-      <h1
-        class="mt-4 font-display text-display-lg font-semibold text-(--color)"
-      >
-        Writing
-      </h1>
-      <!-- Plain anchor: /rss.xml is a prerendered file, not a route. -->
-      <a
-        href="/rss.xml"
-        class="mt-6 inline-flex items-center gap-2 font-mono text-xs tracking-[0.12em] text-(--accent) uppercase transition-colors hover:text-(--accent-hover)"
-      >
-        <UIcon name="i-lucide-rss" class="size-3.5" />
-        Subscribe via RSS
-      </a>
+    <header class="grid items-center gap-5 sm:grid-cols-[1fr_15rem]">
+      <div>
+        <h1
+          class="mt-4 font-display text-display-lg font-semibold text-(--color)"
+        >
+          Writing
+        </h1>
+        <!-- Plain anchor: /rss.xml is a prerendered file, not a route. -->
+        <a
+          href="/rss.xml"
+          class="mt-6 inline-flex items-center gap-2 font-mono text-xs tracking-[0.12em] text-(--accent) uppercase transition-colors hover:text-(--accent-hover)"
+        >
+          <UIcon name="i-lucide-rss" class="size-3.5" />
+          Subscribe via RSS
+        </a>
+      </div>
+      <PixelScene scene="desk" label="Writing desk lamp" class="max-w-64" />
     </header>
 
     <div class="mt-8">

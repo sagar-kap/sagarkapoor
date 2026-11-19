@@ -1,10 +1,13 @@
 <template>
   <section class="mx-auto max-w-[44rem] px-6 pt-12 pb-24 md:pt-20 md:pb-32">
-    <h1
-      class="mb-8 font-display text-display-lg font-semibold text-balance text-(--color)"
-    >
-      Get in touch
-    </h1>
+    <header class="mb-8 grid items-center gap-4 sm:grid-cols-[1fr_12rem]">
+      <h1
+        class="font-display text-display-lg font-semibold text-balance text-(--color)"
+      >
+        Get in touch
+      </h1>
+      <PixelScene scene="beacon" label="Lighthouse beam" class="max-w-52" />
+    </header>
 
     <!-- The signature interaction. The page owns the form state (see
            useContactForm); BottleForm is a stateless render of it plus the
