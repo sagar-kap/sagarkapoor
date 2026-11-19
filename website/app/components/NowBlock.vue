@@ -33,8 +33,6 @@ defineProps<{
   now: { updated: string; items: readonly string[] };
 }>();
 
-const { formatDate } = useFormattedDate();
-
 const el = ref<HTMLElement | null>(null);
 useScrollReveal(el);
 </script>

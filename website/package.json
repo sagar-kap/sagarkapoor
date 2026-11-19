@@ -7,6 +7,7 @@
     "dev": "nuxt dev --host",
     "build": "nuxt build",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "test:built": "node --test tests/build/*.test.mjs",
     "preview": "nuxt preview",
     "lint": "nuxt typecheck && eslint .",
     "format": "prettier . --write",

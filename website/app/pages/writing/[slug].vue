@@ -16,17 +16,7 @@
         {{ post.title }}
       </h1>
 
-      <div
-        class="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs tracking-[0.12em] text-(--muted) uppercase"
-      >
-        <span v-if="post.date">{{ formatDate(post.date) }}</span>
-        <span v-if="readLabel" aria-hidden="true">·</span>
-        <span v-if="readLabel">{{ readLabel }}</span>
-        <template v-if="post.updated">
-          <span aria-hidden="true">·</span>
-          <span>Updated {{ formatDate(post.updated) }}</span>
-        </template>
-      </div>
+      <PostMetadata :post="post" :updated="post.updated" class="mt-5" />
     </header>
 
     <!-- Body. Markdown is first-party (these files live in the repo) and is
@@ -86,15 +76,13 @@ import { identity } from "../../data/site";
 import type { WritingPostDocument } from "#shared/utils/writing";
 
 const route = useRoute();
-const { formatDate } = useFormattedDate();
-const { formatReadTime } = useFormattedReadTime();
 
 const slug = route.params.slug as string;
 
 // Rendered HTML comes from the prerendered /api/writing/<slug>.json (server/api/
 // writing) — the markdown pipeline never runs in the browser. Cached for the
 // session for the same reason as the index (see useWritingIndex).
-const { data } = await useFetch(`/api/writing/${slug}.json`, {
+const { data, error } = await useFetch(`/api/writing/${slug}.json`, {
   transform: ({ data: { id, attributes }, meta }: WritingPostDocument) => ({
     post: { slug: id, ...attributes },
     neighbours: meta,
@@ -107,14 +95,14 @@ const post = data.value?.post;
 const neighbours = data.value?.neighbours ?? { previous: null, next: null };
 
 if (!post) {
+  const statusCode = error.value?.statusCode ?? 404;
   throw createError({
-    statusCode: 404,
-    statusMessage: "Post not found",
+    statusCode,
+    statusMessage:
+      statusCode === 404 ? "Post not found" : "Could not load post",
     fatal: true,
   });
 }
-
-const readLabel = computed(() => formatReadTime({ minutes: post.readMinutes }));
 
 useSeoMeta({
   title: post.title,

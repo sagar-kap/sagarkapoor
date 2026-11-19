@@ -17,15 +17,7 @@
       >
         {{ post.excerpt }}
       </p>
-      <div
-        class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs tracking-[0.12em] text-(--muted) uppercase"
-      >
-        <span v-if="post.date">{{ formatDate(post.date) }}</span>
-        <span v-if="readLabel" aria-hidden="true">·</span>
-        <span v-if="readLabel">{{ readLabel }}</span>
-        <span v-if="firstTag" aria-hidden="true">·</span>
-        <span v-if="firstTag" class="text-(--accent)">{{ firstTag }}</span>
-      </div>
+      <PostMetadata :post="post" :tag="post.tags[0]" class="mt-4" />
     </NuxtLink>
   </article>
 </template>
@@ -38,7 +30,7 @@ import type { WritingPostMeta } from "#shared/utils/writing";
  * teasers sit under a section <h2>, so h3 is right; on /writing they sit
  * directly under the page <h1>, where h3 would skip a level.
  */
-const props = withDefaults(
+withDefaults(
   defineProps<{
     post: WritingPostMeta;
     headingTag?: "h2" | "h3";
@@ -46,13 +38,4 @@ const props = withDefaults(
   }>(),
   { headingTag: "h3" },
 );
-
-const { formatDate } = useFormattedDate();
-const { formatReadTime } = useFormattedReadTime();
-
-const readLabel = computed(() =>
-  formatReadTime({ minutes: props.post.readMinutes }),
-);
-
-const firstTag = computed(() => props.post.tags[0]);
 </script>

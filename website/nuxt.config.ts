@@ -64,7 +64,11 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       umamiWebsiteId: "",
-      shareImageOrigin: process.env.CF_PAGES_URL || "",
+      // Preview cards use the preview asset. Production uses the canonical domain.
+      shareImageOrigin:
+        process.env.CF_PAGES_BRANCH === "main"
+          ? ""
+          : process.env.CF_PAGES_URL || "",
     },
     resendApiKey: "",
     contactTo: "",

@@ -39,6 +39,7 @@ currently pnpm 11). Node ≥ 22 required.
 | Lint + typecheck | `pnpm lint` (runs `nuxt typecheck` then `eslint .`) |
 | Format | `pnpm format` (write) / `pnpm format:check` |
 | Build | `pnpm build` |
+| Test the built Pages Worker | `pnpm test:built` (after build, external services mocked) |
 
 Why the PORT= rule: the dev script is `nuxt dev --host`, so a trailing
 `--port` gets eaten by `--host` and the port number becomes a rootDir — you

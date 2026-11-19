@@ -53,7 +53,7 @@ useSchemaOrg([
 
 const description = `${identity.name}. ${identity.bio}`;
 
-// Pages previews can go live before the canonical domain points to Pages.
+// Keep production card URLs stable across Cloudflare deployments.
 const ogImage = new URL("/og.png", shareImageOrigin || useSiteConfig().url)
   .href;
 

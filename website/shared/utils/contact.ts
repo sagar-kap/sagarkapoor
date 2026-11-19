@@ -6,7 +6,9 @@
  * and the Cloudflare Worker alike.
  */
 
-export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const TURNSTILE_REQUIRED = "Please complete the anti-spam check.";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const MAX = {
   name: 100,
   email: 200,

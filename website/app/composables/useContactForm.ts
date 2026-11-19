@@ -10,7 +10,11 @@
  * the form reports back via `markSent` when it's done (immediately under
  * reduced motion).
  */
-import { validateContact, type ContactInput } from "#shared/utils/contact";
+import {
+  TURNSTILE_REQUIRED,
+  validateContact,
+  type ContactInput,
+} from "#shared/utils/contact";
 
 export type ContactFormState = "idle" | "sending" | "casting" | "sent";
 export type ContactFieldError = "" | "email" | "general";
@@ -49,11 +53,7 @@ export const serverMessage = (error: unknown): string => {
 };
 
 export const useContactForm = () => {
-  const runtimeConfig = useRuntimeConfig();
-  const turnstileSiteKey =
-    (runtimeConfig.public.turnstile as { siteKey?: string } | undefined)
-      ?.siteKey ?? "";
-  const turnstileEnabled = turnstileSiteKey !== "";
+  const turnstileEnabled = Boolean(useRuntimeConfig().public.turnstile.siteKey);
 
   const fields = reactive<ContactFields>({
     name: "",
@@ -102,6 +102,11 @@ export const useContactForm = () => {
     // animation without hitting the API (which would reject the missing token).
     if (import.meta.dev && !turnstileEnabled) {
       state.value = "casting";
+      return;
+    }
+
+    if (turnstileEnabled && !fields.token) {
+      fail("general", TURNSTILE_REQUIRED);
       return;
     }
 
