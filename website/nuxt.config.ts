@@ -49,6 +49,7 @@ export default defineNuxtConfig({
   // The Turnstile secret is added to runtimeConfig by @nuxtjs/turnstile itself
   //   (NUXT_TURNSTILE_SECRET_KEY); the site key below is public.
   runtimeConfig: {
+    public: { umamiWebsiteId: "" },
     resendApiKey: "",
     contactTo: "",
     contactFrom: "",
@@ -89,10 +90,10 @@ export default defineNuxtConfig({
   },
 
   // Hybrid Cloudflare Pages deploy (the Weburz house pattern). `nuxt build`
-  // prerenders the homepage into .output/public AND emits a Worker that runs the
+  // prerenders the homepage into dist/ AND emits a Worker that runs the
   // server routes — so POST /api/contact has a runtime. A pure `nuxt generate`
   // ships no Worker and the contact form would 405. CF Pages build command must
-  // be `pnpm build`; output dir stays `.output/public`.
+  // be `pnpm build`; output directory is `dist`.
   // DEPLOY NOTE: the emitted Worker uses Node built-ins, so the Cloudflare Pages
   // project must have the `nodejs_compat` compatibility flag enabled (Pages →
   // Settings → Functions → Compatibility flags, for both production & preview).

@@ -68,8 +68,8 @@ Pre-commit hooks to expect:
 
 One workflow, `qa-checks.yml`, running the `[FRONT END] Code Quality Check` job
 on Node 22 + pnpm 11 for every PR and every push to `main`: lint, format
-check, and a full `pnpm build`. Nothing deploys yet — the CF Pages + DNS
-cutover is still pending. Keep the job name stable; the required status check
+check, and a full `pnpm build`. Pages Git integration and DNS cutover are managed in Cloudflare.
+See README for build settings and the production Umami website ID variable. Keep the job name stable; the required status check
 on `main` is keyed on that name.
 
 ## Dependency management

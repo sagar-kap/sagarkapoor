@@ -9,7 +9,19 @@
 <script setup lang="ts">
 import { identity, socialLinks } from "./data/site";
 
+const { umamiWebsiteId } = useRuntimeConfig().public;
+
 useHead({
+  script: umamiWebsiteId
+    ? [
+        {
+          defer: true,
+          src: "https://umami.weburz.com/script.js",
+          "data-website-id": umamiWebsiteId,
+          "data-domains": "sagarkapoor.eu",
+        },
+      ]
+    : [],
   htmlAttrs: { lang: "en" },
   titleTemplate: (titleChunk) =>
     titleChunk && titleChunk !== identity.name
