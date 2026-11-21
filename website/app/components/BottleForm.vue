@@ -300,23 +300,29 @@ const playCast = () => {
   });
 
   // 4. Drift off to the right with a gentle sine bob (custom motion, not physics).
+  // The distance is measured so the bottle travels only as far as it takes to
+  // clear the viewport, and the bob is exactly as long as the drift: anything
+  // longer is time spent animating an off-screen bottle on an empty page.
   tl.to(
     bottleEl.value,
     {
-      x: "115vw",
+      x: () =>
+        window.innerWidth -
+        (bottleEl.value?.firstElementChild?.getBoundingClientRect().left ?? 0) +
+        24,
       rotation: 6,
-      duration: 2.5,
+      duration: 1.6,
       ease: "power1.in",
     },
-    "+=0.25",
+    "+=0.15",
   );
   tl.to(
     bottleEl.value,
     {
       y: "-=22",
-      repeat: 4,
+      repeat: 3,
       yoyo: true,
-      duration: 0.62,
+      duration: 0.4,
       ease: "sine.inOut",
     },
     "<",
@@ -326,11 +332,12 @@ const playCast = () => {
   tl.add(() => {
     emit("castComplete");
   });
-  tl.from(
-    successEl.value,
-    { opacity: 0, y: 18, duration: 0.7, ease: "power3.out" },
-    "+=0.05",
-  );
+  tl.from(successEl.value, {
+    opacity: 0,
+    y: 18,
+    duration: 0.5,
+    ease: "power3.out",
+  });
 };
 
 watch(reducedMotion, (reduce) => {
